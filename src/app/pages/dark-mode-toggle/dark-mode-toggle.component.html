@@ -1,0 +1,17 @@
+<input
+  id="darkMode"
+  type="checkbox"
+  [checked]="isDark"
+  (change)="onToggle()"
+  class="toggle"
+/>
+<label class="toggle-label text-center" for="darkMode">
+  <img
+    src="assets/img/moon.svg"
+    class="moon"
+  />
+  <img
+    src="assets/img/sun.svg"
+    class="sun"
+  />
+</label>

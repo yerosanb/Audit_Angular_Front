@@ -1,0 +1,23 @@
+
+<div *ngIf="isLoggedIn; else elseTemplate">
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
+
+<ng-template #elseTemplate>
+  <app-signup *ngIf="_router.url==='/signup';else forgotPassword"> </app-signup>
+  <ng-template #forgotPassword>
+    <app-forget-password *ngIf="_router.url==='/forget-password'; else updatePassword"> </app-forget-password>
+    <ng-template #updatePassword>
+      <app-update-password *ngIf="_router.isActive('/update-password',false); else invalidToken"> </app-update-password>
+      <ng-template #invalidToken>
+        <app-invalid-token *ngIf="_router.url==='/invalid-token'; else defaultLogin"></app-invalid-token>
+        <ng-template #defaultLogin>
+          <app-pages-login> </app-pages-login>
+        </ng-template>
+      </ng-template>
+    </ng-template>
+  </ng-template>
+</ng-template>

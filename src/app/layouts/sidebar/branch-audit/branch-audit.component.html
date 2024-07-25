@@ -1,0 +1,394 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav" id="mySideBar">
+    <div *ngIf="_router.url === '/' && !contentLoaded">
+      <div class="item ml-3 mr-1 mb-2">
+        <ngx-skeleton-loader
+          animation="progress"
+          [theme]="{ width: '95%', height: '40px' }"
+        ></ngx-skeleton-loader>
+      </div>
+    </div>
+    <div *ngIf="_router.url != '/' || contentLoaded">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">
+          <i class="bi bi-grid"></i> <span>Dashboard</span>
+        </a>
+      </li>
+    </div>
+
+    <ng-container>
+      <div *ngIf="_router.url === '/' && !contentLoaded">
+        <app-admin-skeleton-one></app-admin-skeleton-one>
+      </div>
+      <div *ngIf="_router.url != '/' || contentLoaded">
+        <div *ngIf="!regional_d">
+          <li class="nav-heading">Remarks</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              routerLink="/app-remark-notification-branch"
+            >
+              <i class="pi pi-envelope"></i>
+              <span
+                >Unseen Remarks
+                <span class="badge badge-pill badge-info">{{
+                  unseen_remark
+                }}</span>
+              </span>
+            </a>
+          </li>
+        </div>
+
+        <div *ngIf="auditor">
+          <li class="nav-heading">Findings Status</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              routerLink="/incomplete-account-on-progress-branch"
+            >
+              <i class="pi pi-envelope"></i>
+              <span>Progress</span>
+            </a>
+          </li>
+        </div>
+
+        <div *ngIf="branch_manger">
+          <li class="nav-heading">Reported Findings</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              routerLink="/app-branch-audit-notification-lower-roles"
+            >
+              <i class="pi pi-envelope"></i>
+              <span>Pending Findings </span>
+            </a>
+          </li>
+        </div>
+
+        <div *ngIf="reviewer">
+          <li class="nav-heading">Findings Status</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              routerLink="/app-branch-audit-notification-lower-roles"
+            >
+              <i class="pi pi-envelope"></i>
+              <span>Pending Findings </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#cash-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-money-bill"></i
+              ><span>Compiled Findings</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="cash-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/app-regional-compiled-findings-pending">
+                  <i class="bi bi-tools"></i><span>Compiled</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/regional-compiled-audits-progress">
+                  <i class="bi bi-plus-lg"></i><span>Progress</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+
+        <div *ngIf="compiler">
+          <li class="nav-heading">Findings Status</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              routerLink="/app-branch-audit-notification-higher-roles"
+            >
+              <i class="pi pi-envelope"></i>
+              <span>Pending Findings </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#cash-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-money-bill"></i
+              ><span>Compiled Findings</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="cash-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/compiled-audits-division">
+                  <i class="bi bi-tools"></i><span>Compiled</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/compiled-audits-progress-division">
+                  <i class="bi bi-plus-lg"></i><span>Progress</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+
+        <div *ngIf="!auditor">
+          <li class="nav-heading">Rectification</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#rerion-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-tag"></i
+              ><span>Financial Audit Findings</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="rerion-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a
+                  routerLink="/app-incomplete-document-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-tools"></i><span>Incomplete Document</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/app-operational-descripancy-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Transaction Related Findings </span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  routerLink="/app-dormant-inactive-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Dormant/Inactive Account</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/app-suspense-account-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i><span>Suspense Account</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/app-general-observation-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i
+                  ><span>General Observation and Comment</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/status-of-audit-reviewer-rectification-tracker">
+                  <i class="bi bi-plus-lg"></i><span>Cleared Logs</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#account-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-credit-card"></i
+              ><span>Books of Accounts</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="account-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a
+                  routerLink="/app-negotiable-instrument-rectification-tracker"
+                >
+                  <i class="bi bi-tools"></i><span>Negotiable Instrument</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/app-long-outstanding-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Long Outstanding Items</span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  routerLink="/app-controllable-expense-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i><span>Controllable Expense</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/asset-liability-reviewer-rectification-tracker">
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Asset and Liabilities</span>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  routerLink="/abnormal-balance-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i>
+                  <span>Abnormal Balance</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink="/memorandum-reviewer-rectification-tracker">
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Memorandum & contingent</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#cash-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-money-bill"></i
+              ><span>Cash related discrepancies</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="cash-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/app-cash-count-reviewer-rectification-tracker">
+                  <i class="bi bi-tools"></i><span>Cash Count</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/cash-performance-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Cash Excess or Shortage</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/cash-management-reviewer-rectification-tracker">
+                  <i class="bi bi-plus-lg"></i>
+                  <span>Cash Management</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#digital-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-credit-card"></i
+              ><span>Digital banking related findings</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="digital-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/app-atm-card-reviewer-rectification-tracker">
+                  <i class="bi bi-plus-lg"></i><span>ATM</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/">
+                  <i class="bi bi-plus-lg"></i><span>POS</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/">
+                  <i class="bi bi-plus-lg"></i><span>Agent</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/">
+                  <i class="bi bi-plus-lg"></i><span>E - Branch</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#loan-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="pi pi-fw pi-truck"></i
+              ><span>Loans and Advances related findings</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="loan-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a
+                  routerLink="/app-loan-and-advance-reviewer-rectification-tracker"
+                >
+                  <i class="bi bi-plus-lg"></i><span>Loan and Advance</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+        <div *ngIf="reviewer || compiler">
+          <li class="nav-heading">Data Pooling</li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/app-data-pooling-branch">
+              <i class="pi pi-envelope"></i>
+              <span>Transaction Related Findings </span>
+            </a>
+          </li>
+        </div>
+      </div>
+    </ng-container>
+  </ul>
+</aside>

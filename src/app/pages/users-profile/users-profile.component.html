@@ -1,0 +1,515 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Profile</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
+        <div class="card">
+          <div
+            class="card-body profile-card pt-4 d-flex flex-column align-items-center"
+          >
+            <img
+              *ngIf="userData.photoUrl; else leftBlankPic"
+              src="{{ environment.imagesUserApi + userData.photoUrl }}"
+              alt="Profile"
+              class="rounded-circle"
+            />
+            <ng-template #leftBlankPic>
+              <img
+                src="{{ environment.blankPic }}"
+                alt="Profile"
+                class="rounded-circle"
+              />
+            </ng-template>
+            <h2>{{ userData.first_name }} {{ userData.last_name }}</h2>
+
+            <h3>{{ title }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <div class="card">
+          <div class="card-body pt-3">
+            <ul class="nav nav-tabs nav-tabs-bordered">
+              <li class="nav-item">
+                <button
+                  class="nav-link active"
+                  data-bs-toggle="tab"
+                  data-bs-target="#profile-overview"
+                >
+                  Overview
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#profile-edit"
+                >
+                  Edit Profile
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#profile-change-password"
+                >
+                  Change Password
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content pt-2">
+              <div
+                class="tab-pane fade show active profile-overview"
+                id="profile-overview"
+              >
+                <h5 class="card-title">Profile Details</h5>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Full Name</div>
+                  <div class="col-lg-9 col-md-8">
+                    {{ userData.first_name }} {{ userData.middle_name }} {{ userData.last_name }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Email</div>
+                  <div class="col-lg-9 col-md-8">{{ userData.email }}</div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Phone Number</div>
+                  <div class="col-lg-9 col-md-8">
+                    {{ userData.phone_number }}
+                  </div>
+                </div>
+                <div *ngIf class="row">
+                  <div class="col-lg-3 col-md-4 label">Job Title</div>
+                  <div class="col-lg-9 col-md-8">{{ user_job_position }}</div>
+                </div>
+                <div *ngIf="!admin">
+                  <div *ngIf="userData.branch; else region">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Unit</div>
+                      <div class="col-lg-9 col-md-8">
+                        {{ userData.branch.name }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Unit Code</div>
+                      <div class="col-lg-9 col-md-8">
+                        {{ userData.branch.code }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-template #region>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Region</div>
+                      <div class="col-lg-9 col-md-8">
+                        {{ userData.region?.name }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Region Code</div>
+                      <div class="col-lg-9 col-md-8">
+                        {{ userData.region?.code }}
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Assigned Roles</div>
+                  <div class="col-lg-9 col-md-8">
+                    <ul class="list-group">
+                      <li
+                        class="list-group-item"
+                        *ngFor="let role of userData.roles"
+                      >
+                        {{ role.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                <div
+                  *ngIf="submitted"
+                  class="alert alert-success alert-dismissible fade show"
+                  role="alert"
+                >
+                  User {{ userData.first_name }} is updated successfully!
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                    (click)="alertClosed('success')"
+                  ></button>
+                </div>
+                <div
+                  *ngIf="message !== ''"
+                  class="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  Error:
+                  {{ message }}
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                    (click)="alertClosed('danger')"
+                  ></button>
+                </div>
+                <form ngNativeValidate #userForm="ngForm" class="row g-3">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Profile Picture</div>
+                    <div class="col-md-8 col-lg-9">
+                      <img
+                        *ngIf="userData.photoUrl; else blankPic"
+                        src="{{
+                          environment.imagesUserApi + userData.photoUrl
+                        }}"
+                        style="max-width: 120px"
+                        alt="Profile"
+                      />
+                      <ng-template #blankPic>
+                        <img
+                          src="{{ environment.blankPic }}"
+                          style="max-width: 120px"
+                          alt="Profile"
+                        />
+                      </ng-template>
+                      <div class="pt-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          #imageInput
+                          id="photoUrl"
+                          class="form-control form-control-sm"
+                          style="width: 40%"
+                          title="Update my profile image"
+                          (change)="processFile(imageInput)"
+                        />
+                      </div>
+                      <div class="pt-2">
+                        <button
+                          class="btn btn-danger btn-sm"
+                          title="Remove my profile image"
+                          (click)="removeImage()"
+                        >
+                          <span><i class="bi bi-trash"></i></span> Remove my
+                          profile image
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputText" class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="userData.first_name"
+                      name="first_name"
+                      #first_name="ngModel"
+                      [class.is-invalid]="
+                        first_name.invalid && first_name.touched
+                      "
+                      required
+                    />
+                    <small
+                      class="text-danger"
+                      [class.d-none]="first_name.valid || first_name.untouched"
+                      >First name is required</small
+                    >
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputText" class="form-label"
+                      >Middle Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="userData.middle_name"
+                      name="middle_name"
+                      #middle_name="ngModel"
+                      [class.is-invalid]="
+                        middle_name.invalid && middle_name.touched
+                      "
+                      required
+                    />
+                    <small
+                      class="text-danger"
+                      [class.d-none]="
+                        middle_name.valid || middle_name.untouched
+                      "
+                      >Middle name is required</small
+                    >
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputText" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="userData.last_name"
+                      name="last_name"
+                      #last_name="ngModel"
+                      [class.is-invalid]="
+                        last_name.invalid && last_name.touched
+                      "
+                      required
+                    />
+                    <small
+                      class="text-danger"
+                      [class.d-none]="last_name.valid || last_name.untouched"
+                      >Last name is required</small
+                    >
+                  </div>
+                  <div class="col-md-12">
+                    <label for="inputText" class="form-label"
+                      >Phone Number</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      pattern="(\+251|0)(9|7)\d{8}"
+                      [(ngModel)]="userData.phone_number"
+                      name="phone_number"
+                      #phone="ngModel"
+                      [class.is-invalid]="phone.invalid && phone.touched"
+                      (input)="checkPhoneNumberStatus($event)"
+                      required
+                    />
+                    <div *ngIf="phone_number_status">
+                      <small class="text-danger">
+                        Phone Number Already Exists
+                      </small>
+                    </div>
+                    <div *ngIf="phone.errors && phone.touched">
+                      <small
+                        class="text-danger"
+                        *ngIf="phone.errors['required']"
+                        >Phone number is required</small
+                      >
+                      <small class="text-danger" *ngIf="phone.errors['pattern']"
+                        >Phone number not valid or should start with +251, 09 or
+                        07</small
+                      >
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label for="inputEmail" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      [(ngModel)]="userData.email"
+                      name="email"
+                      id="inputEmail"
+                      #email="ngModel"
+                      [class.is-invalid]="email.invalid && email.touched"
+                      pattern="\w+@awashbank\.com$"
+                      (input)="checkEmailStatus($event)"
+                      required
+                    />
+                    <div *ngIf="email.errors && email.touched">
+                      <small
+                        class="text-danger"
+                        *ngIf="email.errors['required']"
+                        >Email is required</small
+                      >
+                      <small class="text-danger" *ngIf="email.errors['pattern']"
+                        >Email should end with '@awashbank.com'</small
+                      >
+                    </div>
+                    <div *ngIf="email_status">
+                      <small class="text-danger">
+                        Outlook Address Already Exists
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 justify-content-center">
+                    <div class="col-sm-2">
+                      <button
+                        [disabled]="
+                          userForm.form.invalid ||
+                          phone_number_status ||
+                          email_status
+                        "
+                        type="submit"
+                        class="btn btn-primary"
+                        (click)="addUser()"
+                      >
+                        Update Profile
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="tab-pane fade pt-3" id="profile-change-password">
+                <div
+                  *ngIf="submitted"
+                  class="alert alert-success alert-dismissible fade show"
+                  role="alert"
+                >
+                  Password is updated successfully!
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                    (click)="alertClosed('success')"
+                  ></button>
+                </div>
+                <div
+                  *ngIf="message !== ''"
+                  class="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  Error:
+                  {{ message }}
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                    (click)="alertClosed('danger')"
+                  ></button>
+                </div>
+                <form ngNativeValidate #passwordForm="ngForm" class="row g-3">
+                  <div ngModelGroup="passwords" #passwords="ngModelGroup">
+                    <div class="col-md-6">
+                      <label for="inputOldPassword" class="form-label"
+                        >Old Password</label
+                      >
+                      <input
+                        type="password"
+                        name="oldPassword"
+                        class="form-control"
+                        #oldPassword="ngModel"
+                        [(ngModel)]="passwordData.oldPassword"
+                        [class.is-invalid]="
+                          oldPassword.invalid && oldPassword.touched
+                        "
+                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$! %*? &])[A-Za-z\d$@$! %*? &]{8,}"
+                        required
+                      />
+                      <small
+                        class="form-text text-muted"
+                        [class.d-none]="
+                          oldPassword.valid || oldPassword.untouched
+                        "
+                      >
+                        Your old password must be 8-20 characters long and
+                        contain:<br />
+                        - At least one lowercase letter<br />
+                        - At least one uppercase letter<br />
+                        - At least one number<br />
+                        - At least one special character
+                      </small>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="inputPassword" class="form-label"
+                        >New Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        [(ngModel)]="passwordData.password"
+                        name="password1"
+                        id="inputPassword"
+                        #password1="ngModel"
+                        [class.is-invalid]="
+                          (password1.invalid &&
+                            password1.touched &&
+                            confirmPasswordInput.touched) ||
+                          passwordData.confirmPassword !== passwordData.password
+                        "
+                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$! %*? &])[A-Za-z\d$@$! %*? &]{8,}"
+                        required
+                      />
+                      <small
+                        class="form-text text-muted"
+                        [class.d-none]="password1.valid || password1.untouched"
+                      >
+                        Your new password must be 8-20 characters long,
+                        different from old password and contain:<br />
+                        - At least one lowercase letter<br />
+                        - At least one uppercase letter<br />
+                        - At least one number<br />
+                        - At least one special character
+                      </small>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="confirmPassword" class="form-label"
+                        >Confirm Password</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        [(ngModel)]="passwordData.confirmPassword"
+                        name="confirmPasswordInput"
+                        id="confirmPassword"
+                        #confirmPasswordInput="ngModel"
+                        [class.is-invalid]="
+                          (confirmPasswordInput.untouched && password1.valid) ||
+                          (passwordData.confirmPassword !==
+                            passwordData.password &&
+                            password1.touched)
+                        "
+                        (input)="confirmPassword($event)"
+                        required
+                      />
+
+                      <small
+                        *ngIf="
+                          password1.valid &&
+                          confirmPasswordInput.untouched &&
+                          !confirmPasswordInput.dirty
+                        "
+                        class="form-text text-muted"
+                      >
+                        Please confirm your password.
+                      </small>
+
+                      <small
+                        *ngIf="!is_password_matched"
+                        class="form-text text-muted"
+                      >
+                        Passwords do not match.
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 justify-content-center">
+                    <div class="col-sm-2">
+                      <button
+                        [disabled]="
+                          !is_password_matched || passwordForm.form.invalid
+                        "
+                        type="submit"
+                        class="btn btn-primary"
+                        (click)="changePassword()"
+                      >
+                        Change Password
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

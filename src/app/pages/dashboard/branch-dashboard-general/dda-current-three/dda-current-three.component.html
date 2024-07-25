@@ -1,0 +1,24 @@
+<div class="p-fluid grid formgrid row justify-content-center p-4">
+  <!-- three -->
+  <div class="field">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div class="card-body">
+        <h5 class="card-title">
+          <a style="color: darkblue" *ngIf="!this.approver"
+            >Division Compiled, Division Submitted and Approved Audits</a
+          >
+          <a style="color: darkblue" *ngIf="this.approver"
+            >Division Submitted and Approved Audits</a
+          >
+          <span> | Current </span>
+        </h5>
+        <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="line" [data]="data" [options]="options"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2017 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Discrepancy</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+
+
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+
+              <!-- <div *ngIf="loading">
+                  <div class="card-body">
+                  <h5 class="card-title">
+                  <a routerLink="/detail/{{ auditorDashboardData.card_data[0] }}" (click)="goToPage('detail')" (click)="toggleDetailVisibility()">Drafted</a>
+                  <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                  </div>
+                  <div class="ps-3">
+                  <h6>
+                  {{ auditorDashboardData.card_data[0] }}
+                  <span class="text-muted small pt-2 ps-1"></span>
+                  </h6>
+                  </div>
+                  </div>
+                  </div>
+                  </div>      -->
+
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Drafted</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[0] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Passed</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[1] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Reviewer Rejected</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[2] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Reviewed</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[3] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xxl-3 col-md-3">
+        <div class="card info-card revenue-card">
+          <div *ngIf="!loading" class="mt-3">
+            <app-maker-approver-one></app-maker-approver-one>
+          </div>
+          <div *ngIf="loading">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Approved</a
+                >
+                <span>| Total</span>
+              </h5>
+              <div class="d-flex align-items-center">
+                <div
+                  class="
+                    card-icon
+                    rounded-circle
+                    d-flex
+                    align-items-center
+                    justify-content-center
+                  "
+                >
+                  <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>
+                    {{ auditorDashboardData.card_data[4] }}
+                    <span class="text-muted small pt-2 ps-1"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-maker-approver-skeleton></app-maker-approver-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                Recent Activity
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-external-link"
+                  class="p-button-text p-button-info"
+                  routerLink="recent-activity"
+                ></button>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- ===================================================  -->
+
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="doughnut"
+                [data]="data1"
+                [options]="chartOptions"
+                [style]="{ width: '40%' }"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="line"
+                [data]="multiAxisData"
+                [options]="multiAxisOptions"
+                width="800"
+                height="290"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="bar"
+                [data]="basicData1"
+                [options]="basicOptions"
+                width="1000"
+                height="400"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Rectification</li>
+        <li></li>
+      </ol>
+
+      <!-- ========================== -->
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+
+              <!-- <div *ngIf="loading">
+                <div class="card-body">
+                <h5 class="card-title">
+                <a routerLink="/detail/{{ auditorDashboardData.card_data[0] }}" (click)="goToPage('detail')" (click)="toggleDetailVisibility()">Drafted</a>
+                <span>| Total</span>
+                </h5>
+                <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                </div>
+                <div class="ps-3">
+                <h6>
+                {{ auditorDashboardData.card_data[0] }}
+                <span class="text-muted small pt-2 ps-1"></span>
+                </h6>
+                </div>
+                </div>
+                </div>
+                </div>      -->
+
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Drafted</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[0] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Passed</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[1] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Reviewer Rejected</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[2] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+              <div *ngIf="!loading" class="mt-3">
+                <app-maker-approver-one></app-maker-approver-one>
+              </div>
+              <div *ngIf="loading">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a
+                      routerLink="/detail"
+                      (click)="goToPage('detail')"
+                      (click)="toggleDetailVisibility()"
+                      style="color: darkblue"
+                      >Reviewed</a
+                    >
+                    <span>| Total</span>
+                  </h5>
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="
+                        card-icon
+                        rounded-circle
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
+                      <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>
+                        {{ auditorDashboardData.card_data[3] }}
+                        <span class="text-muted small pt-2 ps-1"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xxl-3 col-md-3">
+        <div class="card info-card revenue-card">
+          <div *ngIf="!loading" class="mt-3">
+            <app-maker-approver-one></app-maker-approver-one>
+          </div>
+          <div *ngIf="loading">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Passed</a
+                >
+                <span>| Total</span>
+              </h5>
+              <div class="d-flex align-items-center">
+                <div
+                  class="
+                    card-icon
+                    rounded-circle
+                    d-flex
+                    align-items-center
+                    justify-content-center
+                  "
+                >
+                  <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>
+                    {{ auditorDashboardData.card_data[1] }}
+                    <span class="text-muted small pt-2 ps-1"></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-maker-approver-skeleton></app-maker-approver-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                Recent Activity
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-external-link"
+                  class="p-button-text p-button-info"
+                  routerLink="recent-activity"
+                ></button>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- ===================================================  -->
+
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="doughnut"
+                [data]="data1"
+                [options]="chartOptions"
+                [style]="{ width: '40%' }"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="line"
+                [data]="multiAxisData"
+                [options]="multiAxisOptions"
+                width="800"
+                height="290"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div *ngIf="!loading" class="mt-3">
+              <app-loan-allowed-amount-skeleton></app-loan-allowed-amount-skeleton>
+            </div>
+            <div *ngIf="loading">
+              <h5 class="card-title">
+                <a
+                  routerLink="/detail"
+                  (click)="goToPage('detail')"
+                  (click)="toggleDetailVisibility()"
+                  style="color: darkblue"
+                  >Finding Status</a
+                >
+                <span>| Other Roles</span>
+              </h5>
+              <p-chart
+                type="bar"
+                [data]="basicData1"
+                [options]="basicOptions"
+                width="1000"
+                height="400"
+              ></p-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+
+      <!-- <router-outlet *ngIf="isDetailVisible"></router-outlet> -->
+      <a id="children-component"></a>
+    </div>
+  </section>
+</main>
+
+=========================================================================================================
+
+
+      <div class="field col-xl-4 col-md-6 mb-4">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+            <!-- (click)="goToPage('rectification/current/dp')" -->
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Drafted, Passed and Regional Reviewed Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Drafted: {{ 10 }}</span>
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Passed: {{ 10 }}</span>
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Regional Reviewed: {{ 10 }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-4 col-md-6 mb-4">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+            <!-- (click)="goToPage('rectification/current/dp')" -->
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Regional Compiled, Regional Submitted and Division Reviewed
+                  Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Regional Compiled: {{ 10 }}</span>
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Submitted: {{ 10 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Division Reviewed: {{ 10 }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-4 col-md-6 mb-4">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Division Compiled, Division Submitted and Approved Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Division Compiled: {{ 10 }}</span>
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Submitted: {{ 10 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text">Approved: {{ 10 }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 1) AS reviewed_1_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 2) AS reviewed_1_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 3) AS reviewed_1_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 4) AS reviewed_1_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 5) AS reviewed_1_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 6) AS reviewed_1_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 7) AS reviewed_1_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 8) AS reviewed_1_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 9) AS reviewed_1_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 10) AS reviewed_1_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 11) AS reviewed_1_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 12) AS reviewed_1_december;
+
+
+
+
+
+
+
+
+
+
+
+	  private long regional_compiled_2_acb;
+    private long regional_compiled_2_ccb;
+    private long regional_compiled_2_cpb;
+    private long regional_compiled_2_cmb;
+    private long regional_compiled_2_nib;
+    private long regional_compiled_2_sab;
+    private long regional_compiled_2_loib;
+    private long regional_compiled_2_lab;
+    private long regional_compiled_2_ceb;
+    private long regional_compiled_2_iab;
+    private long regional_compiled_2_odb;
+    private long regional_compiled_2_diab;
+    private long regional_compiled_2_alb;
+    private long regional_compiled_2_abb;
+    private long regional_compiled_2_mcb;
+
+    private long regional_submitted_2_acb;
+    private long regional_submitted_2_ccb;
+    private long regional_submitted_2_cpb;
+    private long regional_submitted_2_cmb;
+    private long regional_submitted_2_nib;
+    private long regional_submitted_2_sab;
+    private long regional_submitted_2_loib;
+    private long regional_submitted_2_lab;
+    private long regional_submitted_2_ceb;
+    private long regional_submitted_2_iab;
+    private long regional_submitted_2_odb;
+    private long regional_submitted_2_diab;
+    private long regional_submitted_2_alb;
+    private long regional_submitted_2_abb;
+    private long regional_submitted_2_mcb;
+
+    private long division_reviewed_2_acb;
+    private long division_reviewed_2_ccb;
+    private long division_reviewed_2_cpb;
+    private long division_reviewed_2_cmb;
+    private long division_reviewed_2_nib;
+    private long division_reviewed_2_sab;
+    private long division_reviewed_2_loib;
+    private long division_reviewed_2_lab;
+    private long division_reviewed_2_ceb;
+    private long division_reviewed_2_iab;
+    private long division_reviewed_2_odb;
+    private long division_reviewed_2_diab;
+    private long division_reviewed_2_alb;
+    private long division_reviewed_2_abb;
+    private long division_reviewed_2_mcb;
+
+
+ATM_card_branch
+cash_count_branch
+cash_performance_branch
+cash_management_branch
+negotiable_instrument_branch
+suspense_account_branch
+long_outstanding_item_branch
+loan_advance_branch
+controllable_expense_branch
+incomplete_account_branch
+operational_descripancy_branch
+dormant_inactive_account_branch
+asset_liability_branch
+abnormal_balance_branch
+memorandom_contingent_branch
+
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM ATM_card_branch)) AS regional_compiled_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM cash_count_branch)) AS regional_compiled_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM cash_performance_branch)) AS regional_compiled_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM cash_management_branch)) AS regional_compiled_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS regional_compiled_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM suspense_account_branch)) AS regional_compiled_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS regional_compiled_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM loan_advance_branch)) AS regional_compiled_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM controllable_expense_branch)) AS regional_compiled_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM incomplete_account_branch)) AS regional_compiled_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM operational_descripancy_branch)) AS regional_compiled_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS regional_compiled_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM asset_liability_branch)) AS regional_compiled_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM abnormal_balance_branch)) AS regional_compiled_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_status = 1 AND regional_compiler_submitted = 0 AND auditor_id = 10010 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS regional_compiled_2_mcb;
+
+
+
+
+
+	private long division_compiled_3_acb;
+	private long division_compiled_3_ccb;
+	private long division_compiled_3_cpb;
+	private long division_compiled_3_cmb;
+	private long division_compiled_3_nib;
+	private long division_compiled_3_sab;
+	private long division_compiled_3_loib;
+	private long division_compiled_3_lab;
+	private long division_compiled_3_ceb;
+	private long division_compiled_3_iab;
+	private long division_compiled_3_odb;
+	private long division_compiled_3_diab;
+	private long division_compiled_3_alb;
+	private long division_compiled_3_abb;
+	private long division_compiled_3_mcb;
+
+	private long division_submitted_3_acb;
+	private long division_submitted_3_ccb;
+	private long division_submitted_3_cpb;
+	private long division_submitted_3_cmb;
+	private long division_submitted_3_nib;
+	private long division_submitted_3_sab;
+	private long division_submitted_3_loib;
+	private long division_submitted_3_lab;
+	private long division_submitted_3_ceb;
+	private long division_submitted_3_iab;
+	private long division_submitted_3_odb;
+	private long division_submitted_3_diab;
+	private long division_submitted_3_alb;
+	private long division_submitted_3_abb;
+	private long division_submitted_3_mcb;
+
+	private long approved_3_acb;
+	private long approved_3_ccb;
+	private long approved_3_cpb;
+	private long approved_3_cmb;
+	private long approved_3_nib;
+	private long approved_3_sab;
+	private long approved_3_loib;
+	private long approved_3_lab;
+	private long approved_3_ceb;
+	private long approved_3_iab;
+	private long approved_3_odb;
+	private long approved_3_diab;
+	private long approved_3_alb;
+	private long approved_3_abb;
+	private long approved_3_mcb;
+
+
+
+
+
+
+
+
+
+	private long passed_4_acb;
+	private long passed_4_ccb;
+	private long passed_4_cpb;
+	private long passed_4_cmb;
+	private long passed_4_nib;
+	private long passed_4_sab;
+	private long passed_4_loib;
+	private long passed_4_lab;
+	private long passed_4_ceb;
+	private long passed_4_iab;
+	private long passed_4_odb;
+	private long passed_4_diab;
+	private long passed_4_alb;
+	private long passed_4_abb;
+	private long passed_4_mcb;
+
+	private long regional_compiled_4_acb;
+	private long regional_compiled_4_ccb;
+	private long regional_compiled_4_cpb;
+	private long regional_compiled_4_cmb;
+	private long regional_compiled_4_nib;
+	private long regional_compiled_4_sab;
+	private long regional_compiled_4_loib;
+	private long regional_compiled_4_lab;
+	private long regional_compiled_4_ceb;
+	private long regional_compiled_4_iab;
+	private long regional_compiled_4_odb;
+	private long regional_compiled_4_diab;
+	private long regional_compiled_4_alb;
+	private long regional_compiled_4_abb;
+	private long regional_compiled_4_mcb;
+
+	private long division_compiled_4_acb;
+	private long division_compiled_4_ccb;
+	private long division_compiled_4_cpb;
+	private long division_compiled_4_cmb;
+	private long division_compiled_4_nib;
+	private long division_compiled_4_sab;
+	private long division_compiled_4_loib;
+	private long division_compiled_4_lab;
+	private long division_compiled_4_ceb;
+	private long division_compiled_4_iab;
+	private long division_compiled_4_odb;
+	private long division_compiled_4_diab;
+	private long division_compiled_4_alb;
+	private long division_compiled_4_abb;
+	private long division_compiled_3_mcb;
+
+	private long approved_4_acb;
+	private long approved_4_ccb;
+	private long approved_4_cpb;
+	private long approved_4_cmb;
+	private long approved_4_nib;
+	private long approved_4_sab;
+	private long approved_4_loib;
+	private long approved_4_lab;
+	private long approved_4_ceb;
+	private long approved_4_iab;
+	private long approved_4_odb;
+	private long approved_4_diab;
+	private long approved_4_alb;
+	private long approved_4_abb;
+	private long approved_3_mcb;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 1) AS passed_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 2) AS passed_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 3) AS passed_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 4) AS passed_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 5) AS passed_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 6) AS passed_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 7) AS passed_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 8) AS passed_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 9) AS passed_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 10) AS passed_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 11) AS passed_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 12) AS passed_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 1) AS reviewed_1_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 2) AS reviewed_1_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 3) AS reviewed_1_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 4) AS reviewed_1_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 5) AS reviewed_1_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 6) AS reviewed_1_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 7) AS reviewed_1_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 8) AS reviewed_1_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 9) AS reviewed_1_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 10) AS reviewed_1_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 11) AS reviewed_1_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(reviewed_date) = 12) AS reviewed_1_december;
+
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 1) AS passed_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 2) AS passed_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 3) AS passed_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 4) AS passed_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 5) AS passed_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 6) AS passed_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 7) AS passed_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 8) AS passed_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 9) AS passed_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 10) AS passed_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 11) AS passed_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(passed_date) = 12) AS passed_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 1) AS regional_compiled_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 2) AS regional_compiled_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 3) AS regional_compiled_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 4) AS regional_compiled_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 5) AS regional_compiled_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 6) AS regional_compiled_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 7) AS regional_compiled_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 8) AS regional_compiled_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 9) AS regional_compiled_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 10) AS regional_compiled_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 11) AS regional_compiled_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(regional_compiler_compiled_date) = 12) AS regional_compiled_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 1) AS division_compiled_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 2) AS division_compiled_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 3) AS division_compiled_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 4) AS division_compiled_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 5) AS division_compiled_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 6) AS division_compiled_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 7) AS division_compiled_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 8) AS division_compiled_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 9) AS division_compiled_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 10) AS division_compiled_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 11) AS division_compiled_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 12) AS division_compiled_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 1) AS approved_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 2) AS approved_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 3) AS approved_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 4) AS approved_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 5) AS approved_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 6) AS approved_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 7) AS approved_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 8) AS approved_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 9) AS approved_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 10) AS approved_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 11) AS approved_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 12) AS approved_4_december,
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////REVIEWER////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		select
+       		(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 0 and b.region_id = 20048) as drafted_1,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and bfa.review_status = 0 and b.region_id = 20048) as passed_1,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.review_status = 1 and bfa.regional_compiler_status = 0 and b.region_id = 20048) as regional_reviewed_1,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_status = 1 and bfa.regional_compiler_submitted = 0 and b.region_id = 20048) as regional_compiled_2,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_submitted = 1 and bfa.division_compiler_review_status = 0 and b.region_id = 20048) as regional_submitted_2,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_review_status = 1 and bfa.division_compiler_status = 0 and b.region_id = 20048) as division_reviewed_2,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_status = 1 and bfa.division_compiler_submitted = 0 and b.region_id = 20048) as division_compiled_3,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_submitted = 1 and bfa.approve_status = 0 and b.region_id = 20048) as division_submitted_3,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.approve_status = 1 and b.region_id = 20048) as approved_3,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and b.region_id = 20048) as passed_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_status = 1 and b.region_id = 20048) as regional_compiled_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_status = 1 and b.region_id = 20048) as division_compiled_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.approve_status = 1 and b.region_id = 20048) as approved_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and b.region_id = 20048) as passed_5,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.response_added = 1 and rectification_status = 0 and b.region_id = 20048) as responded_5,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.rectification_status = 3 and b.region_id = 20048) as partially_rectified_5,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.rectification_status = 1 and b.region_id = 20048) as rectified_5;
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS regional_compiled_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS regional_compiled_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS regional_compiled_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS regional_compiled_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS regional_compiled_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS regional_compiled_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS regional_compiled_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS regional_compiled_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS regional_compiled_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS regional_compiled_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS regional_compiled_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS regional_compiled_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS regional_compiled_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS regional_compiled_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.regional_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS regional_compiled_2_mcb,
+
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS regional_submitted_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS regional_submitted_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS regional_submitted_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS regional_submitted_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS regional_submitted_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS regional_submitted_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS regional_submitted_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS regional_submitted_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS regional_submitted_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS regional_submitted_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS regional_submitted_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS regional_submitted_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS regional_submitted_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS regional_submitted_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_submitted = 1 AND bfa.division_compiler_review_status = 0 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS regional_submitted_2_mcb,
+
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS division_reviewed_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS division_reviewed_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS division_reviewed_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS division_reviewed_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS division_reviewed_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS division_reviewed_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS division_reviewed_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS division_reviewed_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS division_reviewed_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS division_reviewed_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS division_reviewed_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS division_reviewed_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS division_reviewed_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS division_reviewed_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_review_status = 1 AND bfa.division_compiler_status = 0 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS division_reviewed_2_mcb;
+
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS division_compiled_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS division_compiled_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS division_compiled_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS division_compiled_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS division_compiled_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS division_compiled_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS division_compiled_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS division_compiled_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS division_compiled_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS division_compiled_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS division_compiled_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS division_compiled_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS division_compiled_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS division_compiled_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.division_compiler_submitted = 0 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS division_compiled_3_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS division_submitted_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS division_submitted_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS division_submitted_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS division_submitted_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS division_submitted_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS division_submitted_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS division_submitted_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS division_submitted_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS division_submitted_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS division_submitted_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS division_submitted_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS division_submitted_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS division_submitted_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS division_submitted_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_submitted = 1 AND bfa.approve_status = 0 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS division_submitted_3_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS approved_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS approved_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS approved_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS approved_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS approved_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS approved_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS approved_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS approved_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS approved_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS approved_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS approved_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS approved_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS approved_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS approved_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS approved_3_mcb;
+
+
+
+
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS passed_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS passed_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS passed_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS passed_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS passed_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS passed_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS passed_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS passed_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS passed_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS passed_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS passed_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS passed_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS passed_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS passed_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.auditor_status = 1 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS passed_4_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS regional_compiled_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS regional_compiled_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS regional_compiled_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS regional_compiled_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS regional_compiled_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS regional_compiled_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS regional_compiled_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS regional_compiled_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS regional_compiled_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS regional_compiled_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS regional_compiled_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS regional_compiled_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS regional_compiled_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS regional_compiled_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.regional_compiler_status = 1 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS regional_compiled_4_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS division_compiled_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS division_compiled_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS division_compiled_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS division_compiled_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS division_compiled_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS division_compiled_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS division_compiled_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS division_compiled_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS division_compiled_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS division_compiled_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS division_compiled_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS division_compiled_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS division_compiled_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS division_compiled_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.division_compiler_status = 1 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS division_compiled_4_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM ATM_card_branch) AND b.region_id = 20048) AS approved_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_count_branch) AND b.region_id = 20048) AS approved_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_performance_branch) AND b.region_id = 20048) AS approved_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM cash_management_branch) AND b.region_id = 20048) AS approved_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM negotiable_instrument_branch) AND b.region_id = 20048) AS approved_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM suspense_account_branch) AND b.region_id = 20048) AS approved_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM long_outstanding_item_branch) AND b.region_id = 20048) AS approved_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM loan_advance_branch) AND b.region_id = 20048) AS approved_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM controllable_expense_branch) AND b.region_id = 20048) AS approved_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM incomplete_account_branch) AND b.region_id = 20048) AS approved_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM operational_descripancy_branch) AND b.region_id = 20048) AS approved_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM dormant_inactive_account_branch) AND b.region_id = 20048) AS approved_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM asset_liability_branch) AND b.region_id = 20048) AS approved_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM abnormal_balance_branch) AND b.region_id = 20048) AS approved_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE bfa.approve_status = 1 AND bfa.id IN (SELECT id FROM memorandom_contingent_branch) AND b.region_id = 20048) AS approved_4_mcb;
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 1) AS passed_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 2) AS passed_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 3) AS passed_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 4) AS passed_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 5) AS passed_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 6) AS passed_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 7) AS passed_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 8) AS passed_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 9) AS passed_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 10) AS passed_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 11) AS passed_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(passed_date) = 12) AS passed_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 1) AS regional_compiled_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 2) AS regional_compiled_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 3) AS regional_compiled_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 4) AS regional_compiled_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 5) AS regional_compiled_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 6) AS regional_compiled_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 7) AS regional_compiled_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 8) AS regional_compiled_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 9) AS regional_compiled_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 10) AS regional_compiled_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 11) AS regional_compiled_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(regional_compiler_compiled_date) = 12) AS regional_compiled_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 1) AS division_compiled_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 2) AS division_compiled_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 3) AS division_compiled_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 4) AS division_compiled_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 5) AS division_compiled_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 6) AS division_compiled_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 7) AS division_compiled_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 8) AS division_compiled_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 9) AS division_compiled_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 10) AS division_compiled_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 11) AS division_compiled_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(division_compiler_compiled_date) = 12) AS division_compiled_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 1) AS approved_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 2) AS approved_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 3) AS approved_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 4) AS approved_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 5) AS approved_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 6) AS approved_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 7) AS approved_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 8) AS approved_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 9) AS approved_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 10) AS approved_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 11) AS approved_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND MONTH(approved_date) = 12) AS approved_4_december;
+
+
+
+
+
+
+
+
+
+select
+	(SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND bfa.auditor_status = 1) AS passed_5,
+	(SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND bfa.response_added = 1 AND rectification_status = 0) AS responded_5,
+	(SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND bfa.rectification_status = 3) AS partially_rectified_5,
+	(SELECT COUNT(*) FROM branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id WHERE b.region_id = 20048 AND bfa.rectification_status = 1) AS rectified_5
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+select
+				(select count(*) from branch_financial_audit where auditor_status = 0) as drafted_1,
+					(select count(*) from branch_financial_audit where auditor_status = 1 and review_status = 0) as passed_1,
+					(select count(*) from branch_financial_audit where review_status = 1 and regional_compiler_status = 0) as regional_reviewed_1,
+					(select count(*) from branch_financial_audit where regional_compiler_status = 1 and regional_compiler_submitted = 0) as regional_compiled_2,
+
+
+          (select count(*) from branch_financial_audit where regional_compiler_submitted = 1 and division_compiler_review_status = 0) as regional_submitted_2,
+					(select count(*) from branch_financial_audit where division_compiler_review_status = 1 and division_compiler_status = 0) as division_reviewed_2,
+					(select count(*) from branch_financial_audit where division_compiler_status = 1 and division_compiler_submitted = 0) as division_compiled_3,
+					(select count(*) from branch_financial_audit where division_compiler_submitted = 1 and approve_status = 0) as division_submitted_3,
+					(select count(*) from branch_financial_audit where approve_status = 1) as approved_3,
+					(select count(*) from branch_financial_audit where auditor_status = 1) as passed_4,
+					(select count(*) from branch_financial_audit where regional_compiler_status = 1) as regional_compiled_4,
+					(select count(*) from branch_financial_audit where division_compiler_status = 1) as division_compiled_4,
+					(select count(*) from branch_financial_audit where approve_status = 1) as approved_4,
+					(select count(*) from branch_financial_audit where auditor_status = 1) as passed_5,
+					(select count(*) from branch_financial_audit where response_added = 1 and rectification_status = 0) as responded_5,
+					(select count(*) from branch_financial_audit where rectification_status = 3) as partially_rectified_5,
+					(select count(*) from branch_financial_audit where rectification_status = 1) as rectified_5;
+
+
+
+select
+				(select count(*) from branch_financial_audit where auditor_status = 0 and auditor_id = 10010) as drafted_1,
+					(select count(*) from branch_financial_audit where auditor_status = 1 and review_status = 0 and auditor_id = 10010) as passed_1,
+					(select count(*) from branch_financial_audit where review_status = 1 and regional_compiler_status = 0 and auditor_id = 10010) as regional_reviewed_1,
+					(select count(*) from branch_financial_audit where regional_compiler_status = 1 and regional_compiler_submitted = 0 and auditor_id = 10010) as regional_compiled_2,
+
+
+
+
+
+
+					(select count(*) from branch_financial_audit where regional_compiler_submitted = 1 and division_compiler_review_status = 0 and auditor_id = 10010) as regional_submitted_2,
+					(select count(*) from branch_financial_audit where division_compiler_review_status = 1 and division_compiler_status = 0 and auditor_id = 10010) as division_reviewed_2,
+					(select count(*) from branch_financial_audit where division_compiler_status = 1 and division_compiler_submitted = 0 and auditor_id = 10010) as division_compiled_3,
+					(select count(*) from branch_financial_audit where division_compiler_submitted = 1 and approve_status = 0 and auditor_id = 10010) as division_submitted_3,
+					(select count(*) from branch_financial_audit where approve_status = 1 and auditor_id = 10010) as approved_3,
+
+
+
+
+
+
+					(select count(*) from branch_financial_audit where auditor_status = 1 and auditor_id = 10010) as passed_4,
+					(select count(*) from branch_financial_audit where regional_compiler_status = 1 and auditor_id = 10010) as regional_compiled_4,
+					(select count(*) from branch_financial_audit where division_compiler_status = 1 and auditor_id = 10010) as division_compiled_4,
+					(select count(*) from branch_financial_audit where approve_status = 1 and auditor_id = 10010) as approved_4,
+					(select count(*) from branch_financial_audit where auditor_status = 1 and auditor_id = 10010) as passed_5,
+					(select count(*) from branch_financial_audit where response_added = 1 and rectification_status = 0 and auditor_id = 10010) as responded_5,
+					(select count(*) from branch_financial_audit where rectification_status = 3 and auditor_id = 10010) as partially_rectified_5,
+					(select count(*) from branch_financial_audit where rectification_status = 1 and auditor_id = 10010) as rectified_5;
+
+
+			select
+       		//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 0 and b.region_id = 20048) as drafted_1,
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and bfa.review_status = 0 and b.region_id = 20048) as passed_1,
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.review_status = 1 and bfa.regional_compiler_status = 0 and b.region_id = 20048) as regional_reviewed_1,
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_status = 1 and bfa.regional_compiler_submitted = 0 and b.region_id = 20048) as regional_compiled_2,
+
+
+
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_submitted = 1 and bfa.division_compiler_review_status = 0 and b.region_id = 20048) as regional_submitted_2,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_review_status = 1 and bfa.division_compiler_status = 0 and b.region_id = 20048) as division_reviewed_2,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_status = 1 and bfa.division_compiler_submitted = 0 and b.region_id = 20048) as division_compiled_3,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_submitted = 1 and bfa.approve_status = 0 and b.region_id = 20048) as division_submitted_3,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.approve_status = 1 and b.region_id = 20048) as approved_3,
+
+
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and b.region_id = 20048) as passed_4,
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.regional_compiler_status = 1 and b.region_id = 20048) as regional_compiled_4,
+
+
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.division_compiler_status = 1 and b.region_id = 20048) as division_compiled_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.approve_status = 1 and b.region_id = 20048) as approved_4,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.auditor_status = 1 and b.region_id = 20048) as passed_5,
+
+					//(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.response_added = 1 and rectification_status = 0 and b.region_id = 20048) as responded_5,
+
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.rectification_status = 3 and b.region_id = 20048) as partially_rectified_5,
+					(select count(*) from branch_financial_audit bfa JOIN branch as b on bfa.branch_id = b.id where bfa.rectification_status = 1 and b.region_id = 20048) as rectified_5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM ATM_card_branch)) AS regional_submitted_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM cash_count_branch)) AS regional_submitted_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM cash_performance_branch)) AS regional_submitted_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM cash_management_branch)) AS regional_submitted_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS regional_submitted_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM suspense_account_branch)) AS regional_submitted_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS regional_submitted_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM loan_advance_branch)) AS regional_submitted_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM controllable_expense_branch)) AS regional_submitted_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM incomplete_account_branch)) AS regional_submitted_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM operational_descripancy_branch)) AS regional_submitted_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS regional_submitted_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM asset_liability_branch)) AS regional_submitted_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM abnormal_balance_branch)) AS regional_submitted_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS regional_submitted_2_mcb,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM ATM_card_branch)) AS division_reviewed_2_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM cash_count_branch)) AS division_reviewed_2_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM cash_performance_branch)) AS division_reviewed_2_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM cash_management_branch)) AS division_reviewed_2_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS division_reviewed_2_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM suspense_account_branch)) AS division_reviewed_2_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS division_reviewed_2_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM loan_advance_branch)) AS division_reviewed_2_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM controllable_expense_branch)) AS division_reviewed_2_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM incomplete_account_branch)) AS division_reviewed_2_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM operational_descripancy_branch)) AS division_reviewed_2_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS division_reviewed_2_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM asset_liability_branch)) AS division_reviewed_2_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM abnormal_balance_branch)) AS division_reviewed_2_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_review_status = 1 AND division_compiler_status = 0 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS division_reviewed_2_mcb;
+
+
+
+
+
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM ATM_card_branch)) AS division_compiled_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM cash_count_branch)) AS division_compiled_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM cash_performance_branch)) AS division_compiled_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM cash_management_branch)) AS division_compiled_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS division_compiled_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM suspense_account_branch)) AS division_compiled_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS division_compiled_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM loan_advance_branch)) AS division_compiled_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM controllable_expense_branch)) AS division_compiled_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM incomplete_account_branch)) AS division_compiled_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM operational_descripancy_branch)) AS division_compiled_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS division_compiled_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM asset_liability_branch)) AS division_compiled_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM abnormal_balance_branch)) AS division_compiled_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND division_compiler_submitted = 0 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS division_compiled_3_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM ATM_card_branch)) AS division_submitted_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_count_branch)) AS division_submitted_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_performance_branch)) AS division_submitted_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_management_branch)) AS division_submitted_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS division_submitted_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM suspense_account_branch)) AS division_submitted_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS division_submitted_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM loan_advance_branch)) AS division_submitted_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM controllable_expense_branch)) AS division_submitted_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM incomplete_account_branch)) AS division_submitted_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM operational_descripancy_branch)) AS division_submitted_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS division_submitted_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM asset_liability_branch)) AS division_submitted_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM abnormal_balance_branch)) AS division_submitted_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS division_submitted_3_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM ATM_card_branch)) AS approved_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_count_branch)) AS approved_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_performance_branch)) AS approved_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_management_branch)) AS approved_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS approved_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM suspense_account_branch)) AS approved_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS approved_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM loan_advance_branch)) AS approved_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM controllable_expense_branch)) AS approved_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM incomplete_account_branch)) AS approved_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM operational_descripancy_branch)) AS approved_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS approved_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM asset_liability_branch)) AS approved_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM abnormal_balance_branch)) AS approved_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS approved_3_mcb;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM ATM_card_branch)) AS division_compiled_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM cash_count_branch)) AS division_compiled_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM cash_performance_branch)) AS division_compiled_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM cash_management_branch)) AS division_compiled_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS division_compiled_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM suspense_account_branch)) AS division_compiled_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS division_compiled_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM loan_advance_branch)) AS division_compiled_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM controllable_expense_branch)) AS division_compiled_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM incomplete_account_branch)) AS division_compiled_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM operational_descripancy_branch)) AS division_compiled_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS division_compiled_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM asset_liability_branch)) AS division_compiled_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM abnormal_balance_branch)) AS division_compiled_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_status = 1 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS division_compiled_4_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM ATM_card_branch)) AS approved_4_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_count_branch)) AS approved_4_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_performance_branch)) AS approved_4_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_management_branch)) AS approved_4_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS approved_4_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM suspense_account_branch)) AS approved_4_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS approved_4_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM loan_advance_branch)) AS approved_4_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM controllable_expense_branch)) AS approved_4_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM incomplete_account_branch)) AS approved_4_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM operational_descripancy_branch)) AS approved_4_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS approved_4_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM asset_liability_branch)) AS approved_4_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM abnormal_balance_branch)) AS approved_4_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS approved_4_mcb;
+
+
+
+
+select
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 1) AS division_compiled_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 2) AS division_compiled_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 3) AS division_compiled_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 4) AS division_compiled_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 5) AS division_compiled_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 6) AS division_compiled_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 7) AS division_compiled_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 8) AS division_compiled_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 9) AS division_compiled_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 10) AS division_compiled_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 11) AS division_compiled_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(division_compiler_compiled_date) = 12) AS division_compiled_4_december,
+
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 1) AS approved_4_january,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 2) AS approved_4_february,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 3) AS approved_4_march,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 4) AS approved_4_april,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 5) AS approved_4_may,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 6) AS approved_4_june,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 7) AS approved_4_july,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 8) AS approved_4_august,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 9) AS approved_4_september,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 10) AS approved_4_october,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 11) AS approved_4_november,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE auditor_id = 10010 AND MONTH(approved_date) = 12) AS approved_4_december;
+
+
+
+
+
+
+
+
+select
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0) AS passed_5,
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE rectification_status = 3) AS partially_rectified_5,
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE rectification_status = 1) AS rectified_5
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+select
+	(select count(*) from branch_financial_audit where division_compiler_submitted = 1 and approve_status = 0) as division_submitted_3,
+	(select count(*) from branch_financial_audit where approve_status = 1) as approved_3,
+
+
+
+
+
+
+SELECT
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM ATM_card_branch)) AS division_submitted_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_count_branch)) AS division_submitted_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_performance_branch)) AS division_submitted_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM cash_management_branch)) AS division_submitted_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS division_submitted_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM suspense_account_branch)) AS division_submitted_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS division_submitted_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM loan_advance_branch)) AS division_submitted_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM controllable_expense_branch)) AS division_submitted_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM incomplete_account_branch)) AS division_submitted_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM operational_descripancy_branch)) AS division_submitted_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS division_submitted_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM asset_liability_branch)) AS division_submitted_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM abnormal_balance_branch)) AS division_submitted_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS division_submitted_3_mcb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM ATM_card_branch)) AS approved_3_acb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_count_branch)) AS approved_3_ccb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_performance_branch)) AS approved_3_cpb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM cash_management_branch)) AS approved_3_cmb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM negotiable_instrument_branch)) AS approved_3_nib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM suspense_account_branch)) AS approved_3_sab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM long_outstanding_item_branch)) AS approved_3_loib,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM loan_advance_branch)) AS approved_3_lab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM controllable_expense_branch)) AS approved_3_ceb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM incomplete_account_branch)) AS approved_3_iab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM operational_descripancy_branch)) AS approved_3_odb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM dormant_inactive_account_branch)) AS approved_3_diab,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM asset_liability_branch)) AS approved_3_alb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM abnormal_balance_branch)) AS approved_3_abb,
+    (SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1 AND id IN (SELECT id FROM memorandom_contingent_branch)) AS approved_3_mcb;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE regional_compiler_submitted = 1 AND division_compiler_review_status = 0) AS passed_5,
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE rectification_status = 3) AS partially_rectified_5,
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE rectification_status = 1) AS rectified_5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cash_count_branch
+	cash_performance_branch
+	cash_management_branch
+	negotiable_instrument_branch
+	suspense_account_branch
+	long_outstanding_item_branch
+	loan_advance_branch
+	controllable_expense_branch
+	incomplete_account_branch
+	operational_descripancy_branch
+	dormant_inactive_account_branch
+	asset_liability_branch
+	abnormal_balance_branch
+	memorandom_contingent_branch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

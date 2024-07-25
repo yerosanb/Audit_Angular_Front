@@ -1,0 +1,208 @@
+<form ngNativeValidate #compilerForm="ngForm" class="p-fluid">
+  <div class="p-field">
+    <label for="finding"><strong class="text-danger">*</strong>Finding</label>
+    <p-dropdown
+      *ngIf="!is_new_finding"
+      [options]="branchFinancialAudits"
+      [(ngModel)]="compiledBranchAudit.finding"
+      optionLabel="finding"
+      optionValue="finding"
+      filterBy="finding"
+      [filter]="true"
+      [showClear]="true"
+      [required]="true"
+      placeholder="Select a finding"
+      (onChange)="onChangeFindingDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledBranchAudit.finding">
+          <div [innerHTML]="compiledBranchAudit.finding"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.finding.includes('New Finding');
+            else writtenFinding
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Finding?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-4"
+          ></button>
+        </ng-container>
+        <ng-template #writtenFinding>
+          <div [innerHTML]="branchFinancialAudit.finding"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <div *ngIf="is_new_finding">
+      <ckeditor
+        #finding="ngModel"
+        name="finding"
+        [(ngModel)]="compiledBranchAudit.finding"
+        [class.is-invalid]="finding.invalid || finding.touched"
+        [editor]="Editor"
+        [config]="config"
+        [required]="true"
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="finding.dirty || finding.untouched"
+        >Finding is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="impact"><strong class="text-danger">*</strong>Impact</label>
+    <p-dropdown
+      *ngIf="!is_new_impact"
+      [options]="branchFinancialAudits"
+      [(ngModel)]="compiledBranchAudit.impact"
+      optionLabel="impact"
+      optionValue="impact"
+      filterBy="impact"
+      [filter]="true"
+      [showClear]="true"
+      [required]="true"
+      placeholder="Select a Impact"
+      (onChange)="onChangeImpactDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledBranchAudit.impact">
+          <div [innerHTML]="compiledBranchAudit.impact"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.impact.includes('New Impact');
+            else writtenImpact
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Impact?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-4"
+          ></button>
+        </ng-container>
+        <ng-template #writtenImpact>
+          <div [innerHTML]="branchFinancialAudit.impact"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+
+    <div *ngIf="is_new_impact">
+      <ckeditor
+        #impact="ngModel"
+        [(ngModel)]="compiledBranchAudit.impact"
+        name="impact"
+        [class.is-invalid]="impact.invalid && impact.touched"
+        [editor]="Editor"
+        [config]="config"
+
+        [required]="true"
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="impact.untouched || impact.dirty || impact.valid"
+        >Impact is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="recommendation"
+      ><strong class="text-danger">*</strong>Recommendation</label
+    >
+    <p-dropdown
+      *ngIf="!is_new_recommendation"
+      [options]="branchFinancialAudits"
+      optionLabel="recommendation"
+      optionValue="recommendation"
+      filterBy="recommendation"
+      [(ngModel)]="compiledBranchAudit.recommendation"
+      [filter]="true"
+      [showClear]="true"
+      [required]="true"
+      placeholder="Select a recommendation"
+      (onChange)="onChangeRecommendationDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledBranchAudit.recommendation">
+          <div [innerHTML]="compiledBranchAudit.recommendation"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.recommendation.includes('New Recommendation');
+            else writtenRecommendation
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Recommendation?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-8"
+          ></button>
+        </ng-container>
+        <ng-template #writtenRecommendation>
+          <div [innerHTML]="branchFinancialAudit.recommendation"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <div *ngIf="is_new_recommendation">
+      <ckeditor
+        #recommendation="ngModel"
+        [(ngModel)]="compiledBranchAudit.recommendation"
+        [class.is-invalid]="recommendation.invalid && recommendation.touched"
+        name="recommendation"
+        required="true"
+        [editor]="Editor"
+        [config]="config"
+
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="recommendation.dirty || recommendation.untouched"
+        >Recommendation is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid mt-4">
+    <div class="p-field p-col-2">
+      <button
+        pButton
+        pRipple
+        label="Save"
+        [disabled]="compilerForm.form.invalid"
+        icon="pi pi-check"
+        class="p-button-raised p-button-rounded"
+        (click)="saveCompiledAudits()"
+      ></button>
+    </div>
+    <div class="p-field p-col-2">
+      <button
+        class="col-md-3"
+        pButton
+        pRipple
+        type="reset"
+        label="Reset"
+        icon="pi pi-times"
+        class="p-button-raised p-button-danger p-button-rounded"
+      ></button>
+    </div>
+  </div>
+</form>

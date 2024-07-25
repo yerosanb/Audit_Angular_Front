@@ -1,0 +1,35 @@
+<div class="p-fluid grid formgrid row justify-content-center p-4">
+  <!-- three -->
+  <div class="field">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+    <!-- Passed, Regional Compiled, Division Compiled and Approved Audits | Total -->
+      <div class="card-body">
+        <h5 class="card-title">
+          <a style="color: darkblue" *ngIf="!this.compiler"
+            >Passed, Regional Compiled, Division Compiled and Approved Audits</a
+          >
+          <a style="color: darkblue" *ngIf="this.compiler"
+            >Division Compiled and Approved Audits</a
+          >
+          <span> | Total </span>
+        </h5>
+        <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="line" [data]="data" [options]="options"></p-chart>
+        </div>
+        <h5 class="card-title">
+          <a style="color: darkblue"
+            >Monthly: </a
+          >
+          <span *ngIf="!this.compiler"> | Passed, Regional Compiled, Division Compiled and Approved Audits </span>
+          <span *ngIf="this.compiler"> | Division Compiled and Approved Audits </span>
+        </h5>
+        <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="line" [data]="data1" [options]="options1"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

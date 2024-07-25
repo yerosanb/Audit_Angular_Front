@@ -1,0 +1,119 @@
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <!-- <div class="search-bar">
+    <form class="search-form d-flex align-items-center" method="POST" action="#"> <input type="text" name="query"
+        placeholder="Search" title="Enter search keyword" id="my_search"> <button type="submit" title="Search"><i
+          class="bi bi-search"></i></button></form>
+  </div> -->
+
+  <nav class="header-nav" style="margin-left: -1%">
+    <p-menubar [model]="displayedItems">
+      <ng-template pTemplate="start">
+        <div class="d-flex align-items-center justify-content-between">
+          <a routerLink="/" class="logo d-flex align-items-center">
+            <img src="assets/img/Awash_International_Bank.png" alt="" />
+            <span *ngIf="approver" class="d-none d-lg-block">Approver</span>
+            <span *ngIf="auditor" class="d-none d-lg-block">Auditor</span>
+            <span *ngIf="reviewer" class="d-none d-lg-block">Reviewer</span>
+            <span *ngIf="division_compiler" class="d-none d-lg-block"
+              >Audit Division</span
+            >
+            <span *ngIf="branch_manager" class="d-none d-lg-block"
+              >Branch Manager</span
+            >
+            <span *ngIf="regional_d" class="d-none d-lg-block"
+              >Regional Director</span
+            > </a
+          ><i
+            (click)="sidebarToggle()"
+            class="bi bi-list toggle-sidebar-btn"
+          ></i>
+          <input
+            type="text"
+            pInputText
+            #searchData
+            class="p-mx-3"
+            pTooltip="Filter audits by label/name"
+            placeholder="Search Audits"
+            (input)="onSearchInputChange(searchData.value)"
+          />
+        </div>
+        <!-- <img src="assets/img/Awash_Bank_Final_logo.jpg" height="40" class="mr-2"> -->
+      </ng-template>
+      <ng-template pTemplate="end">
+        <!-- <app-dark-mode-toggle class="rounded-circle"> </app-dark-mode-toggle> -->
+
+        <ul class="d-flex align-items-center">
+          <li class="nav-item dropdown pe-3">
+            <a
+              class="nav-link nav-profile d-flex align-items-center pe-0"
+              href="#"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                *ngIf="photoUrl; else blankPicHeader"
+                src="{{ environment.imagesUserApi + photoUrl }}"
+                alt="Profile"
+                class="rounded-circle"
+              />
+              <ng-template #blankPicHeader>
+                <img
+                  src="{{ environment.blankPic }}"
+                  alt="Profile"
+                  class="rounded-circle"
+                />
+              </ng-template>
+              <span class="d-none d-md-block dropdown-toggle ps-2">{{
+                username
+              }}</span>
+            </a>
+
+            <ul
+              class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+            >
+              <li class="dropdown-header">
+                <h6>{{ username }}</h6>
+                <span style="color: green">Online</span>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  routerLink="/user-profile"
+                >
+                  <i class="bi bi-person"></i> <span>My Profile</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center"
+                  routerLink="/need-help"
+                  ><i class="bi bi-question-circle"></i> <span>Need Help?</span>
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <button
+                  class="dropdown-item d-flex align-items-center"
+                  (click)="logout()"
+                >
+                  <i class="bi bi-box-arrow-right"></i> <span>Sign Out</span>
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </ng-template>
+    </p-menubar>
+  </nav>
+</header>

@@ -1,0 +1,172 @@
+<form #compilerForm="ngForm" ngNativeValidate class="row g-3">
+  <div class="col-md-12">
+    <label for="finding">Finding</label>
+    <p-dropdown
+      *ngIf="!is_new_finding"
+      [options]="compiledBranchAudits"
+      [(ngModel)]="compiledRegionalAudit.finding"
+      optionLabel="finding"
+      optionValue="finding"
+      filterBy="finding"
+      [filter]="true"
+      [showClear]="true"
+      placeholder="Select a finding"
+      (onChange)="onChangeFindingDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledRegionalAudit.finding">
+          <div [innerHTML]="compiledRegionalAudit.finding"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.finding.includes('New Finding');
+            else writtenFinding
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Finding?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-4"
+          ></button>
+        </ng-container>
+        <ng-template #writtenFinding>
+          <div [innerHTML]="branchFinancialAudit.finding"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <ckeditor
+      *ngIf="is_new_finding"
+      #finding
+      name="finding"
+      [(ngModel)]="compiledRegionalAudit.finding"
+      [editor]="Editor"
+      [config]="config"
+    ></ckeditor>
+  </div>
+
+  <div class="col-md-12">
+    <label for="impact">Impact</label>
+    <p-dropdown
+      *ngIf="!is_new_impact"
+      [options]="compiledBranchAudits"
+      [(ngModel)]="compiledRegionalAudit.impact"
+      optionLabel="impact"
+      optionValue="impact"
+      filterBy="impact"
+      [filter]="true"
+      [showClear]="true"
+      placeholder="Select a Impact"
+      (onChange)="onChangeImpactDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledRegionalAudit.impact">
+          <div [innerHTML]="compiledRegionalAudit.impact"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.impact.includes('New Impact');
+            else writtenImpact
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Impact?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-4"
+          ></button>
+        </ng-container>
+        <ng-template #writtenImpact>
+          <div [innerHTML]="branchFinancialAudit.impact"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+
+    <ckeditor
+      *ngIf="is_new_impact"
+      [(ngModel)]="compiledRegionalAudit.impact"
+      name="impact"
+      [editor]="Editor"
+      [config]="config"
+    ></ckeditor>
+  </div>
+
+  <div class="col-md-12">
+    <label for="recommendation">Recommendation</label>
+    <p-dropdown
+      *ngIf="!is_new_recommendation"
+      [options]="compiledBranchAudits"
+      optionLabel="recommendation"
+      optionValue="recommendation"
+      filterBy="recommendation"
+      [(ngModel)]="compiledRegionalAudit.recommendation"
+      [filter]="true"
+      [showClear]="true"
+      placeholder="Select a recommendation"
+      (onChange)="onChangeRecommendationDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="compiledRegionalAudit.recommendation">
+          <div [innerHTML]="compiledRegionalAudit.recommendation"></div>
+        </div>
+      </ng-template>
+      <ng-template let-branchFinancialAudit pTemplate="item">
+        <ng-container
+          *ngIf="
+            branchFinancialAudit.recommendation.includes('New Recommendation');
+            else writtenRecommendation
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Recommendation?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-8"
+          ></button>
+        </ng-container>
+        <ng-template #writtenRecommendation>
+          <div [innerHTML]="branchFinancialAudit.recommendation"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+
+    <ckeditor
+      *ngIf="is_new_recommendation"
+      #recommendation
+      [(ngModel)]="compiledRegionalAudit.recommendation"
+      name="recommendation"
+      [editor]="Editor"
+      [config]="config"
+    ></ckeditor>
+  </div>
+
+  <div class="col-md-3">
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-raised p-button-rounded"
+      [disabled]="compilerForm.form.invalid"
+      (click)="saveCompiledAudits()"
+    ></button>
+  </div>
+
+  <div class="col-md-3">
+    <button
+      pButton
+      type="reset"
+      label="Reset"
+      class="p-button-raised p-button-rounded p-button-secondary"
+    ></button>
+  </div>
+</form>

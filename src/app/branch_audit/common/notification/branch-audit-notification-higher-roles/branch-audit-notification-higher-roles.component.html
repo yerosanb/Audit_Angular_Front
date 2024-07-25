@@ -1,0 +1,267 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Pending Finding</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <p-card>
+          <p-toolbar styleClass="p-mb-4">
+            <!-- <ng-template pTemplate="left">
+              <button
+                pButton
+                pRipple
+                label="Rectify"
+                pTooltip="Auditee Response"
+                icon="pi pi-check"
+                class="p-button-raised p-button-rounded p-button-success p-mr-2"
+                (click)="rectifySelectedAudit()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button>
+              <button
+                pButton
+                pRipple
+                label="Add"
+                pTooltip="Auditee Response"
+                icon="pi pi-plus-circle"
+                class="p-button-raised p-button-rounded p-button-secondary p-mr-2"
+                (click)="addAuditeeResponseForSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button>
+              <button
+                pButton
+                pRipple
+                label="Back"
+                icon="pi pi-chevron-left"
+                class="p-button-raised p-button-rounded"
+                (click)="backSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button>
+            </ng-template> -->
+
+            <ng-template pTemplate="right">
+              <div class="flex">
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file"
+                  (click)="dt.exportCSV()"
+                  class="mr-2"
+                  pTooltip="CSV"
+                  tooltipPosition="bottom"
+                ></button>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-excel"
+                  (click)="exportExcel()"
+                  class="p-button-success mr-2"
+                  pTooltip="XLS"
+                  tooltipPosition="bottom"
+                ></button>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-pdf"
+                  (click)="exportPdf()"
+                  class="p-button-warning mr-2"
+                  pTooltip="PDF"
+                  tooltipPosition="bottom"
+                ></button>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-filter"
+                  (click)="dt.exportCSV({ selectionOnly: true })"
+                  class="p-button-info ml-auto"
+                  pTooltip="Selection Only"
+                  tooltipPosition="bottom"
+                ></button>
+              </div>
+            </ng-template>
+          </p-toolbar>
+
+          <p-table
+            #dt
+            [value]="audits"
+            [rows]="10"
+            [paginator]="true"
+            [loading]="loading"
+            [globalFilterFields]="[
+              'case_number',
+              'audit_type',
+              'passed_date',
+              'outstanding_date'
+            ]"
+            [(selection)]="selectedAudits"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Pending Findings</h5>
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    #input
+                    (input)="dt.filterGlobal(input.value, 'contains')"
+                    placeholder="Search..."
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Case Number
+                    <p-columnFilter
+                      type="text"
+                      field="case_number"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Audit Type
+                    <p-columnFilter
+                      type="text"
+                      field="audit_type"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="min-width: 5rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Reported Date
+                    <p-columnFilter
+                      type="date"
+                      field="passed_date"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="width: 10rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Status
+                    <p-columnFilter
+                      type="boolean"
+                      field="status"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="width: 13rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Oustanding Date
+                    <p-columnFilter
+                      type="numeric"
+                      field="outstanding_date"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-audit let-expanded="expanded">
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                </td>
+                <td>{{ audit.case_number }}</td>
+                <td>{{ audit.audit_type }}</td>
+                <td>{{ audit.compiler_submitted_date | date : "MM/dd/yyyy" }}</td>
+                <td>
+                  <button
+                    pButton
+                    pRipple
+                    type="text"
+                    icon="pi pi-spinner"
+                    label="Pending"
+                    class="p-button-rounded p-button-outlined p-button-sm"
+                  ></button>
+                </td>
+                <td>
+                  <button
+                    *ngIf="audit.outstanding_date >= 40"
+                    pButton
+                    pRipple
+                    type="button"
+                    class="p-button-danger p-button-outlined p-button-rounded"
+                    >{{audit.outstanding_date}}</button>
+                    <button
+                    *ngIf="
+                      audit.outstanding_date < 40 && audit.outstanding_date >= 30
+                    "
+                    pButton
+                    pRipple
+                    type="button"
+                    class="p-button-warning p-button-outlined p-button-rounded"
+                    >{{audit.outstanding_date}}</button>
+                    <button
+                    *ngIf="
+                      audit.outstanding_date < 30 && audit.outstanding_date >= 20
+                    "
+                    pButton
+                    pRipple
+                    type="button"
+                    class="p-button-secondary p-button-outlined p-button-rounded"
+                    >{{audit.outstanding_date}}</button>
+                    <button
+                    *ngIf="
+                      audit.outstanding_date < 20 && audit.outstanding_date >= 10
+                    "
+                    pButton
+                    pRipple
+                    type="button"
+                    class="p-button-outlined p-button-rounded"
+                    >{{audit.outstanding_date}}</button>
+                    <button
+                    *ngIf="audit.outstanding_date < 10"
+                    pButton
+                    pRipple
+                    type="button"
+                    class="p-button-success p-button-outlined p-button-rounded"
+                  >{{audit.outstanding_date}}</button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{ audits ? audits.length : 0 }} findings.
+              </div>
+            </ng-template>
+          </p-table>
+        </p-card>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

@@ -1,0 +1,10 @@
+ select
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND approve_status = 0) AS passed_0,
+	(SELECT COUNT(*) FROM compiled_regional_audit WHERE drafting_status = 1 AND approve_status = 0) AS reviewed_0,
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE approve_status = 1) AS approved_0,
+	(select count(*) from branch_financial_audit where division_compiler_submitted = 1 and approve_status = 0) as division_submitted_3,
+	(select count(*) from branch_financial_audit where approve_status = 1) as approved_3,
+
+	(SELECT COUNT(*) FROM branch_financial_audit WHERE division_compiler_submitted = 1 AND rectification_status = 0) AS passed_5,
+	(select count(*) from branch_financial_audit where rectification_status = 3) as partially_rectified_5,
+	(select count(*) from branch_financial_audit where rectification_status = 1) as rectified_5;

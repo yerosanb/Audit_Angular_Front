@@ -1,0 +1,378 @@
+<form ngNativeValidate #auditForm="ngForm" class="p-fluid">
+  <div class="p-field">
+    <label class="p-mb-3"><strong class="text-danger">*</strong> Banking</label>
+    <div class="p-formgrid p-grid">
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="conventional"
+          name="banking"
+          value="conventional"
+          (onClick)="changeBanking($event.value)"
+          [(ngModel)]="auditData.banking"
+        ></p-radioButton>
+        <label for="conventional">Conventional</label>
+      </div>
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="ifb"
+          name="banking"
+          value="ifb"
+          [(ngModel)]="auditData.banking"
+          (onClick)="changeBanking($event.value)"
+        ></p-radioButton>
+        <label for="ifb">IFB</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="amount" class="p-mb-3 text-primary"
+      >Do you need common findings or recommendations?</label
+    >
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="is_table"
+        name="is_table"
+        (click)="checkTable()"
+      ></p-inputSwitch>
+    </div>
+  </div>
+  <div class="p-field">
+    <label for="finding"><strong class="text-danger">*</strong> Finding</label>
+    <p-dropdown
+      *ngIf="!is_new_finding"
+      [options]="commonFindings"
+      [(ngModel)]="auditData.finding"
+      optionLabel="content"
+      optionValue="content"
+      [filter]="true"
+      filterBy="content"
+      [showClear]="true"
+      placeholder="Select a finding"
+      (onChange)="onChangeFindingDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="auditData.finding">
+          <div [innerHTML]="auditData.finding"></div>
+        </div>
+      </ng-template>
+      <ng-template let-commonfinding pTemplate="item">
+        <ng-container
+          *ngIf="
+            commonfinding.content.includes('New Finding');
+            else writtenFinding
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Finding?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-6"
+          ></button>
+        </ng-container>
+        <ng-template #writtenFinding>
+          <div [innerHTML]="commonfinding.content"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+
+    <div *ngIf="is_new_finding">
+      <ckeditor
+        #finding="ngModel"
+        name="finding"
+        [(ngModel)]="auditData.finding"
+        [class.is-invalid]="finding.invalid || finding.touched"
+        [editor]="findingEditor"
+        [config]="config"
+        [required]="true"
+        (ready)="changeFinding($event, auditData)"
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="finding.dirty || finding.untouched"
+        >Finding is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="finding_detail">Finding Detail</label>
+    <ckeditor
+      #finding_detail="ngModel"
+      [(ngModel)]="auditData.finding_detail"
+      name="finding_detail"
+      [editor]="impactEditor"
+      [config]="config"
+    ></ckeditor>
+  </div>
+
+  <div class="p-field">
+    <label for="impact"><strong class="text-danger">*</strong>Impact</label>
+    <ckeditor
+      #impact="ngModel"
+      [(ngModel)]="auditData.impact"
+      name="impact"
+      [editor]="impactEditor"
+      [config]="config"
+      [class.is-invalid]="impact.invalid && impact.touched"
+      [required]="true"
+      (ready)="changeImpact($event, auditData)"
+    ></ckeditor>
+    <small
+      class="text-danger"
+      [class.d-none]="impact.untouched || impact.dirty || impact.valid"
+      >Impact is required<br
+    /></small>
+  </div>
+
+  <div class="p-field">
+    <label for="recommendation"
+      ><strong class="text-danger">*</strong> Recommendation</label
+    >
+    <p-dropdown
+      *ngIf="!is_new_recommendation"
+      [options]="commonRecommendations"
+      [(ngModel)]="auditData.recommendation"
+      optionLabel="content"
+      optionValue="content"
+      [filter]="true"
+      filterBy="content"
+      [showClear]="true"
+      placeholder="Select a recommendation"
+      (onChange)="onChangeRecommendationDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="auditData.recommendation">
+          <div [innerHTML]="auditData.recommendation"></div>
+        </div>
+      </ng-template>
+      <ng-template let-commonRecommendation pTemplate="item">
+        <ng-container
+          *ngIf="
+            commonRecommendation.content.includes('New Recommendation');
+            else writtenRecommendation
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Recommendation?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-8"
+          ></button>
+        </ng-container>
+        <ng-template #writtenRecommendation>
+          <div [innerHTML]="commonRecommendation.content"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+
+    <div *ngIf="is_new_recommendation">
+      <ckeditor
+        #recommendation="ngModel"
+        [(ngModel)]="auditData.recommendation"
+        name="recommendation"
+        [editor]="recommendationEditor"
+        [config]="config"
+        [class.is-invalid]="recommendation.invalid && recommendation.touched"
+        [required]="true"
+        (ready)="changeRecommendation($event, auditData)"
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="recommendation.dirty || recommendation.untouched"
+        >Recommendation is required<br
+      /></small>
+    </div>
+  </div>
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="issued_card"
+        ><strong class="text-danger">*</strong>Issued Card</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.atmCardBranch!.issued_card"
+        #issued_card="ngModel"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        (onBlur)="computeDifference()"
+        spinnerMode="horizontal"
+        [min]="0"
+        [ariaRequired]="true"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-info"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        [step]="1"
+        name="issued_card"
+        [class.is-invalid]="issued_card.invalid && issued_card.touched"
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="text-danger"
+        [class.d-none]="issued_card.valid || issued_card.untouched"
+        >Issued Card is required<br
+      /></small>
+    </div>
+
+    <div class="p-field p-col">
+      <label for="distributed_card"
+        ><strong class="text-danger">*</strong>Distributed Card</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.atmCardBranch!.distributed_card"
+        #distributed="ngModel"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        (onBlur)="computeDifference()"
+        [step]="1"
+        [min]="0"
+        [ariaRequired]="true"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-info"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        name="distributed_card"
+        [class.is-invalid]="distributed.invalid && distributed.touched"
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="text-danger"
+        [class.d-none]="distributed.valid || distributed.untouched"
+        >Distributed Card is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="returned_card"
+        ><strong class="text-danger">*</strong>Returned Card</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.atmCardBranch!.returned_card"
+        name="returned_card"
+        #returned="ngModel"
+        [class.is-invalid]="returned.invalid && returned.touched"
+        [required]="true"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        (onBlur)="computeDifference()"
+        spinnerMode="horizontal"
+        [step]="1"
+        [min]="0"
+        [ariaRequired]="true"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-info"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+      ></p-inputNumber>
+      <small
+        class="text-danger"
+        [class.d-none]="returned.valid || returned.untouched"
+        >Returned Card is required<br
+      /></small>
+    </div>
+
+    <div class="p-field p-col">
+      <label for="remaining_card">Remaining Card</label>
+      <p-inputNumber
+        [(ngModel)]="auditData.atmCardBranch!.remaining_card"
+        name="remaining_card"
+        #remaining="ngModel"
+        [class.is-invalid]="remaining.invalid && remaining.touched"
+        [required]="true"
+        [disabled]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="1"
+        [min]="0"
+        [ariaRequired]="true"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-info"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+      ></p-inputNumber>
+      <small
+        class="text-danger"
+        [class.d-none]="remaining.valid || remaining.untouched"
+        >remaining card is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="finding_date"
+        ><strong class="text-danger">*</strong>Date of Discrepancy</label
+      >
+      <p-calendar
+        [showIcon]="true"
+        [(ngModel)]="findingDate"
+        name="finding_date"
+        id="finding_date"
+        [maxDate]="today"
+      ></p-calendar>
+    </div>
+  </div>
+
+  <ul class="list-group col-md-12 mt-2">
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="edit_auditee"
+        (click)="changeEditAuditee()"
+        name="edit_auditee"
+      ></p-inputSwitch>
+    </div>
+    <li class="list-group-item ml-1" *ngIf="edit_auditee">
+      <app-file-upload (dataChange)="onDataChange($event)"></app-file-upload>
+    </li>
+  </ul>
+  <div class="p-formgrid p-grid mt-4">
+    <div class="p-field p-col-2">
+      <button
+        *ngIf="!loading"
+        pButton
+        pRipple
+        label="Save"
+        [disabled]="
+          auditForm.form.invalid ||
+          !finding_valid ||
+          !recommendation_valid ||
+          !impact_valid ||
+          !banking
+        "
+        icon="pi pi-check"
+        class="p-button-raised p-button-rounded"
+        (click)="saveAudit()"
+      ></button>
+      <button *ngIf="loading" type="button" disabled class="btn btn-primary">
+        Loading...
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+    <div class="p-field p-col-2">
+      <button
+        class="col-md-3"
+        pButton
+        pRipple
+        type="reset"
+        label="Reset"
+        icon="pi pi-times"
+        class="p-button-raised p-button-danger p-button-rounded"
+      ></button>
+    </div>
+  </div>
+</form>

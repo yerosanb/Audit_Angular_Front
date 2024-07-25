@@ -1,0 +1,667 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Pending Account Opened with Incomplete Document Findings</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <p-toolbar styleClass="p-mb-4">
+              <ng-template pTemplate="left">
+                <button
+                  pButton
+                  pRipple
+                  label="Review"
+                  icon="pi pi-send"
+                  class="p-button-raised p-button-rounded p-mr-2"
+                  (click)="reviewSelectedFindings()"
+                  [disabled]="!selectedAudits || !selectedAudits.length"
+                ></button>
+              </ng-template>
+
+              <ng-template pTemplate="right">
+                <div class="flex">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file"
+                    (click)="dt.exportCSV()"
+                    class="mr-2"
+                    pTooltip="CSV"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="p-button-success mr-2"
+                    pTooltip="XLS"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-pdf"
+                    (click)="exportPdf()"
+                    class="p-button-warning mr-2"
+                    pTooltip="PDF"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="dt.exportCSV({ selectionOnly: true })"
+                    class="p-button-info ml-auto"
+                    pTooltip="Selection Only"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
+              </ng-template>
+            </p-toolbar>
+            <p-table
+              #dt
+              [value]="compiledBranchAudits"
+              [rows]="10"
+              [paginator]="true"
+              [loading]="loading"
+              [globalFilterFields]="[
+                'id',
+                'case_number',
+                'status',
+                'risk_level',
+                'finding_date'
+              ]"
+              [(selection)]="selectedAudits"
+              [rowHover]="true"
+              dataKey="id"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [tableStyle]="{ 'min-width': '100rem' }"
+              [showCurrentPageReport]="true"
+            >
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                  <h5 class="p-m-0">Compiled Findings</h5>
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                   <input
+                    pInputText
+                    #searchData
+                    type="text"
+                    (input)="dt.filterGlobal(searchData.value, 'contains')"
+                    placeholder="Search..."
+                  />
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 3rem"></th>
+                  <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Region
+                      <p-columnFilter
+                        type="text"
+                        field="region.name"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Case Number
+                      <p-columnFilter
+                        type="text"
+                        field="case_number"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Audit Type
+                      <p-columnFilter
+                        type="text"
+                        field="audit_type"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Finding
+                      <p-columnFilter
+                        type="text"
+                        field="finding"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Impact
+                      <p-columnFilter
+                        type="text"
+                        field="impact"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Recommendation
+                      <p-columnFilter
+                        type="text"
+                        field="recommendation"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Compiled By
+                      <p-columnFilter
+                        type="text"
+                        field="compiler.first_name"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 5rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Compiled Date
+                      <p-columnFilter
+                        type="date"
+                        field="compiled_date"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="width: 8rem">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-audit let-expanded="expanded">
+                <tr>
+                  <td>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      [pRowToggler]="audit"
+                      (click)="getUnseenRemarks(audit)"
+                      class="p-button-text p-button-rounded p-button-plain"
+                      [icon]="
+                        expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                      "
+                    ></button>
+                  </td>
+                  <td>
+                    <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                  </td>
+                  <td>{{ audit.region.name }}</td>
+
+                  <td>{{ audit.case_number }}</td>
+                  <td>{{ audit.audit_type }}</td>
+                  <td>
+                    <span [innerHTML]="audit.finding"></span>
+                  </td>
+                  <td>
+                    <span [innerHTML]="audit.impact"></span>
+                  </td>
+                  <td>
+                    <span [innerHTML]="audit.recommendation"></span>
+                  </td>
+                  <td>
+                    {{ audit.compiler.first_name }}
+                    {{ audit.compiler.middle_name }}
+                  </td>
+                  <td>
+                    {{ audit.compiled_date | date : "MM/dd/yyyy" }}
+                  </td>
+                  <td>
+                    <button
+                      pButton
+                      pRipple
+                      icon="pi pi-send"
+                      class="p-button-rounded p-button-success p-mr-2"
+                      (click)="reviewFinding(audit)"
+                    ></button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="rowexpansion" let-audit>
+                <tr>
+                  <td colspan="12">
+                    <div class="p-3">
+                      <div style="padding: 0.5em 0 1em 0">
+                        <p-button
+                          (click)="activeIndex1 = 0"
+                          icon="pi pi-plus"
+                          styleClass="p-button-raised p-button-rounded p-ml-2"
+                          label="Detail"
+                        ></p-button>
+
+                        <ng-container
+                          *ngIf="unseen_remark > 0; else elseTemplate"
+                        >
+                          <p-button
+                            icon="pi pi-envelope"
+                            label="Remarks"
+                            styleClass="p-button-rounded p-button-raised p-ml-2"
+                            badge="{{ unseen_remark }}"
+                            (onClick)="openRemarkModal(audit)"
+                          ></p-button>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                          <p-button
+                            icon="pi pi-plus"
+                            label="Remark"
+                            styleClass="p-button-rounded p-button-raised p-ml-2"
+                            (onClick)="openRemarkModal(audit)"
+                          ></p-button>
+                        </ng-template>
+                      </div>
+                      <p-tabView [(activeIndex)]="activeIndex1">
+                        <p-tabPanel header="Detail">
+                          <tr *ngIf="audit.audit_type == 'IncompleteAccount'">
+                            <td colspan="12">
+                              <div class="p-3">
+                                <p-table
+                                  #IncompleteAccount
+                                  [value]="audit.branchFinancialAudits"
+                                  [rows]="10"
+                                  [paginator]="true"
+                                  [loading]="loading"
+                                  [globalFilterFields]="[
+                                    'case_number',
+                                    'branch.name',
+                                    'review_status',
+                                    'approve_status',
+                                    'finding_date',
+                                    'incompleteAccountBranch.approved_by',
+                                    'incompleteAccountBranch.account_opened_date',
+                                    'incompleteAccountBranch.account_number',
+                                    'incompleteAccountBranch.account_type',
+                                    'incompleteAccountBranch.account_opened_amount',
+                                    'incompleteAccountBranch.opened_by'
+                                  ]"
+                                  [rowHover]="true"
+                                  dataKey="id"
+                                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                  [showCurrentPageReport]="true"
+                                  [tableStyle]="{ 'min-width': '100rem' }"
+                                  [rowsPerPageOptions]="[5, 10, 25, 50]"
+                                >
+                                  <ng-template pTemplate="caption">
+                                    <div
+                                      class="p-d-flex p-ai-center p-jc-between"
+                                    >
+                                      <span class="p-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <input
+                                          pInputText
+                                          type="text"
+                                          #input
+                                          (input)="
+                                            IncompleteAccount.filterGlobal(
+                                              input.value,
+                                              'contains'
+                                            )
+                                          "
+                                          placeholder="Search..."
+                                        />
+                                      </span>
+                                    </div>
+                                  </ng-template>
+                                  <ng-template pTemplate="header">
+                                    <tr>
+                                      <th style="width: 3rem">
+                                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                      </th>
+
+                                      <th style="min-width: 8rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Branch
+                                          <p-columnFilter
+                                            type="text"
+                                            field="branch.name"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 6rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Case Number
+                                          <p-columnFilter
+                                            type="text"
+                                            field="case_number"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+                                      <th style="min-width: 6rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Account Type
+                                          <p-columnFilter
+                                            type="text"
+                                            field="incompleteAccountBranch.account_type"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 6rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Account Number
+                                          <p-columnFilter
+                                            type="text"
+                                            field="incompleteAccountBranch.account_number"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 3rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Amount Opened
+                                          <p-columnFilter
+                                            type="numeric"
+                                            field="incompleteAccountBranch.account_opened_amount"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 6rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Opened By
+                                          <p-columnFilter
+                                            type="text"
+                                            field="incompleteAccountBranch.opened_by"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 6rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Approved By
+                                          <p-columnFilter
+                                            type="text"
+                                            field="incompleteAccountBranch.approved_by"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 5rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Account Opened Date
+                                          <p-columnFilter
+                                            type="date"
+                                            field="incompleteAccountBranch.account_opened_date"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="min-width: 5rem">
+                                        <div
+                                          class="flex justify-content-center align-items-center"
+                                        >
+                                          Date of Discrepancy
+                                          <p-columnFilter
+                                            type="date"
+                                            field="finding_date"
+                                            display="menu"
+                                          ></p-columnFilter>
+                                        </div>
+                                      </th>
+
+                                      <th style="width: 5rem">Action</th>
+                                    </tr>
+                                  </ng-template>
+                                  <ng-template
+                                    pTemplate="body"
+                                    let-branchFinancialAudit
+                                    let-expanded="expanded"
+                                  >
+                                    <tr>
+                                      <!-- <td>
+                                        <p-tableCheckbox
+                                          [value]="branchFinancialAudit"
+                                        ></p-tableCheckbox>
+                                      </td> -->
+                                      <td>
+                                        <button
+                                          type="button"
+                                          pButton
+                                          pRipple
+                                          [pRowToggler]="branchFinancialAudit"
+                                          (click)="getRowDetails(branchFinancialAudit)"
+                                          class="p-button-text p-button-rounded p-button-plain"
+                                          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                      </td>
+                                      <td>
+                                        {{ branchFinancialAudit?.branch.name }}
+                                      </td>
+                                      <td>
+                                        {{ branchFinancialAudit.case_number }}
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit
+                                            .incompleteAccountBranch
+                                            .account_type
+                                        }}
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit
+                                            .incompleteAccountBranch
+                                            .account_number
+                                        }}
+                                      </td>
+                                      <td>
+                                        <span
+                                          *ngIf="
+                                            branchFinancialAudit
+                                              .incompleteAccountBranch
+                                              ?.account_type == 'LCY'
+                                          "
+                                        >
+                                          {{
+                                            branchFinancialAudit
+                                              .incompleteAccountBranch
+                                              .account_opened_amount
+                                              | number : "1.0-2"
+                                          }}
+                                          ETB</span
+                                        >
+                                        <span
+                                          *ngIf="
+                                            branchFinancialAudit
+                                              .incompleteAccountBranch
+                                              .account_type == 'FCY'
+                                          "
+                                        >
+                                          {{
+                                            branchFinancialAudit
+                                              .incompleteAccountBranch
+                                              .account_opened_amount
+                                              | number : "1.0-2"
+                                          }}
+                                          {{
+                                            branchFinancialAudit
+                                              .incompleteAccountBranch?.fcy
+                                          }}
+                                        </span>
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit
+                                            .incompleteAccountBranch.opened_by
+                                        }}
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit
+                                            .incompleteAccountBranch.approved_by
+                                        }}
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit
+                                            .incompleteAccountBranch
+                                            .account_opened_date
+                                            | date : "MM/dd/yyyy"
+                                        }}
+                                      </td>
+                                      <td>
+                                        {{
+                                          branchFinancialAudit.finding_date
+                                            | date : "MM/dd/yyyy"
+                                        }}
+                                      </td>
+
+                                      <td>
+                                        <button
+                                          pButton
+                                          pRipple
+                                          label="Files"
+                                          icon="pi pi-file"
+                                          class="p-button-raised p-button-rounded p-mr-2"
+                                          (click)="
+                                            getFileUrls(branchFinancialAudit)
+                                          "
+                                          [disabled]="
+                                            !branchFinancialAudit.file_urls ||
+                                            !branchFinancialAudit.file_urls
+                                              .length
+                                          "
+                                        ></button>
+                                      </td>
+                                    </tr>
+                                  </ng-template>
+
+                                  <ng-template pTemplate="footer">
+                                    <tr>
+                                      <td [colSpan]="3"><span class="text-primary ml-4">Total</span></td>
+                                      <td><span class="text-success">Amount Opened(LCY) = </span>{{ total_amount_withdraw_lcy | number : "1.0-2" }}</td>
+                                      <td><span class="text-success">Amount Opened(FCY) = </span>{{total_amount_withdraw_fcy | number : "1.0-2" }}</td>
+                                    </tr>
+                                  </ng-template>
+                                </p-table>
+                              </div>
+                            </td>
+                          </tr>
+                        </p-tabPanel>
+                      </p-tabView>
+                    </div>
+                  </td>
+                </tr>
+
+              </ng-template>
+              <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                  In total there are
+                  {{ compiledBranchAudits ? compiledBranchAudits.length : 0 }}
+                  findings.
+                </div>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p-dialog
+  [(visible)]="filesDialog"
+  [style]="{ width: '800px', height: '80%' }"
+  header="Attached Files"
+  [modal]="true"
+  styleClass="p-fluid"
+  [maximizable]="true"
+>
+  <ng-template pTemplate="content">
+    <div class="card">
+      <div class="card-header">Attached Files</div>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let file of fileInfos | async" class="list-group-item">
+          <a href="{{ file.url }}">{{ file.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<p-dialog
+  [(visible)]="auditRemarkDialog"
+  [style]="{ width: '800px' }"
+  header="Remarks"
+  [modal]="true"
+  styleClass="p-fluid"
+  [maximizable]="true"
+>
+  <ng-template pTemplate="content">
+    <app-remark-compiled-branch-audit
+      [compiledBranchAudit]="audit_remark"
+    ></app-remark-compiled-branch-audit>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,341 @@
+<div class="card" *ngIf="remark_flag">
+  <p-dataView
+    #dv
+    [value]="contacts_remark"
+    [paginator]="true"
+    [rows]="9"
+    filterBy="email"
+    [sortField]="sortField"
+    [sortOrder]="sortOrder"
+    layout="list"
+  >
+    <ng-template pTemplate="header">
+      <p-toolbar>
+        <ng-template pTemplate="left">
+          <span class="p-input-icon-left mb-2">
+            <i class="pi pi-search"></i>
+            <input
+              type="search"
+              pInputText
+              class="search"
+              placeholder="Search outlook address"
+              #searchData
+              (input)="dv.filter(searchData.value)"
+            />
+            <!-- (input)="dv.filter($event.target.value)"> -->
+          </span>
+        </ng-template>
+        <ng-template pTemplate="right">
+          <p-dataViewLayoutOptions
+            styleClass="layout"
+          ></p-dataViewLayoutOptions>
+        </ng-template>
+      </p-toolbar>
+    </ng-template>
+    <ng-template let-contact pTemplate="listItem">
+      <div class="col-12">
+        <div class="product-list-item">
+          <img
+            *ngIf="contact.photoUrl; else leftBlankPic"
+            src="{{ environment.imagesUserApi + contact.photoUrl }}"
+            alt="Profile"
+          />
+          <ng-template #leftBlankPic>
+            <img src="{{ environment.blankPic }}" alt="Profile" />
+          </ng-template>
+
+          <div class="product-list-detail">
+            <div class="product-name font-weight-light">
+              {{ contact.first_name + " " + contact.last_name }}
+            </div>
+            <div class="product-description font-weight-light">
+              {{ contact.jobPosition.title }}
+            </div>
+            <i class="pi pi-envelope product-category-icon"></i
+            ><span class="product-category font-weight-light">{{
+              contact.email
+            }}</span>
+          </div>
+          <div class="product-list-action">
+            <span class="product-price font-weight-light">{{
+              contact.roles[0].code
+            }}</span>
+            <span class="pi pi-phone mb-3 ml-1">
+              {{ contact.phone_number }}</span
+            >
+            <ng-container *ngIf="contact.unseen_remark > 0; else elseTemplate">
+              <p-button
+                icon="pi pi-envelope"
+                label="Remarks"
+                styleClass="p-button-rounded p-button-sm "
+                badge="{{ contact.unseen_remark }}"
+                (onClick)="openRemarkDialog(contact)"
+              ></p-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <p-button
+                icon="pi pi-envelope"
+                label="Remarks"
+                styleClass="p-button-rounded p-button-outlined p-button-sm"
+                (onClick)="openRemarkDialog(contact)"
+              ></p-button>
+            </ng-template>
+            <!--
+            <p-button icon="pi pi-shopping-cart" label="Add to Cart"
+            [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button> -->
+            <!-- <span icon="pi pi-pencil">{{audit.finding_date}}</span> -->
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-contact pTemplate="gridItem">
+      <div class="col-12 md:col-4">
+        <div class="product-grid-item card">
+          <div class="product-grid-item-top">
+            <div>
+              <i class="pi pi-envelope product-category-icon"></i
+              ><span class="product-category font-weight-light">{{
+                contact.email
+              }}</span>
+            </div>
+            <span class="pi pi-phone font-weight-light">
+              {{ contact.phone_number }}</span
+            >
+          </div>
+          <div class="product-grid-item-content">
+            <img
+              *ngIf="contact.photoUrl; else leftBlankPic"
+              src="{{ environment.imagesUserApi + contact.photoUrl }}"
+              alt="Profile"
+            />
+            <ng-template #leftBlankPic>
+              <img src="{{ environment.blankPic }}" alt="Profile" />
+            </ng-template>
+
+            <div class="product-name font-weight-light">
+              {{
+                contact.first_name +
+                  " " +
+                  contact.middle_name +
+                  " " +
+                  contact.last_name
+              }}
+            </div>
+            <div class="product-description font-weight-light">
+              {{ contact.jobPosition.title }}
+            </div>
+          </div>
+          <div class="product-grid-item-bottom">
+            <span class="product-price font-weight-light">{{
+              contact.roles[0].code
+            }}</span>
+            <ng-container *ngIf="contact.unseen_remark > 0; else elseTemplate">
+              <p-button
+                icon="pi pi-envelope"
+                label="Remarks"
+                styleClass="p-button-rounded p-button-sm "
+                badge="{{ contact.unseen_remark }}"
+                (onClick)="openRemarkDialog(contact)"
+              ></p-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <p-button
+                icon="pi pi-envelope"
+                label="Remarks"
+                styleClass="p-button-rounded p-button-outlined p-button-sm"
+                (onClick)="openRemarkDialog(contact)"
+              ></p-button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
+
+<section *ngIf="!remark_flag" style="background-color: #eee">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center" style="width: 100%">
+      <div class="col-md-10 col-lg-10 col-xl-10">
+        <div class="card overflow-auto" style="width: 100%">
+          <div
+            class="card-header d-flex justify-content-between align-items-center p-3"
+            style="border-top: 4px solid #36abff"
+          >
+            <!-- f5f6f7 -->
+            <h5 class="mb-0">Remarks on this finding</h5>
+            <!-- <div class="d-flex flex-row align-items-center">
+                      <span class="badge bg-danger me-3">20</span>
+                      <i class="fas fa-minus me-3 text-muted fa-xs"></i>
+                      <i class="fas fa-comments me-3 text-muted fa-xs"></i>
+                      <i class="fas fa-times text-muted fa-xs"></i>
+                    </div> -->
+          </div>
+          <div
+            class="card-container overflow-auto"
+            id="remark-container"
+            style="height: 400px"
+          >
+            <div
+              *ngFor="let remark of auditRemarks"
+              class="card-body overflow-auto remark-maker"
+              style="position: relative"
+            >
+              <div
+                *ngIf="currentUser.id == remark.sender?.id; else reciever"
+                class="conversation-entity-grouper"
+              >
+                <div class="d-flex justify-content-between">
+                  <p class="small mb-1 text-muted">{{ remark.remark_date |  timeago : true }}</p>
+                  <p class="small mb-1">{{ currentUser.first_name }}</p>
+                </div>
+                <div
+                  *ngIf="!remark.rejected; else rejectedRemark"
+                  class="d-flex flex-row justify-content-end mb-4 pt-1"
+                >
+                  <div>
+                    <p class="small p-2 me-3 mb-3 text-white rounded-3 bg-info">
+                      {{ remark.message }}
+                    </p>
+                  </div>
+                  <img
+                    *ngIf="currentUser.photoUrl; else blankPic"
+                    src="{{ environment.imagesUserApi + currentUser.photoUrl }}"
+                    alt="avatar 1"
+                    style="width: 45px; height: 100%"
+                  />
+                  <ng-template #blankPic>
+                    <img
+                      src="{{ environment.blankPic }}"
+                      alt="avatar 1"
+                      style="width: 45px; height: 100%"
+                    />
+                  </ng-template>
+                </div>
+                <ng-template #rejectedRemark>
+                  <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                    <div>
+                      <p
+                        class="small p-2 me-3 mb-3 text-white rounded-3 bg-danger"
+                      >
+                        {{ remark.message }} <br /><sub
+                          ><i>Remark for the rejection</i></sub
+                        >
+                      </p>
+                    </div>
+                    <img
+                      *ngIf="currentUser.photoUrl; else blankPic"
+                      src="{{
+                        environment.imagesUserApi + currentUser.photoUrl
+                      }}"
+                      alt="avatar 1"
+                      style="width: 45px; height: 100%"
+                    />
+                    <ng-template #blankPic>
+                      <img
+                        src="{{ environment.blankPic }}"
+                        alt="avatar 1"
+                        style="width: 45px; height: 100%"
+                      />
+                    </ng-template>
+                  </div>
+                </ng-template>
+              </div>
+              <ng-template #reciever class="conversation-entity-grouper">
+                <div class="d-flex justify-content-between">
+                  <p class="small mb-1">{{ remark.sender?.first_name }}</p>
+                  <p class="small mb-1 text-muted">{{ remark.remark_date  |  timeago : true }}</p>
+                </div>
+
+                <div
+                  *ngIf="!remark.rejected; else rejectedRemark"
+                  class="d-flex flex-row justify-content-start mb-4 pt-1"
+                >
+                  <img
+                    *ngIf="remark.sender?.photoUrl; else blankPic"
+                    src="{{
+                      environment.imagesUserApi + remark.sender?.photoUrl
+                    }}"
+                    alt="avatar 1"
+                    style="width: 45px; height: 100%"
+                  />
+                  <ng-template #blankPic>
+                    <img
+                      src="{{ environment.blankPic }}"
+                      alt="avatar 1"
+                      style="width: 45px; height: 100%"
+                    />
+                  </ng-template>
+                  <div>
+                    <p
+                      class="small p-2 ms-3 mb-3 rounded-3"
+                      style="background-color: #f5f6f7"
+                    >
+                      {{ remark.message }}
+                    </p>
+                  </div>
+                  <!-- <div>
+                            <p class="small p-2 me-3 mb-3 ml-3 text-white rounded-3 bg-info">{{remark.message}}</p>
+                          </div> -->
+                </div>
+                <ng-template #rejectedRemark>
+                  <div class="d-flex flex-row justify-content-start mb-4 pt-1">
+                    <img
+                      *ngIf="remark.sender?.photoUrl; else blankPic"
+                      src="{{
+                        environment.imagesUserApi + remark.sender?.photoUrl
+                      }}"
+                      alt="avatar 1"
+                      style="width: 45px; height: 100%"
+                    />
+                    <ng-template #blankPic>
+                      <img
+                        src="{{ environment.blankPic }}"
+                        alt="avatar 1"
+                        style="width: 45px; height: 100%"
+                      />
+                    </ng-template>
+                    <div>
+                      <p
+                        class="small p-2 ml-3 mb-3 text-white rounded-3 bg-danger"
+                      >
+                        {{ remark.message }} <br /><sub
+                          ><i>Remark for the rejection</i></sub
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+
+          <div
+            class="card-footer text-muted d-flex justify-content-start align-items-center p-3"
+          >
+            <div class="input-group mb-0">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="remarkMessage"
+                name="remarkMessage"
+                placeholder="Type Remark"
+                aria-label="Recipient's username"
+                aria-describedby="button-addon2"
+              />
+              <button
+                class="btn btn-info"
+                type="button"
+                id="button-addon2"
+                style="padding-top: 0.55rem"
+                (click)="sendRemarkEventListener()"
+              >
+                <i class="bx bx-send"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

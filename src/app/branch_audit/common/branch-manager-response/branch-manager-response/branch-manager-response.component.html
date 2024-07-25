@@ -1,0 +1,82 @@
+<p-toast></p-toast>
+<form #auditeeResponseForm="ngForm" ngNativeValidate class="row g-3">
+  <div class="col-md-12">
+    <label for="action_plan" class="form-label"
+      ><strong class="text-warning">*</strong>Action Plan</label
+    >
+    <!-- <editor
+      [init]="editorConfig"
+      [(ngModel)]="auditee_response.action_plan"
+      name="action_plan"
+    ></editor> -->
+    <ckeditor
+      #action_plan
+      [disabled]="!auditor"
+      name="action_plan"
+      [(ngModel)]="branchFinancialAudit[0].action_plan"
+      [editor]="Editor"
+    >
+    </ckeditor>
+  </div>
+  <div *ngIf="attached_files" class="col-md-12">
+    <div class="card">
+      <div class="card-header">Attached Files</div>
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let file of fileInfos | async" class="list-group-item">
+          <a href="{{ file.url }}">{{ file.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="auditor" class="col-md-12">
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="file_flag"
+        name="file_flag"
+        styleClass="p-ml-2"
+      ></p-inputSwitch>
+      <label for="file_flag" class="form-label ml-2">File?</label>
+    </div>
+  </div>
+  <div class="col-md-12" *ngIf="file_flag">
+    <label for="demo[]" class="form-label">Attach Files</label>
+    <div class="card flex justify-content-center">
+      <p-fileUpload
+        name="demo[]"
+        [customUpload]="true"
+        (uploadHandler)="onUpload($event)"
+        [multiple]="true"
+        accept="image/*, application/*"
+        [maxFileSize]="10000000"
+      >
+        <ng-template pTemplate="content">
+          <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">
+              {{ file.name }} - {{ file.size }} bytes
+            </li>
+          </ul>
+        </ng-template>
+      </p-fileUpload>
+    </div>
+  </div>
+
+  <div *ngIf="auditor" class="col-md-3">
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-raised p-button-rounded"
+      [disabled]="auditeeResponseForm.form.invalid"
+      (click)="addAuditeeResponse()"
+    ></button>
+  </div>
+
+  <div *ngIf="auditor" class="col-md-3">
+    <button
+      pButton
+      type="reset"
+      label="Reset"
+      class="p-button-raised p-button-rounded p-button-secondary"
+    ></button>
+  </div>
+</form>

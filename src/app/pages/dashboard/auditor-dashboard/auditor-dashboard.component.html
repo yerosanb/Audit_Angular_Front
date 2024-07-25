@@ -1,0 +1,515 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Financial Audit Reporting and Follow up System Dashboard</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <!-- dashboard data: {
+
+
+} -->
+  <section>
+    <div class="p-fluid grid formgrid row justify-content-center p-4">
+      <!-- three -->
+      <div class="field col-xl-4 col-md-6 mb-4" *ngIf="auditor">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_1')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Drafted, Passed and Regional Reviewed Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Drafted: {{ dashboard_response_data.drafted_1 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_1 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Reviewed:
+                        {{ dashboard_response_data.regional_reviewed_1 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-4 col-md-6 mb-4" *ngIf="branch_m">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_1')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Passed and Regional Reviewed Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <!-- <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Drafted: {{ dashboard_response_data.drafted_1 }}</span
+                      >
+                    </p> -->
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_1 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Reviewed:
+                        {{ dashboard_response_data.regional_reviewed_1 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-4 col-md-6 mb-4">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_2')">
+            <!-- (click)="goToPage('rectification/current/dp')" -->
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Regional Compiled, Regional Submitted and Division Reviewed
+                  Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Compiled:
+                        {{ dashboard_response_data.regional_compiled_2 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Submitted:
+                        {{ dashboard_response_data.regional_submitted_2 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Reviewed:
+                        {{ dashboard_response_data.division_reviewed_2 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-4 col-md-12 mb-4">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_3')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Division Compiled, Division Submitted and Approved Audits</a
+                >
+                <span> | Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Compiled:
+                        {{ dashboard_response_data.division_compiled_3 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Submitted:
+                        {{ dashboard_response_data.division_submitted_3 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Approved:
+                        {{ dashboard_response_data.approved_3 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-6 col-md-12 mb-4" *ngIf="branch_m">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_3')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Passed, Regional Compiled, Division Compiled and Approved
+                  Audits
+                </a>
+                <span>| Total </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_4 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Compiled:
+                        {{ dashboard_response_data.regional_compiled_4 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Compiled:
+                        {{ dashboard_response_data.division_compiled_4 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Approved:
+                        {{ dashboard_response_data.approved_4 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field col-xl-6 col-md-12 mb-4" *ngIf="branch_m">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_3')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Rectification: Passed, Responded, Partially Rectified and
+                  Fully Rectified Audits</a
+                >
+                <span>| Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_5 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Responded:
+                        {{ dashboard_response_data.responded_5 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Partially Rectified:
+                        {{
+                          dashboard_response_data.partially_rectified_5
+                        }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Fully Rectified:
+                        {{ dashboard_response_data.rectified_5 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="auditor"
+        class="field col-xxl-6 mb-4"
+        style="display: flex; flex-direction: column; gap: 24px"
+      >
+        <!-- <div class=""> -->
+        <div
+          class="field card info-card revenue-card m-0"
+          style="cursor: pointer; flex: 1"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_4')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Passed, Regional Compiled, Division Compiled and Approved
+                  Audits
+                </a>
+                <span>| Total </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_4 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Regional Compiled:
+                        {{ dashboard_response_data.regional_compiled_4 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Division Compiled:
+                        {{ dashboard_response_data.division_compiled_4 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Approved:
+                        {{ dashboard_response_data.approved_4 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="field col-xl-6 col-lg-12 col-md-12 mb-4"> -->
+        <div
+          class="field card info-card revenue-card m-0"
+          style="cursor: pointer; flex: 1"
+        >
+          <div *ngIf="true" (click)="toggleDetailVisibility('c_5')">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"
+                  >Rectification: Passed, Responded, Partially Rectified and
+                  Fully Rectified Audits</a
+                >
+                <span>| Current </span>
+              </h5>
+              <div class="ps-3">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Passed: {{ dashboard_response_data.passed_5 }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Responded:
+                        {{ dashboard_response_data.responded_5 }}</span
+                      >
+                    </p>
+                  </div>
+                  <div class="col-sm-6">
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Partially Rectified:
+                        {{
+                          dashboard_response_data.partially_rectified_5
+                        }}</span
+                      >
+                    </p>
+                    <p>
+                      <i class="bx bx-check-circle text-success"></i>
+                      <span class="list-text"
+                        >Fully Rectified:
+                        {{ dashboard_response_data.rectified_5 }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+
+      <div class="field col-xxl-6 mb-4" *ngIf="auditor">
+        <div
+          class="card info-card revenue-card m-0"
+          style="cursor: pointer; height: 100% !important"
+        >
+          <div *ngIf="true">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a style="color: darkblue"> Recent Activities </a>
+                <span>| last 10</span>
+              </h5>
+              <div style="display: flex; justify-content: flex-start">
+                <p-timeline
+                  *ngIf="dashboard_response_data.recentActivities.length != 0"
+                  [value]="dashboard_response_data.recentActivities"
+                >
+                  <ng-template pTemplate="content" let-event>
+                    {{ event.message }}
+                  </ng-template>
+                  <ng-template pTemplate="opposite" let-event>
+                    Date:
+                    {{ event.created_date }}
+                  </ng-template>
+                </p-timeline>
+                <h5
+                  *ngIf="dashboard_response_data.recentActivities.length == 0"
+                  style="display: flex; justify-content: center; width: 100%"
+                  class="card-title"
+                >
+                  <span>No Activity Found!</span>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <a id="c_1"></a>
+      <p-divider align="left" *ngIf="c_1 || a_">
+        <div class="inline-flex align-items-center">
+          <b *ngIf="auditor">Drafted, Passed and Regional Reviewed Audits | Current</b>
+          <b *ngIf="branch_m">Passed and Regional Reviewed Audits | Current</b>
+        </div>
+      </p-divider>
+      <app-dpr-current-one *ngIf="c_1 || a_"></app-dpr-current-one>
+      <a id="c_2"></a>
+      <p-divider align="left" *ngIf="c_2 || a_">
+        <div class="inline-flex align-items-center">
+          <b
+            >Regional Compiled, Regional Submitted and Division Reviewed Audits
+            | Current</b
+          >
+        </div>
+      </p-divider>
+      <app-rrd-current-two *ngIf="c_2 || a_"></app-rrd-current-two>
+      <a id="c_3"></a>
+      <p-divider align="left" *ngIf="c_3 || a_">
+        <div class="inline-flex align-items-center">
+          <b
+            >Division Compiled, Division Submitted and Approved Audits |
+            Current</b
+          >
+        </div>
+      </p-divider>
+      <app-dda-current-three *ngIf="c_3 || a_"></app-dda-current-three>
+      <a id="c_4"></a>
+      <p-divider align="left" *ngIf="c_4 || a_">
+        <div class="inline-flex align-items-center">
+          <b
+            >Passed, Regional Compiled, Division Compiled and Approved Audits |
+            Total</b
+          >
+        </div>
+      </p-divider>
+      <app-prda-total-four *ngIf="c_4 || a_"></app-prda-total-four>
+      <a id="c_5"></a>
+      <p-divider align="left" *ngIf="c_5 || a_">
+        <div class="inline-flex align-items-center">
+          <b
+            >Rectification: Passed, Responded, Partially Rectified and Fully
+            Rectified Audits| Current</b
+          >
+        </div>
+      </p-divider>
+      <app-rprpf-five *ngIf="c_5 || a_"></app-rprpf-five>
+    </div>
+  </section>
+</main>

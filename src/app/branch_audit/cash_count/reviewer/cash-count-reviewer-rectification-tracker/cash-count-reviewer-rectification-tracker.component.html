@@ -1,0 +1,470 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Rectified Cash Count Findings</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <p-toolbar styleClass="p-mb-4">
+              <ng-template pTemplate="left">
+                <button
+                  pButton
+                  pRipple
+                  label="Seen"
+                  icon="pi pi-send"
+                  class="p-button-raised p-button-rounded p-button-secondary p-mr-2"
+                  (click)="makeSelectedFindingsSeen()"
+                  [disabled]="!selectedAudits || !selectedAudits.length"
+                ></button>
+              </ng-template>
+
+              <ng-template pTemplate="right">
+                <div class="flex">
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file"
+                    (click)="dt.exportCSV()"
+                    class="mr-2"
+                    pTooltip="CSV"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-excel"
+                    (click)="exportExcel()"
+                    class="p-button-success mr-2"
+                    pTooltip="XLS"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file-pdf"
+                    (click)="exportPdf()"
+                    class="p-button-warning mr-2"
+                    pTooltip="PDF"
+                    tooltipPosition="bottom"
+                  ></button>
+                  <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="dt.exportCSV({ selectionOnly: true })"
+                    class="p-button-info ml-auto"
+                    pTooltip="Selection Only"
+                    tooltipPosition="bottom"
+                  ></button>
+                </div>
+              </ng-template>
+            </p-toolbar>
+            <p-table
+              #dt
+              [value]="audits"
+              [columns]="selectedColumns"
+              [rows]="10"
+              [paginator]="true"
+              [loading]="loading"
+              [globalFilterFields]="selectedColumns"
+              [(selection)]="selectedAudits"
+              [rowHover]="true"
+              dataKey="id"
+              [tableStyle]="{ 'min-width': '160rem' }"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true"
+            >
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                  <h5 class="p-m-0">
+                    <p-multiSelect
+                      [options]="cols"
+                      [(ngModel)]="selectedColumns"
+                      optionLabel="header"
+                      selectedItemsLabel="{0} columns selected"
+                      [style]="{ 'min-width': '200px' }"
+                      placeholder="Choose Columns"
+                    ></p-multiSelect>
+                  </h5>
+                  <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input
+                      pInputText
+                      #searchData
+                      type="text"
+                      (input)="dt.filterGlobal(searchData.value, 'contains')"
+                      placeholder="Search..."
+                    />
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th style="width: 3rem"></th>
+                  <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+
+                  <th>
+                    <div class="flex justify-content-center align-items-center">
+                      Case Number
+                      <p-columnFilter
+                        type="text"
+                        field="audit_case_number"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="flex justify-content-center align-items-center">
+                      Branch Name
+                      <p-columnFilter
+                        type="text"
+                        field="branch_name"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th *ngFor="let col of columns">
+                    <!-- <span
+                      *ngIf="
+                        !containsAnyField(
+                          [
+                            'audit_finding',
+                            'audit_impact',
+                            'audit_recommendation',
+                            'finding_detail'
+                          ],
+                          [col.field]
+                        )
+                      "
+                      >-->
+                    <span *ngIf="col.field.includes('date')">
+                      <div
+                        class="flex justify-content-center align-items-center"
+                      >
+                        {{ col.header }}
+                        <p-columnFilter
+                          type="date"
+                          [field]="col.field"
+                          display="menu"
+                        ></p-columnFilter></div
+                    ></span>
+
+                    <span
+                      *ngIf="
+                        containsAnyField(
+                          [
+                            { field: 'actual_cash_count' },
+                            { field: 'trial_balance' },
+                            { field: 'difference' }
+                          ],
+                          [col.field]
+                        )
+                      "
+                    >
+                      <div
+                        class="flex justify-content-center align-items-center"
+                      >
+                        {{ col.header }}
+                        <p-columnFilter
+                          type="numeric"
+                          [field]="col.field"
+                          display="menu"
+                        ></p-columnFilter></div
+                    ></span>
+                    <span
+                      *ngIf="
+                        containsAnyField(
+                          [
+                            { field: 'cash_count_type' },
+                            { field: 'accountable_staff' }
+                          ],
+                          [col.field]
+                        )
+                      "
+                    >
+                      <div
+                        class="flex justify-content-center align-items-center"
+                      >
+                        {{ col.header }}
+                        <p-columnFilter
+                          type="text"
+                          [field]="col.field"
+                          display="menu"
+                        ></p-columnFilter></div
+                    ></span>
+                    <!-- </span> -->
+                  </th>
+                  <th style="width: 8rem">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-audit
+                let-columns="columns"
+                let-expanded="expanded"
+              >
+                <tr>
+                  <td>
+                    <button
+                      type="button"
+                      pButton
+                      pRipple
+                      [pRowToggler]="audit"
+                      (click)="getFileUrls(audit)"
+                      class="p-button-text p-button-rounded p-button-plain"
+                      [icon]="
+                        expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                      "
+                    ></button>
+                  </td>
+                  <td>
+                    <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                  </td>
+                  <td>{{ audit.audit_case_number }}</td>
+                  <td>{{ audit.branch_name }}</td>
+                  <td *ngFor="let col of columns">
+                    <span *ngIf="col.field.includes('date')">{{
+                      audit[col.field] | date : "MM/dd/yyyy"
+                    }}</span>
+                    <span
+                      *ngIf="
+                        containsAnyField(
+                          [
+                            { field: 'actual_cash_count' },
+                            { field: 'trial_balance' },
+                            { field: 'difference' }
+                          ],
+                          [col.field]
+                        )
+                      "
+                    >
+                      <span *ngIf="audit.cashcount?.cash_count_type != 'FCY'">
+                        {{ audit.cashcount[col.field] }}
+                        ETB
+                      </span>
+                      <span *ngIf="audit.cashcount.cash_count_type == 'FCY'">
+                        {{ audit.cashcount[col.field] }}
+                        {{ audit.cashcount?.fcy }}
+                      </span>
+                    </span>
+                    <span
+                      *ngIf="
+                        containsAnyField(
+                          [
+                            { field: 'cash_count_type' },
+                            { field: 'accountable_staff' }
+                          ],
+                          [col.field]
+                        )
+                      "
+                    >
+                      {{ audit.cashcount[col.field] }}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      *ngIf="audit.rectification_status == 1"
+                      pButton
+                      pRipple
+                      icon="pi pi-desktop"
+                      pTooltip="View Auditee Response"
+                      class="p-button-rounded p-button-secondary p-mr-2"
+                      (click)="addAuditeeResponse(audit)"
+                    ></button>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="rowexpansion" let-audit>
+                <tr>
+                  <td colspan="9">
+                    <div class="p-3">
+                      <div style="padding: 0.5em 0 1em 0">
+                        <p-button
+                          (click)="activeIndex1 = 0"
+                          icon="pi pi-plus"
+                          styleClass="p-button-raised p-button-rounded p-ml-2"
+                          label="Detail"
+                        ></p-button>
+                      </div>
+                      <p-tabView [(activeIndex)]="activeIndex1">
+                        <p-tabPanel header="Detail">
+                          <div class="py-3">
+                            <p-button
+                              [icon]="
+                                activeState[0] ? 'pi pi-minus' : 'pi pi-plus'
+                              "
+                              (click)="toggle(0)"
+                              styleClass="p-button-text"
+                              label="Finding"
+                            ></p-button>
+
+                            <p-button
+                              *ngIf="audit.finding_detail"
+                              [icon]="
+                                activeState[1] ? 'pi pi-minus' : 'pi pi-plus'
+                              "
+                              (click)="toggle(1)"
+                              styleClass="p-button-text"
+                              label="Finding Detail"
+                            ></p-button>
+
+                            <p-button
+                              [icon]="
+                                activeState[2] ? 'pi pi-minus' : 'pi pi-plus'
+                              "
+                              (click)="toggle(2)"
+                              styleClass="p-button-text ml-2"
+                              label="Impact"
+                            ></p-button>
+                            <p-button
+                              [icon]="
+                                activeState[3] ? 'pi pi-minus' : 'pi pi-plus'
+                              "
+                              (click)="toggle(3)"
+                              styleClass="p-button-text ml-2"
+                              label="Recommendation"
+                            ></p-button>
+                            <p-button
+                              [icon]="
+                                activeState[4] ? 'pi pi-minus' : 'pi pi-plus'
+                              "
+                              (click)="toggle(4)"
+                              styleClass="p-button-text ml-2"
+                              label="Files"
+                            ></p-button>
+                          </div>
+                          <p-accordion>
+                            <p-accordionTab
+                              [transitionOptions]="'400ms'"
+                              header="Finding"
+                              [(selected)]="activeState[0]"
+                            >
+                              <ckeditor
+                                #finding
+                                name="finding"
+                                [data]="audit.audit_finding"
+                                [editor]="Editor"
+                                [disabled]="true"
+                              ></ckeditor>
+                            </p-accordionTab>
+                            <p-accordionTab
+                              *ngIf="audit.finding_detail"
+                              [transitionOptions]="'400ms'"
+                              header="Finding Detail"
+                              [(selected)]="activeState[1]"
+                            >
+                              <ckeditor
+                                #finding_detail
+                                name="finding_detail"
+                                [data]="audit.finding_detail"
+                                [editor]="Editor"
+                                [disabled]="true"
+                              ></ckeditor>
+                            </p-accordionTab>
+                            <p-accordionTab
+                              header="Impact"
+                              [(selected)]="activeState[2]"
+                            >
+                              <ckeditor
+                                #impact
+                                name="impact"
+                                [data]="audit.audit_impact"
+                                [editor]="Editor"
+                                [disabled]="true"
+                              >
+                              </ckeditor>
+                            </p-accordionTab>
+                            <p-accordionTab
+                              header="Recommendation"
+                              [(selected)]="activeState[3]"
+                            >
+                              <ckeditor
+                                #recommendation
+                                name="impact"
+                                [data]="audit.audit_recommendation"
+                                [editor]="Editor"
+                                [disabled]="true"
+                              ></ckeditor>
+                            </p-accordionTab>
+
+                            <p-accordionTab
+                              header="Attached Files"
+                              [(selected)]="activeState[4]"
+                            >
+                              <div class="card">
+                                <div class="card-header">Attached Files</div>
+                                <ul class="list-group list-group-flush">
+                                  <li
+                                    *ngFor="let file of fileInfos | async"
+                                    class="list-group-item"
+                                  >
+                                    <a href="{{ file.url }}">{{ file.name }}</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </p-accordionTab>
+                          </p-accordion>
+                        </p-tabPanel>
+                      </p-tabView>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                  In total there are {{ audits ? audits.length : 0 }} findings.
+                </div>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<p-dialog
+  [(visible)]="auditeeResponseDialog"
+  [style]="{ width: '800px' }"
+  header="Auditee Response"
+  [modal]="true"
+  styleClass="p-fluid"
+  [maximizable]="true"
+>
+  <ng-template pTemplate="content">
+    <app-branch-manager-response
+      [passedBranchFinancialAudit]="outputBranchFinancialAudit"
+      (dataChange)="onDataChangeAuditeeResponse($event)"
+    ></app-branch-manager-response>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+  </ng-template>
+</p-dialog>

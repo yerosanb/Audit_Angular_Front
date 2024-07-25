@@ -1,0 +1,29 @@
+<div>
+  <div>
+    <app-auditor-dashboard *ngIf="auditor || branch_m"></app-auditor-dashboard>
+    <!-- <router-outlet></router-outlet> -->
+  </div>
+
+  <div>
+    <app-approver-dashboard *ngIf="approver"></app-approver-dashboard>
+    <!-- <div (click)="toggleDetailVisibility()">
+    <router-outlet *ngIf="isDetailVisible"></router-outlet>
+  </div> -->
+  </div>
+
+  <div>
+    <app-reviewer-dashboard
+      *ngIf="reviewer || regional_d"
+    ></app-reviewer-dashboard>
+    <!-- <div (click)="toggleDetailVisibility()">
+    <router-outlet *ngIf="isDetailVisible"></router-outlet>
+  </div> -->
+  </div>
+
+  <div>
+    <app-division-dashboard *ngIf="compiler"></app-division-dashboard>
+    <!-- <div (click)="toggleDetailVisibility()">
+    <router-outlet *ngIf="isDetailVisible"></router-outlet>
+  </div> -->
+  </div>
+</div>

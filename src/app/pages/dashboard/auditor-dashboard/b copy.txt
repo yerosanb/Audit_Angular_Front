@@ -1,0 +1,528 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Dashbaord</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section" >
+      <p-tabView>
+        <p-tabPanel header="Descrepancy">
+          <p>
+            111
+          </p>
+            <div class="row">
+              <div class="col-xxl-3 col-md-6 col-md-6">
+                <div class="card info-card revenue-card" >
+                  <div *ngIf="loading" (click)="goToPage('descripancy/current/dp')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">14
+                        <a style="color: darkblue">Drafted and Passed for all audits </a>
+                        <span>| Current </span>
+
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Drafted: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="card info-card revenue-card">
+                  <!-- <div *ngIf="!loading" class="mt-3">
+                    <app-maker-approver-one></app-maker-approver-one>
+                  </div> -->
+                  <div *ngIf="loading" (click)="goToPage('descripancy/total/dp')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a  (click)="toggleDetailVisibility()" style="color: darkblue">Passed Peviewed and Approved</a>
+                        <span>| Total</span>
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Reviewed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Approved: {{ auditorDashboardData.card_data[2] }}</span>
+                              </li>
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="card info-card customers-card">
+
+                  <div *ngIf="loading" (click)="goToPage('descripancy/current/pra')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a  (click)="toggleDetailVisibility()" style="color: darkblue">Passed Peviewed and Approved</a>
+                        <span>| Current</span>
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Reviewed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Approved: {{ auditorDashboardData.card_data[2] }}</span>
+                              </li>
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+               </div>
+
+               <div class="col-lg-5">
+                <div class="card">
+                  <div class="card-body">
+
+                    <div *ngIf="loading">
+                      <h5 class="card-title">
+                        <a  style="color: darkblue"> Recent Activities </a>
+                        <span>| current</span>
+                        </h5>
+                        <p-chart type="polarArea" [data]="basicData1" [options]="chartOptions" [style]="{'height': '80%'}"></p-chart>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+
+
+                  <div *ngIf="loading">
+                    <h5 class="card-title">
+                      <a  style="color: darkblue"> Recent Activities </a>
+                      <span>| current</span>
+                      </h5>
+                      <p-chart type="polarArea" [data]="basicData1" [options]="chartOptions" [style]="{'width': '40%'}"></p-chart>
+                   </div>
+                </div>
+              </div>
+            </div> -->
+
+        </p-tabPanel>
+        <p-tabPanel header="Rectification">
+          <p>
+           222
+          </p>
+            <div class="row">
+              <div class="col-xxl-3 col-md-6 col-md-6">
+                <div class="card info-card revenue-card" >
+                  <div *ngIf="loading" (click)="goToPage('rectification/current/dp')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">14
+                        <a style="color: darkblue">Drafted and Passed for all audits </a>
+                        <span>| Current </span>
+
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Drafted: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="card info-card revenue-card">
+                  <!-- <div *ngIf="!loading" class="mt-3">
+                    <app-maker-approver-one></app-maker-approver-one>
+                  </div> -->
+                  <div *ngIf="loading" (click)="goToPage('rectification/total/dp')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a  (click)="toggleDetailVisibility()" style="color: darkblue">Passed Peviewed and Approved</a>
+                        <span>| Total</span>
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Reviewed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Approved: {{ auditorDashboardData.card_data[2] }}</span>
+                              </li>
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="card info-card customers-card">
+
+                  <div *ngIf="loading" (click)="goToPage('rectification/current/pra')" (click)="toggleDetailVisibility()">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a  (click)="toggleDetailVisibility()" style="color: darkblue">Passed Peviewed and Approved</a>
+                        <span>| Current</span>
+                      </h5>
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                         </div>
+                        <div class="ps-3">
+                          <h6>
+                            <ul class="custom-list" style="list-style: none;">
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Passed: {{ auditorDashboardData.card_data[0] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Reviewed: {{ auditorDashboardData.card_data[1] }}</span>
+                              </li>
+                              <li>
+                                <i class="bx bx-check-shield text-info"></i>
+                                <span class="list-text">Approved: {{ auditorDashboardData.card_data[2] }}</span>
+                              </li>
+                            </ul>
+                          </h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+               </div>
+
+               <div class="col-lg-5">
+                <div class="card">
+                  <div class="card-body">
+
+                    <div *ngIf="loading">
+                      <h5 class="card-title">
+                        <a  style="color: darkblue"> Recent Activities </a>
+                        <span>| current</span>
+                        </h5>
+                        <p-chart type="polarArea" [data]="basicData1" [options]="chartOptions" [style]="{'height': '80%'}"></p-chart>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-4">
+              <div class="card">
+                <div class="card-body">
+
+
+                  <div *ngIf="loading">
+                    <h5 class="card-title">
+                      <a  style="color: darkblue"> Recent Activities </a>
+                      <span>| current</span>
+                      </h5>
+                      <p-chart type="polarArea" [data]="basicData1" [options]="chartOptions" [style]="{'width': '40%'}"></p-chart>
+                   </div>
+                </div>
+              </div>
+            </div> -->
+
+        </p-tabPanel>
+
+
+      </p-tabView>
+
+
+
+
+    <div class="row">
+      <!-- <router-outlet *ngIf="isDetailVisible"></router-outlet> -->
+      <a id="children-component"></a>
+    </div>
+  </section>
+</main>
+
+
+=================================///////////////////////////////////////////////////////////////////////////////=============================================
+    <!-- 3 cards row -->
+    <!-- <div
+      class="row"
+      style="
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        gap: 32px;
+      "
+    >
+      <div
+        class="col-md-4 card info-card revenue-card m-0"
+        style="cursor: pointer; flex: 1"
+      >
+        <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a style="color: darkblue"
+                >Drafted, Passed and Regional Reviewed Audits</a
+              >
+              <span> | Current </span>
+            </h5>
+            <div class="ps-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Drafted: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Passed: {{ 10 }}</span>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Regional Reviewed: {{ 10 }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-md-4 card info-card revenue-card m-0"
+        style="cursor: pointer; flex: 1"
+      >
+        <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a style="color: darkblue"
+                >Regional Compiled, Regional Submitted and Division Reviewed
+                Audits</a
+              >
+              <span> | Current </span>
+            </h5>
+            <div class="ps-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Regional Compiled: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Regional Submitted: {{ 10 }}</span>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Division Reviewed: {{ 10 }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-md-4 card info-card revenue-card m-0"
+        style="cursor: pointer; flex: 1"
+      >
+        <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a style="color: darkblue"
+                >Division Compiled, Division Submitted and Approved Audits</a
+              >
+              <span> | Current </span>
+            </h5>
+            <div class="ps-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Division Compiled: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Division Submitted: {{ 10 }}</span>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Approved: {{ 10 }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- 2 cards row -->
+    <!-- <div
+      class="row"
+      style="
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        gap: 32px;
+      "
+    >
+      <div
+        class="col-md-6 card info-card revenue-card m-0"
+        style="cursor: pointer; flex: 1"
+      >
+        <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a style="color: darkblue"
+                >Passed, Regional Compiled, Division Compiled and Approved
+                Audits
+              </a>
+              <span>| Total </span>
+            </h5>
+            <div class="ps-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Passed: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Regional Compiled: {{ 10 }}</span>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Division Compiled: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Approved: {{ 10 }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-md-6 card info-card revenue-card m-0"
+        style="cursor: pointer; flex: 1"
+      >
+        <div *ngIf="loading" (click)="toggleDetailVisibility('c_1')">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a style="color: darkblue"
+                >Rectification: Passed, Responded, Partially Rectified and Fully
+                Rectified Audits</a
+              >
+              <span>| Current </span>
+            </h5>
+            <div class="ps-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Passed: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Responded: {{ 10 }}</span>
+                  </p>
+                </div>
+                <div class="col-sm-6">
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Partially Rectified: {{ 10 }}</span>
+                  </p>
+                  <p>
+                    <i class="bx bx-check-circle text-success"></i>
+                    <span class="list-text">Fully Rectified: {{ 10 }}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+    <!-- activities row -->

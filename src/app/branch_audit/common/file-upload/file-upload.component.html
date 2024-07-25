@@ -1,0 +1,27 @@
+<p-toast></p-toast>
+<div class="row g-3">
+  <div class="col-md-12">
+    <label for="demo[]" class="form-label"
+      ><strong class="text-warning">*</strong>Attach Files(Browse or Drag
+      Drop)</label
+    >
+    <div class="card flex justify-content-center">
+      <p-fileUpload
+        name="demo[]"
+        [customUpload]="true"
+        (uploadHandler)="onUpload($event)"
+        [multiple]="true"
+        accept="image/*, application/*"
+        [maxFileSize]="maxFileSize"
+      >
+        <ng-template pTemplate="content">
+          <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">
+              {{ file.name }} - {{ file.size }} bytes
+            </li>
+          </ul>
+        </ng-template>
+      </p-fileUpload>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+.Flex
+{
+    display: flex; 
+   justify-content: space-between;
+}
+
+.cofsearch
+{
+  border: 1px solid #7fcdee;
+    border-radius: 7px;
+    padding: 9px;
+}

@@ -1,0 +1,419 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active"> Controllable Expense Drafted Findings</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <p-card>
+          <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+              <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-raised p-button-rounded p-mr-2"
+                (click)="openNew()"></button>
+              <button pButton pRipple label="Delete" icon="pi pi-trash"
+                class="p-button-raised p-button-rounded p-button-danger p-mr-2" (click)="deleteSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"></button>
+              <button pButton pRipple label="Pass" icon="pi pi-chevron-right"
+                class="p-button-raised p-button-rounded p-button-secondary" (click)="passSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"></button>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <div class="flex">
+                <button type="button" pButton pRipple icon="pi pi-file" (click)="dt.exportCSV()" class="mr-2"
+                  pTooltip="CSV" tooltipPosition="bottom"></button>
+                <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                  class="p-button-success mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+                <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                  class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+                <button type="button" pButton pRipple icon="pi pi-filter"
+                  (click)="dt.exportCSV({ selectionOnly: true })" class="p-button-info ml-auto"
+                  pTooltip="Selection Only" tooltipPosition="bottom"></button>
+              </div>
+            </ng-template>
+          </p-toolbar>
+
+          <p-table #dt [value]="audits" [rows]="10" [paginator]="true" [loading]="loading" [globalFilterFields]="[
+                  'case_number',
+              'controllableExpense.budget_per_plan',
+              'controllableExpense.actual_balance',
+              'controllableExpense.cash_type',
+              'controllableExpense.variation',
+              'controllableExpense.fcy',
+              'controllableExpense.controllableExpenseType.name',
+              'controllableExpense.period',
+              'finding_date',
+              'review_status',
+              'approve_status',
+              'controllableExpense.cash_type',
+
+                ]" [(selection)]="selectedAudits" [rowHover]="true" dataKey="id"
+            [tableStyle]="{ 'min-width': '120rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Manage Findings</h5>
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    #searchData
+                    type="text"
+                    (input)="dt.filterGlobal(searchData.value, 'contains')"
+                    placeholder="Search..."
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem"></th>
+                <th style="width: 3rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Case Number
+                    <p-columnFilter type="text" field="case_number" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+
+
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Budget Per Plan
+                    <p-columnFilter type="text" field="balance_per_tracer" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Actual Balance
+                    <p-columnFilter type="numeric" field="balance_per_trial_balance" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Variation
+                    <p-columnFilter type="numeric" field="difference" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Expense Type
+                    <p-columnFilter type="numeric" field="controllable_expense_type" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="min-width: 3rem">
+                  <div class="flex justify-content-center align-items-center">
+                    Date
+                    <p-columnFilter type="date" field="tracer_date" display="menu"></p-columnFilter>
+                  </div>
+                </th>
+
+                <th style="width: 12rem">Action</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-audit let-expanded="expanded">
+              <tr>
+                <td>
+                  <button type="button" pButton pRipple [pRowToggler]="audit"
+                    (click)="getChangeTrackerForRowDetail(audit)" class="p-button-text p-button-rounded p-button-plain"
+                    [icon]="
+                          expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                        "></button>
+                </td>
+                <td>
+                  <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                </td>
+                <td>{{ audit.case_number }}</td>
+
+                <td> <span *ngIf=" audit.controllableExpense?.cash_type == 'LCY'">
+                    {{ audit.controllableExpense?.budget_per_plan  | number:'1.0-2'}} ETB
+                  </span>
+                  <span *ngIf="audit.controllableExpense.cash_type == 'FCY'">
+                    {{ audit.controllableExpense?.budget_per_plan  | number:'1.0-2'}}
+                    {{ audit.controllableExpense?.fcy }}
+                  </span>
+                </td>
+
+                <td> <span *ngIf=" audit.controllableExpense?.cash_type == 'LCY'">
+                    {{ audit.controllableExpense?.actual_balance | number:'1.0-2' }} ETB
+                  </span>
+                  <span *ngIf="audit.controllableExpense.cash_type == 'FCY'">
+                    {{ audit.controllableExpense?.actual_balance  | number:'1.0-2'}}
+                    {{ audit.controllableExpense?.fcy }}
+                  </span>
+                </td>
+
+                <td> <span *ngIf=" audit.controllableExpense?.cash_type == 'LCY'">
+                    {{ audit.controllableExpense?.variation | number:'1.0-2' }}
+                    ETB
+                  </span>
+                  <span *ngIf="audit.controllableExpense.cash_type == 'FCY'">
+                    {{ audit.controllableExpense?.variation  | number:'1.0-2'}}
+                    {{ audit.controllableExpense?.fcy }}
+                  </span>
+                </td>
+
+
+                <td> <span
+                    *ngFor="let controllable_expense_type of audit.controllableExpense!.controllableExpenseType; let isLast = last">
+                    {{controllable_expense_type.name}}<ng-container *ngIf="!isLast">, </ng-container> </span>
+                </td>
+
+                <td>{{ audit.controllableExpense?.period | date : "MM/dd/yyyy"}}</td>
+
+                <td>
+                  <button pTooltip="Edit" tooltipPosition="bottom" pButton pRipple icon="pi pi-pencil"
+                    class="p-button-rounded p-button-success p-mr-2" (click)="editAudit(audit)"></button>
+                  <button pTooltip="Delete" tooltipPosition="bottom" pButton pRipple icon="pi pi-trash"
+                    class="p-button-rounded p-button-warning p-mr-2" (click)="deleteAudit(audit)"></button>
+                  <button pTooltip="Pass" tooltipPosition="bottom" pButton pRipple icon="pi pi-chevron-right"
+                    class="p-button-rounded p-button-secondary" (click)="passAudit(audit)"></button>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-audit>
+              <tr>
+                <td colspan="9">
+                  <div class="p-3">
+                    <div style="padding: 0.5em 0 1em 0">
+                      <p-button (click)="activeIndex1 = 0" icon="pi pi-plus"
+                        styleClass="p-button-raised p-button-rounded p-ml-2" label="Detail"></p-button>
+                      <p-button *ngIf="audit.is_edited" (click)="activeIndex1 = 1" icon="pi pi-plus"
+                        styleClass="p-button-raised p-button-rounded  p-ml-2" label="History"></p-button>
+                    </div>
+                    <p-tabView [(activeIndex)]="activeIndex1">
+                      <p-tabPanel header="Detail">
+                        <div class="py-3">
+                          <p-button [icon]="
+                                  activeState[0] ? 'pi pi-minus' : 'pi pi-plus'
+                                " (click)="toggle(0)" styleClass="p-button-text" label="Finding"></p-button>
+                          <p-button [icon]="
+                                activeState[4] ? 'pi pi-minus' : 'pi pi-plus'
+                              " (click)="toggle(4)" styleClass="p-button-text" label="Finding Detail"
+                            *ngIf="audit.finding_detail"></p-button>
+                          <p-button [icon]="
+                                  activeState[1] ? 'pi pi-minus' : 'pi pi-plus'
+                                " (click)="toggle(1)" styleClass="p-button-text ml-2" label="Impact"></p-button>
+                          <p-button [icon]="
+                                  activeState[2] ? 'pi pi-minus' : 'pi pi-plus'
+                                " (click)="toggle(2)" styleClass="p-button-text ml-2"
+                            label="Recommendation"></p-button>
+                          <p-button [icon]="
+                                  activeState[3] ? 'pi pi-minus' : 'pi pi-plus'
+                                " (click)="toggle(3)" styleClass="p-button-text ml-2" label="Auditees"></p-button>
+                        </div>
+                        <p-accordion>
+                          <p-accordionTab [transitionOptions]="'400ms'" header="Finding" [(selected)]="activeState[0]">
+                            <ckeditor #finding name="finding" [data]="audit.finding" [editor]="Editor"
+                              [disabled]="true"></ckeditor>
+                          </p-accordionTab>
+
+                          <p-accordionTab header="Finding Detail" [(selected)]="activeState[4]"
+                            *ngIf="audit.finding_detail">
+                            <ckeditor #finding_detail name="finding_detail" [data]="audit.finding_detail"
+                              [editor]="Editor" [disabled]="true">
+                            </ckeditor>
+                          </p-accordionTab>
+                          <p-accordionTab header="Impact" [(selected)]="activeState[1]">
+                            <ckeditor #impact name="impact" [data]="audit.impact" [editor]="Editor" [disabled]="true">
+                            </ckeditor>
+                          </p-accordionTab>
+                          <p-accordionTab header="Recommendation" [(selected)]="activeState[2]">
+                            <ckeditor #recommendation name="impact" [data]="audit.recommendation" [editor]="Editor"
+                              [disabled]="true"></ckeditor>
+                          </p-accordionTab>
+                          <p-accordionTab header="Attached Files" [(selected)]="activeState[3]">
+                            <div class="card">
+                              <div class="card-header">Attached Files</div>
+                              <ul class="list-group list-group-flush">
+                                <li *ngFor="let file of fileInfos | async" class="list-group-item">
+                                  <a href="{{ file.url }}">{{ file.name }}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </p-accordionTab>
+                          <p-accordionTab header="Auditees" [(selected)]="activeState[3]">
+                            <p-listbox [options]="audit.is_MGTAuditee" optionLabel="auditee.name"
+                              [metaKeySelection]="false" [checkbox]="true" [filter]="true" [multiple]="true"
+                              [listStyle]="{ 'max-height': '250px' }" [style]="{ width: '50rem' }"></p-listbox>
+                          </p-accordionTab>
+                        </p-accordion>
+                      </p-tabPanel>
+                      <p-tabPanel *ngIf="audit.is_edited" header="Edit History">
+                        <p-timeline [value]="row_detail_change_tracker" align="alternate"
+                          styleClass="customized-timeline">
+                          <ng-template pTemplate="marker" let-change_tracker>
+                            <button pButton pRipple *ngIf="change_tracker.role == 'REVIEWER'" icon="pi pi-eye"
+                              class="custom-marker shadow-2"></button>
+                            <button pButton pRipple *ngIf="change_tracker.role == 'APPROVER'" icon="pi pi-check"
+                              class="custom-marker shadow-2 p-button-success"></button>
+                            <button pButton pRipple *ngIf="change_tracker.role == 'AUDITOR'" icon="pi pi-pencil"
+                              class="custom-marker shadow-2 p-button-secondary"></button>
+                          </ng-template>
+                          <ng-template pTemplate="content" style="width: 30px" let-change_tracker>
+                            <p-card [header]="
+                                    change_tracker.changer.first_name +
+                                    ' ' +
+                                    change_tracker.changer.middle_name
+                                  " [subheader]="change_tracker.change_date">
+                              <!-- <img *ngIf="event.image" [src]="'assets/img/' + event.image" [alt]="event.name"
+                                      width="200" class="shadow-2" /> -->
+                              <img *ngIf="
+                                      change_tracker.changer.photoUrl;
+                                      else leftBlankPic
+                                    " src="{{
+                                      environment.imagesUserApi +
+                                        change_tracker.changer.photoUrl
+                                    }}" alt="Profile" width="200" class="rounded-circle shadow-2 mb-2" />
+                              <ng-template #leftBlankPic>
+                                <img src="{{ environment.blankPic }}" alt="Profile" width="200"
+                                  class="rounded-circle shadow-2 mb-2" />
+                              </ng-template>
+
+                              <ng-container *ngIf="
+                                      change_tracker.content_type != 'editor';
+                                      else elseTemplate
+                                    ">
+                                <p>{{ change_tracker.change }}</p>
+                              </ng-container>
+                              <ng-template #elseTemplate>
+                                <ckeditor #row_detail class="row_detail" [data]="change_tracker.change"
+                                  [editor]="Editor" [disabled]="true"></ckeditor>
+                              </ng-template>
+                              <button *ngIf="change_tracker.role == 'REVIEWER'" pButton label="Read more"
+                                (click)="getReviewerEditHistory(audit.id, true)" class="p-button-text"></button>
+                              <button *ngIf="change_tracker.role == 'AUDITOR'" pButton label="Read more"
+                                (click)="getAuditorEditHistory(audit.id, true)" class="p-button-text"></button>
+                              <button *ngIf="change_tracker.role == 'APPROVER'" pButton label="Read more"
+                                (click)="getApproverEditHistory(audit.id, true)" class="p-button-text"></button>
+                            </p-card>
+                          </ng-template>
+                        </p-timeline>
+                      </p-tabPanel>
+                    </p-tabView>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{ audits ? audits.length : 0 }} findings.
+              </div>
+            </ng-template>
+          </p-table>
+        </p-card>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<p-dialog [(visible)]="auditEditDialog" header="Controllable Expense Audit Details" [modal]="true" styleClass="p-fluid"
+  [maximizable]="true">
+  <ng-template pTemplate="content">
+    <app-controllable-exspense-create-edit [passedAudit]="outputAudit"
+      (editedAudit)="onDataLoad($event)"></app-controllable-exspense-create-edit>
+  </ng-template>
+</p-dialog>
+
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<p-dialog [(visible)]="editHistoryDialog" [style]="{ width: '520px' }" header="Change History" [modal]="true"
+  styleClass="p-fluid" [maximizable]="true">
+  <ng-template pTemplate="content">
+    <p-table #eh [value]="edit_history_table_tracker_list" [rows]="10" [paginator]="true" [loading]="loading"
+      [globalFilterFields]="['id', 'change', 'change_date']" [rowHover]="true" dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Edit History</h5>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+                    pInputText
+                    #searchData
+                    type="text"
+                    (input)="dt.filterGlobal(searchData.value, 'contains')"
+                    placeholder="Search..."
+                  />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th style="min-width: 6rem">
+            <div class="flex justify-content-center align-items-center">
+              Content
+              <p-columnFilter type="text" field="change" display="menu"></p-columnFilter>
+            </div>
+          </th>
+
+          <th style="min-width: 5rem">
+            <div class="flex justify-content-center align-items-center">
+              Change Date
+              <p-columnFilter type="date" field="change_date" display="menu"></p-columnFilter>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-change_tracker>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="change_tracker"></p-tableCheckbox>
+          </td>
+          <td>
+            <ng-container *ngIf="change_tracker.content_type != 'editor'; else elseTemplate">
+              <p>{{ change_tracker.change }}</p>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <ckeditor #row_detail class="table_editor" [data]="change_tracker.change" [editor]="Editor"
+                [disabled]="true"></ckeditor>
+            </ng-template>
+          </td>
+          <td>{{ change_tracker.change_date | date : "MM/dd/yyyy" }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          In total there are
+          {{
+          edit_history_table_tracker_list
+          ? edit_history_table_tracker_list.length
+          : 0
+          }}
+          changes that made by
+          {{
+          edit_history_table_tracker_list[0].changer?.first_name +
+          "
+          " +
+          edit_history_table_tracker_list[0].changer?.last_name
+          }}.
+        </div>
+      </ng-template>
+    </p-table>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+  </ng-template>
+</p-dialog>

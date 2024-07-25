@@ -1,0 +1,65 @@
+export class DashboardResponseFour {
+  passed_4_acb: number = 0;
+  passed_4_ccb: number = 0;
+  passed_4_cpb: number = 0;
+  passed_4_cmb: number = 0;
+  passed_4_nib: number = 0;
+  passed_4_sab: number = 0;
+  passed_4_loib: number = 0;
+  passed_4_lab: number = 0;
+  passed_4_ceb: number = 0;
+  passed_4_iab: number = 0;
+  passed_4_odb: number = 0;
+  passed_4_diab: number = 0;
+  passed_4_alb: number = 0;
+  passed_4_abb: number = 0;
+  passed_4_mcb: number = 0;
+
+  regional_compiled_4_acb: number = 0;
+  regional_compiled_4_ccb: number = 0;
+  regional_compiled_4_cpb: number = 0;
+  regional_compiled_4_cmb: number = 0;
+  regional_compiled_4_nib: number = 0;
+  regional_compiled_4_sab: number = 0;
+  regional_compiled_4_loib: number = 0;
+  regional_compiled_4_lab: number = 0;
+  regional_compiled_4_ceb: number = 0;
+  regional_compiled_4_iab: number = 0;
+  regional_compiled_4_odb: number = 0;
+  regional_compiled_4_diab: number = 0;
+  regional_compiled_4_alb: number = 0;
+  regional_compiled_4_abb: number = 0;
+  regional_compiled_4_mcb: number = 0;
+
+  division_compiled_4_acb: number = 0;
+  division_compiled_4_ccb: number = 0;
+  division_compiled_4_cpb: number = 0;
+  division_compiled_4_cmb: number = 0;
+  division_compiled_4_nib: number = 0;
+  division_compiled_4_sab: number = 0;
+  division_compiled_4_loib: number = 0;
+  division_compiled_4_lab: number = 0;
+  division_compiled_4_ceb: number = 0;
+  division_compiled_4_iab: number = 0;
+  division_compiled_4_odb: number = 0;
+  division_compiled_4_diab: number = 0;
+  division_compiled_4_alb: number = 0;
+  division_compiled_4_abb: number = 0;
+  division_compiled_4_mcb: number = 0;
+
+  approved_4_acb: number = 0;
+  approved_4_ccb: number = 0;
+  approved_4_cpb: number = 0;
+  approved_4_cmb: number = 0;
+  approved_4_nib: number = 0;
+  approved_4_sab: number = 0;
+  approved_4_loib: number = 0;
+  approved_4_lab: number = 0;
+  approved_4_ceb: number = 0;
+  approved_4_iab: number = 0;
+  approved_4_odb: number = 0;
+  approved_4_diab: number = 0;
+  approved_4_alb: number = 0;
+  approved_4_abb: number = 0;
+  approved_4_mcb: number = 0;
+}

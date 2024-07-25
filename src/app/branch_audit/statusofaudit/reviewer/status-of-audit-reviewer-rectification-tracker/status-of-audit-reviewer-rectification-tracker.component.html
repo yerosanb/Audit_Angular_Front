@@ -1,0 +1,241 @@
+<main id="main" class="main">
+    <p-toast></p-toast>
+    <div class="pagetitle">
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/"><i class="bi bi-house-door"></i></a>
+          </li>
+          <li class="breadcrumb-item active">Rectified Back Logs</li>
+          <li></li>
+        </ol>
+      </nav>
+    </div>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <p-card>
+            <p-toolbar styleClass="p-mb-4">
+              <ng-template pTemplate="left">
+                <button
+                  pButton
+                  pRipple
+                  label="Seen"
+                  icon="pi pi-send"
+                  class="p-button-raised p-button-rounded p-button-secondary p-mr-2"
+                  (click)="makeSelectedFindingsSeen()"
+                  [disabled]="!selectedAudits || !selectedAudits.length"></button>
+              </ng-template>
+            </p-toolbar>
+
+            <p-table
+              #dt
+              [value]="audits"
+              [rows]="10"
+              [paginator]="true"
+              [loading]="loading"
+              [globalFilterFields]="[
+                'branch.name',
+                'auditor.first_name',
+                'statusofAudit.number_of_back_log_day',
+                'statusofAudit.is_updated',
+                'statusofAudit.justification',
+                'finding_date'
+              ]"
+              [(selection)]="selectedAudits"
+              [rowHover]="true"
+              dataKey="id"
+              [tableStyle]="{ 'min-width': '110rem' }"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [showCurrentPageReport]="true"
+            >
+              <ng-template pTemplate="caption">
+                <div class="Flex">
+                  <span class="p-input-icon-left ml-auto">
+                    <!-- <i class="pi pi-search"></i> -->
+                    <input
+                      pInputText
+                      class="cofsearch"
+                      type="text"
+                      #input
+                      (input)="dt.filterGlobal(input.value, 'contains')"
+                      placeholder="Search Keyword"
+                    />
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem"></th>
+                  <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th>
+                    <div class="flex justify-content-center align-items-center">
+                      Branch Name
+                      <p-columnFilter
+                        type="text"
+                        field="branch_name"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Auditor Name
+                      <p-columnFilter
+                        type="text"
+                        field="auditor.first_name"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Date of Report
+                      <p-columnFilter
+                        type="date"
+                        field="finding_date"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Number of back log day/s
+                       <p-columnFilter
+                          type="numeric"
+                          field="statusofAudit.number_of_back_log_day"
+                          display="menu"
+                        ></p-columnFilter>
+                    </div>
+                  </th>
+
+                  <th style="min-width: 6rem">
+                    <div class="flex justify-content-center align-items-center">
+                      Justification
+                      <p-columnFilter
+                        type="text"
+                        field="statusofAudit.justification"
+                        display="menu"
+                      ></p-columnFilter>
+                    </div>
+                  </th>
+                  <th style="width: 12rem">Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-audit let-expanded="expanded">
+                <tr>
+                    <td>
+                        <button
+                          type="button"
+                          pButton
+                          pRipple
+                          [pRowToggler]="audit"
+                          (click)="getFileUrls(audit)"
+                          class="p-button-text p-button-rounded p-button-plain"
+                          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                      </td>
+                  <td style="width: 3rem">
+                    <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                  </td>
+                  <td>{{ audit.branch_name }}</td>
+                  <td>
+                    {{ audit.auditor.first_name }}
+                    {{ audit.auditor.middle_name }}
+                    {{ audit.auditor.last_name }}
+                  </td>
+                  <td>{{audit.finding_date | date :'MM/dd/yyyy'}}</td>
+                  <td>
+                    {{ audit.statusofAudit.number_of_back_log_day }}
+                  </td>
+
+                  <td>
+                    <span [innerHTML]="audit.statusofAudit.justification"></span>
+                  </td>
+                  <td>
+                    <button
+                      *ngIf="audit.rectification_status == 1"
+                      pButton
+                      pRipple
+                      icon="pi pi-desktop"
+                      pTooltip="View Auditee Response"
+                      class="p-button-rounded p-button-secondary p-mr-2"
+                      (click)="addAuditeeResponse(audit)"></button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="rowexpansion" let-audit>
+                <tr>
+                  <td colspan="9">
+                    <div class="p-3">
+                      <p-tabView [(activeIndex)]="activeIndex1">
+                        <p-tabPanel header="Detail">
+                            <p-accordion>
+                                <p-accordionTab
+                              header="Attached Files"
+                              [(selected)]="activeState[4]">
+                              <div class="card">
+                                <div class="card-header">Attached Files</div>
+                                <ul class="list-group list-group-flush">
+                                  <li
+                                    *ngFor="let file of fileInfos | async"
+                                    class="list-group-item"
+                                  >
+                                    <a href="{{ file.url }}">{{ file.name }}</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </p-accordionTab>
+                          </p-accordion>
+                        </p-tabPanel>
+                      </p-tabView>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+
+
+              <ng-template pTemplate="summary">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                  In total there are {{ audits ? audits.length : 0 }} findings!
+                </div>
+              </ng-template>
+            </p-table>
+          </p-card>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<p-dialog
+  [(visible)]="auditeeResponseDialog"
+  [style]="{ width: '800px' }"
+  header="Auditee Response"
+  [modal]="true"
+  styleClass="p-fluid"
+  [maximizable]="true"
+>
+  <ng-template pTemplate="content">
+    <app-branch-manager-response
+      [passedBranchFinancialAudit]="outputBranchFinancialAudit"
+      (dataChange)="onDataChangeAuditeeResponse($event)"
+    ></app-branch-manager-response>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+  </ng-template>
+</p-dialog>

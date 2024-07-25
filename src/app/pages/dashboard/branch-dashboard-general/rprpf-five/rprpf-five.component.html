@@ -1,0 +1,190 @@
+<div
+  class="p-fluid grid formgrid row justify-content-center p-4"
+  *ngIf="this.auditor"
+>
+  <div class="field col-xl-3 col-md-6 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Passed</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Passed: {{ dashboard_response_data.passed_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field col-xl-3 col-md-6 mb-4" *ngIf="this.auditor">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Responded</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Responded: {{ dashboard_response_data.responded_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field col-xl-3 col-md-6 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Partially Rectified</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Partially Rectified:
+                  {{ dashboard_response_data.partially_rectified_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field col-xl-3 col-md-6 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Fully Rectified</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Fully Rectified:
+                  {{ dashboard_response_data.rectified_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p-fluid grid formgrid row justify-content-center p-4"  *ngIf="!this.auditor">
+  
+  <div class="field col-xl-4 col-md-6 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Pending</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Pending: {{ dashboard_response_data.passed_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field col-xl-4 col-md-6 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Partially Rectified</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Partially Rectified:
+                  {{ dashboard_response_data.partially_rectified_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field col-xl-4 col-md-12 mb-4">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a style="color: darkblue">Rectification: Fully Rectified</a>
+            <span> | Current </span>
+          </h5>
+          <div class="ps-3">
+            <div class="row">
+              <p>
+                <i class="bx bx-check-circle text-success"></i>
+                <span class="list-text"
+                  >Fully Rectified:
+                  {{ dashboard_response_data.rectified_5 }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

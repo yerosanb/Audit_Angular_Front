@@ -1,0 +1,665 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">
+          Report Operational Discrepancy
+          <p-progressSpinner
+            *ngIf="filter_spinner"
+            [style]="{
+              width: '1.5rem',
+              height: '1.5rem',
+              marginTop: '-1px',
+              display: 'block',
+              position: 'absolute',
+              marginLeft: '24px'
+            }"
+            strokeWidth="8"
+            fill="var(--surface-ground)"
+            animationDuration=".5s"
+          ></p-progressSpinner>
+        </li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <p-card>
+    <div class="p-fluid grid formgrid row justify-content-center p-4">
+      <div class="row">
+        <div
+          class="field col-lg-4 col-md-6 mb-2"
+          *ngIf="
+            this.storageService.getUser().roles.includes('ROLE_APPROVER_BFA') ||
+            this.storageService.getUser().roles.includes('ROLE_COMPILER_BFA')
+          "
+        >
+          <label for="region">Region</label>
+          <p-dropdown
+            [options]="regionOptions"
+            optionLabel="name"
+            optionValue="id"
+            inputId="region"
+            [(ngModel)]="branch_report.region"
+            placeholder="Select region"
+            [filter]="true"
+            [virtualScroll]="true"
+            [virtualScrollItemSize]="38"
+            [showClear]="true"
+            (onChange)="filterBranchByRegion($event.value)"
+            (onClear)="onRegionCleared()"
+          >
+            <ng-template pTemplate="loader" let-options="options">
+              <div
+                class="flex align-items-center py-2 px-3"
+                style="height: 38px"
+              >
+                <p-skeleton
+                  [width]="options.even ? '60%' : '50%'"
+                  height="1rem"
+                ></p-skeleton>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+
+        <div
+          class="field col-lg-4 col-md-6 mb-2"
+          *ngIf="
+            this.storageService.getUser().roles.includes('ROLE_APPROVER_BFA') ||
+            this.storageService.getUser().roles.includes('ROLE_REGIONALD_BFA') ||
+            this.storageService.getUser().roles.includes('ROLE_REVIEWER_BFA') ||
+            this.storageService.getUser().roles.includes('ROLE_COMPILER_BFA')
+          "
+        >
+          <label for="branch">Branch</label>
+          <p-dropdown
+            [options]="branchOptions"
+            optionLabel="name"
+            optionValue="id"
+            inputId="branch"
+            [(ngModel)]="branch_report.branch"
+            placeholder="Select branch"
+            [filter]="true"
+            [virtualScroll]="true"
+            [virtualScrollItemSize]="38"
+            [showClear]="true"
+          >
+            <ng-template pTemplate="loader" let-options="options">
+              <div
+                class="flex align-items-center py-2 px-3"
+                style="height: 38px"
+              >
+                <p-skeleton
+                  [width]="options.even ? '60%' : '50%'"
+                  height="1rem"
+                ></p-skeleton>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="finding_status">Finding Status</label>
+          <p-dropdown
+            [options]="finding_status"
+            optionLabel="name"
+            inputId="finding_status"
+            optionValue="code"
+            [filter]="true"
+            [(ngModel)]="branch_report.finding_status"
+            placeholder="Select Finding Status"
+            [showClear]="true"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="rectification_date">Rectification Date Range</label>
+          <p-calendar
+            [(ngModel)]="branch_report.rectification_date_range"
+            selectionMode="range"
+            inputId="rectification_date"
+            [readonlyInput]="false"
+            [inline]="false"
+            dateFormat="mm-dd-yy"
+            name="rectification_date"
+            placeholder="Rectification Date"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            [showButtonBar]="true"
+          ></p-calendar>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="audit_period">Finding Date Range</label>
+          <p-calendar
+            [(ngModel)]="branch_report.date_range"
+            selectionMode="range"
+            inputId="audit_period"
+            [inline]="false"
+            [readonlyInput]="false"
+            name="audit_period"
+            placeholder="Report Date"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            [showButtonBar]="true"
+          ></p-calendar>
+        </div>
+    
+      <!-- ======================================================================== -->
+      
+      <div class="field col-lg-4 col-md-6 mb-2" 
+        *ngIf="
+         this.storageService.getUser().roles.includes('ROLE_REVIEWER_BFA')
+       ">
+          <label for="audit_period">Compilation Date Range</label>
+          <p-calendar
+            [(ngModel)]="branch_report.regional_compiler_compiled_date"
+            selectionMode="range"
+            inputId="regional_compilation_date"
+            [inline]="false"
+            [readonlyInput]="false"
+            name="regional_compilation_date"
+            placeholder="Compilation Date"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            [showButtonBar]="true"
+          ></p-calendar>
+      </div>
+
+     <div class="field col-lg-4 col-md-6 mb-2" 
+        *ngIf="
+        this.storageService.getUser().roles.includes('ROLE_COMPILER_BFA')
+        ">
+          <label for="audit_period">Compilation Date Range</label>
+          <p-calendar
+            [(ngModel)]="branch_report.division_compiler_compiled_date"
+            selectionMode="range"
+            inputId="division_compilation_date"
+            [inline]="false"
+            [readonlyInput]="false"
+            name="division_compilation_date"
+            placeholder="Compilation Date"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            [showButtonBar]="true"
+          ></p-calendar>
+      </div>
+
+     <div class="field col-lg-4 col-md-6 mb-2" 
+        *ngIf="
+        this.storageService.getUser().roles.includes('ROLE_APPROVER_BFA')
+      ">
+          <label for="audit_period">Approve Date Range</label>
+          <p-calendar
+            [(ngModel)]="branch_report.approved_date"
+            selectionMode="range"
+            inputId="approve_date"
+            [inline]="false"
+            [readonlyInput]="false"
+            name="approve_date"
+            placeholder="Approve Date"
+            [showIcon]="true"
+            [maxDate]="maxDate"
+            [showButtonBar]="true"
+          ></p-calendar>
+        </div>
+
+        <!-- ====================================================================== -->
+        <div class="field col-lg-4 col-md-6 mb-2" *ngIf="true">
+          <label for="categoryOfDiscrepancy">Finding</label>
+          <p-dropdown
+            [options]="categoryOfDiscrepancyOptions"
+            optionLabel="name"
+            optionValue="id"
+            inputId="categoryOfDiscrepancy"
+            [(ngModel)]="branch_report.category_of_discrepancy"
+            placeholder="Select Finding"
+            [filter]="true"
+            [virtualScroll]="true"
+            [virtualScrollItemSize]="38"
+            [lazy]="true"
+            [virtualScrollOptions]="{
+              showLoader: true,
+              loading: loading,
+              delay: 250
+            }"
+          >
+            <ng-template pTemplate="loader" let-options="options">
+              <div
+                class="flex align-items-center py-2 px-3"
+                style="height: 38px"
+              >
+                <p-skeleton
+                  [width]="options.even ? '60%' : '50%'"
+                  height="1rem"
+                ></p-skeleton>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="amount">Amount</label>
+          <div style="display: flex; flex-direction: row; gap: 12px">
+            <p-inputNumber
+              [(ngModel)]="branch_report.min_amount"
+              placeholder="Min Amount"
+              mode="decimal"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="5"
+              (ngModelChange)="updateMaxValue()"
+            >
+            </p-inputNumber>
+            <p-inputNumber
+              [(ngModel)]="branch_report.max_amount"
+              placeholder="Max Amount"
+              mode="decimal"
+              [minFractionDigits]="2"
+              [min]="minValueForMax"
+              [maxFractionDigits]="5"
+            >
+            </p-inputNumber>
+          </div>
+        </div>
+
+        <!-- <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="amount">Account Number</label>
+          <div class="row">
+
+            <p-inputNumber
+              [(ngModel)]="branch_report.account_number"
+              placeholder="Account Number"
+            >
+            </p-inputNumber>
+
+          </div>
+        </div> -->
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="amount">Account Number</label>
+          <div
+            class="row"
+            style="
+              padding-left: 1rem !important;
+              padding-right: 1rem !important;
+            "
+          >
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="branch_report.account_number"
+              placeholder="Account Number"
+            />
+          </div>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="banking">Banking</label>
+          <p-selectButton
+            [options]="bankingOptions"
+            [(ngModel)]="branch_report.banking"
+            optionLabel="label"
+            optionValue="value"
+            name="banking"
+            id="banking"
+          ></p-selectButton>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="cash_type">Currency Type</label>
+          <p-selectButton
+            [options]="cashTypeOptions"
+            [(ngModel)]="branch_report.cash_type"
+            optionLabel="label"
+            optionValue="value"
+            name="cash_type"
+            id="cash_type"
+          ></p-selectButton>
+        </div>
+
+        <div class="field col-lg-4 col-md-6 mb-2">
+          <label for="rectification_status">Rectification Status</label>
+          <p-selectButton
+            [options]="stateOptions"
+            [(ngModel)]="branch_report.rectification_status"
+            optionLabel="label"
+            optionValue="value"
+            name="rectification_status"
+            id="rectification_status"
+          ></p-selectButton>
+        </div>
+
+        <div class="col-md-12 row mt-2 justify-content-center">
+          <div
+            class="col-md-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-top: 12px;
+            "
+          >
+            <p-button
+              type="button"
+              label="Search"
+              styleClass="p-button-raised p-button-rounded p-button-secondary"
+              (click)="submitReportRequest()"
+            ></p-button>
+          </div>
+          <div
+            class="col-md-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-top: 12px;
+            "
+          >
+            <p-button
+              (click)="clearDataReset()"
+              type="reset"
+              label="Reset"
+              styleClass="p-button-raised p-button-rounded p-button-secondary"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-card>
+
+  <!-- *ngIf="searchClicked"
+            #dt
+          [value]="reports"
+          [tableStyle]="{ 'min-width': '100rem' }"
+          [scrollable]="true"
+          scrollDirection="horizontal"-->
+  <p-card class="p-m-2" *ngIf="searchClicked">
+    <div class="card">
+      <p-table
+        #table_branch_audit_report
+        [value]="reportResponse"
+        [columns]="selectedColumns_branch_audit_report"
+        [resizableColumns]="true"
+        styleClass="p-datatable-gridlines p-datatable-sm"
+        [tableStyle]="{ 'min-width': '80rem' }"
+        dataKey="id"
+        [rowHover]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50, 100, 200, 300, 500]"
+        [loading]="loading"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'id',
+          'case_number',
+          'branch_name',
+          'audit_finding',
+          'auditor_name',
+          'audit_impact',
+          'auditor_recommendation',
+          'auditee_response',
+          'audit_finding_status',
+          'amount',
+          'account_number',
+          'account_holder_name',
+          'transaction_date',
+          'audit_report_date',
+          'rectified_on'
+        ]"
+        [scrollable]="true"
+        scrollDirection="horizontal"
+        selectionMode="multiple"
+        [metaKeySelection]="metaKeySelection"
+        stateStorage="local"
+        stateKey="branch-audit-report-table-session"
+        [exportHeader]="'customExportHeader'"
+        columnResizeMode="expand"
+      >
+        <ng-template pTemplate="caption">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div>
+              <p-multiSelect
+                [options]="cols"
+                [(ngModel)]="selectedColumns_branch_audit_report"
+                optionLabel="header"
+                selectedItemsLabel="{0} columns selected"
+                [style]="{ 'min-width': '200px' }"
+                placeholder="Choose Columns"
+              ></p-multiSelect>
+              <button
+                pButton
+                label="Clear Filters"
+                class="p-button-outlined ml-2"
+                icon="pi pi-filter-slash"
+                (click)="clear(table_branch_audit_report)"
+              ></button>
+            </div>
+            <div>
+              <div class="flex">
+                <!-- <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-file"
+                    (click)="table_branch_audit_report.exportCSV()"
+                    class="mr-2"
+                    pTooltip="CSV"
+                    tooltipPosition="bottom"
+                  ></button> -->
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-excel"
+                  (click)="exportExcel()"
+                  class="p-button-success mr-2"
+                  pTooltip="XLS"
+                  tooltipPosition="bottom"
+                ></button>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-pdf"
+                  (click)="exportPdf()"
+                  class="p-button-warning mr-2"
+                  pTooltip="PDF"
+                  tooltipPosition="bottom"
+                ></button>
+                <!-- <button
+                    type="button"
+                    pButton
+                    pRipple
+                    icon="pi pi-filter"
+                    (click)="
+                      table_branch_audit_report.exportCSV({ selectionOnly: true })
+                    "
+                    class="p-button-info ml-auto"
+                    pTooltip="Selection Only"
+                    tooltipPosition="bottom"
+                  ></button> -->
+              </div>
+            </div>
+            <div>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    table_branch_audit_report.filterGlobal(
+                      $any($event.target).value,
+                      'contains'
+                    )
+                  "
+                  placeholder="Global Search"
+                />
+              </span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th
+              pResizableColumn
+              pFrozenColumn
+              [frozen]="true"
+              pSortableColumn="id"
+            >
+              <div class="flex align-items-center">
+                Id
+                <p-sortIcon field="id"></p-sortIcon>
+                <p-columnFilter
+                  class="ml-1"
+                  type="text"
+                  field="id"
+                  display="menu"
+                ></p-columnFilter>
+              </div>
+            </th>
+            <th
+              pResizableColumn
+              *ngFor="let col of columns"
+              pSortableColumn="{{ col.field }}"
+            >
+              <div class="flex align-items-center">
+                {{ col.header }}
+                <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+                <p-columnFilter
+                  class="ml-1"
+                  type="{{ col.header == 'Quantity' ? 'numeric' : 'text' }}"
+                  field="{{ col.field }}"
+                  display="menu"
+                ></p-columnFilter>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template
+          pTemplate="body"
+          let-report
+          let-columns="columns"
+          let-rowIndex="rowIndex"
+        >
+          <tr [pSelectableRow]="report" [pSelectableRowIndex]="rowIndex">
+            <td pFrozenColumn [frozen]="true">{{ report["id"] }}</td>
+            <td *ngFor="let col of columns">
+              <!-- <div *ngIf="col.field === 'auditee_response'">
+                <div style="text-align: center">
+                  <p-tag
+                    severity="warning"
+                    value="Pending"
+                    [rounded]="true"
+                    *ngIf="
+                      report[col.field] == null || report[col.field] == '-'
+                    "
+                  ></p-tag>
+                </div>
+                <div
+                  *ngIf="report[col.field] != null && report[col.field] != '-'"
+                >
+                  {{ report[col.field] }}
+                </div>
+              </div> -->
+              <div *ngIf="col.field === 'rectified_on'">
+                <div style="text-align: center">
+                  <p-tag
+                    severity="warning"
+                    value="Not Rectified"
+                    [rounded]="true"
+                    *ngIf="
+                      report[col.field] == null || report[col.field] == '-'
+                    "
+                  ></p-tag>
+                  <!-- <p-button
+                    label="Pending"
+                    icon="pi pi-spinner pi-spin"
+                    [loading]="true"
+                    class="p-button-rounded p-button-outlined"
+                    *ngIf="report[col.field] == null"
+                  >
+                  </p-button> -->
+                </div>
+                <div
+                  *ngIf="report[col.field] != null && report[col.field] != '-'"
+                >
+                  {{ report[col.field] }}
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  col.field !== 'rectified_on'
+                "
+              >
+                {{ report[col.field] }}
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer" let-columns>
+          <tr>
+            <th
+              pResizableColumn
+              pFrozenColumn
+              [frozen]="true"
+              pSortableColumn="id"
+            >
+              <div class="flex text-right" style="background-color: #f8f9fa">
+                Total
+              </div>
+            </th>
+            <th pResizableColumn *ngFor="let col of columns">
+              <div *ngIf="col.field === 'amount'">
+                {{ tot_amount }}
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td style="text-align: center !important" colspan="10">
+              No data found for the specified filters.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+</main>
+<p-dialog
+  header="Add Custom Finding"
+  [(visible)]="visibled"
+  [modal]="true"
+  [style]="{ width: '20rem' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="p-inputgroup">
+    <input
+      type="text"
+      pInputText
+      placeholder="Finding"
+      [(ngModel)]="newFinding"
+    />
+    <button
+      type="button"
+      pButton
+      label="Submit"
+      (click)="newFindingSubmit()"
+    ></button>
+  </div>
+</p-dialog>

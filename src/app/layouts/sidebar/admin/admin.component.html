@@ -1,0 +1,259 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav" id="mySideBar">
+    <div *ngIf="_router.url === '/' && !contentLoaded">
+      <div class="item ml-3 mr-1 mb-2">
+        <ngx-skeleton-loader
+          animation="progress"
+          [theme]="{ width: '95%', height: '40px' }"
+        ></ngx-skeleton-loader>
+      </div>
+    </div>
+    <div *ngIf="_router.url != '/' || contentLoaded">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">
+          <i class="bi bi-grid"></i> <span>Dashboard</span>
+        </a>
+      </li>
+    </div>
+
+
+    <ng-container *ngIf="admin">
+      <div *ngIf="_router.url === '/' && !contentLoaded">
+        <app-admin-skeleton-one></app-admin-skeleton-one>
+      </div>
+      <div *ngIf="_router.url != '/' || contentLoaded">
+        <div>
+          <li class="nav-heading">Region Management</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#rerion-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-building"></i><span>Region</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="rerion-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/manage-region">
+                  <i class="bi bi-tools"></i><span>Manage Region</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/add-region">
+                  <i class="bi bi-plus-lg"></i><span>Add Region</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#branch-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-bank2"></i><span>Branch</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="branch-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/manage-branches">
+                  <i class="bi bi-tools"></i><span>Manage Branch</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/create-branch">
+                  <i class="bi bi-plus-lg"></i><span>Add Branch</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+        <div>
+          <li class="nav-heading">Role Management</li>
+          <li class="nav-item" *ngIf="false">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#right-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-ui-checks"></i><span>Right</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="right-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/manage-right">
+                  <i class="bi bi-tools"></i><span>Manage Right</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/add-right">
+                  <i class="bi bi-plus-lg"></i><span> Add Right</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#role-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-person-badge-fill"></i><span>Role</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="role-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/add-role">
+                  <i class="bi bi-plus-lg"></i><span>Add Role</span>
+                </a>
+              </li>
+              <!-- <li> <a routerLink="/manage-job-position"> <i class="bi bi-tools"></i><span>Manage Job Position</span> </a></li> -->
+              <li>
+                <a routerLink="/manage-role">
+                  <i class="bi bi-tools"></i><span>Manage Role</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+
+        <div>
+          <li class="nav-heading">Permission Management</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#functionalities-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-people-fill"></i><span>Permissions</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="functionalities-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/role_functionalities">
+                  <i class="bi bi-plus-lg"></i><span> Role Permissions</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/view_role_functionalities">
+                  <i class="bi bi-plus-lg"></i
+                  ><span>Manage Permissions </span></a
+                >
+              </li>
+            </ul>
+          </li>
+        </div>
+
+        <div>
+          <li class="nav-heading">User Management</li>
+          <li class="nav-item">
+            <a
+              class="nav-link collapsed"
+              data-bs-target="#user-nav"
+              data-bs-toggle="collapse"
+              href="#"
+            >
+              <i class="bi bi-people-fill"></i><span>User</span
+              ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+              id="user-nav"
+              class="nav-content collapse"
+              data-bs-parent="#sidebar-nav"
+            >
+              <li>
+                <a routerLink="/manage-users">
+                  <i class="bi bi-tools"></i><span>Manage User</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/add-user">
+                  <i class="bi bi-plus-lg"></i><span>Add User</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/manage-users-status">
+                  <i class="bi bi-circle"></i><span>Manage User Status </span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <div *ngIf="admin">
+      <div *ngIf="_router.url === '/' && !contentLoaded">
+        <app-admin-skeleton-one></app-admin-skeleton-one>
+      </div>
+      <div *ngIf="_router.url != '/' || contentLoaded">
+        <li class="nav-heading">Reports</li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/user-report">
+            <i class="bi bi-toggles"></i> <span>Active & Inactive Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/online-failed-users">
+            <i class="bi bi-person-bounding-box"></i>
+            <span>Users Login Status </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/user_activities">
+            <i class="bi bi-activity btn-light"></i><span>User Activities</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/active-inactive-branches">
+            <i class="bi bi-toggles"></i>
+            <span>Active & Inactive Branches </span>
+          </a>
+        </li>
+        <li class="nav-heading">Database Management</li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/backup">
+            <i class="bi bi-server"></i> <span>Backup Database</span>
+          </a>
+        </li>
+
+        <li class="nav-heading">Scheduling Management</li>
+        <li class="nav-item">
+          <a class="nav-link collapsed" routerLink="/schedule-management">
+            <i class="bi bi-alarm-fill"></i> <span>Schedule</span>
+          </a>
+        </li>
+      </div>
+    </div>
+  </ul>
+</aside>

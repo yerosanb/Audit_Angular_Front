@@ -1,0 +1,438 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Need Help</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body pt-3">
+            <ul class="nav nav-tabs nav-tabs-bordered">
+              <li class="nav-item">
+                <button
+                  class="nav-link active"
+                  data-bs-toggle="tab"
+                  data-bs-target="#add-contact"
+                >
+                  Contact
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#manage-contacts"
+                >
+                  Raise Issues
+                </button>
+              </li>
+              <li class="nav-item">
+                <button
+                  class="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#view-feedback"
+                >
+                  Raised Issues
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content pt-2">
+              <div
+                class="tab-pane fade show active add-contact pt-3"
+                id="add-contact"
+              >
+                <section class="section">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p-card>
+                        <p-table
+                          #contact_table
+                          [value]="allContact"
+                          [rows]="5"
+                          [paginator]="true"
+                          [loading]="contact_loading"
+                          [globalFilterFields]="[
+                            'first_name',
+                            'last_name',
+                            'title',
+                            'phone_number',
+                            'email'
+                          ]"
+                          [(selection)]="selectedContacts"
+                          [rowHover]="true"
+                          dataKey="id"
+                          [rowsPerPageOptions]="[5, 10, 25, 50]"
+                          [tableStyle]="{ 'min-width': '82rem' }"
+                          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                          [showCurrentPageReport]="true"
+                        >
+                          <ng-template pTemplate="caption">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                              <h5 class="p-m-0">Contacts</h5>
+                              <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input
+                                  pInputText
+                                  type="text"
+                                  #searchData
+                                  (input)="
+                                    contact_table.filterGlobal(
+                                      searchData.value,
+                                      'contains'
+                                    )
+                                  "
+                                  placeholder="Search..."
+                                />
+                              </span>
+                            </div>
+                          </ng-template>
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <!-- <th style="width: 3rem"></th> -->
+                              <th style="width: 3rem">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                              </th>
+                              <th style="min-width: 12rem">
+                                <div
+                                  class="flex justify-content-center align-items-center"
+                                >
+                                  Name
+                                  <p-columnFilter
+                                    type="text"
+                                    field="name"
+                                    display="menu"
+                                  ></p-columnFilter>
+                                </div>
+                              </th>
+                              <th style="min-width: 10rem">
+                                <div
+                                  class="flex justify-content-center align-items-center"
+                                >
+                                  Job Position
+                                  <p-columnFilter
+                                    type="text"
+                                    field="title"
+                                    display="menu"
+                                  ></p-columnFilter>
+                                </div>
+                              </th>
+
+                              <th style="min-width: 12rem">
+                                <div
+                                  class="flex justify-content-center align-items-center"
+                                >
+                                  Phone Number
+                                  <p-columnFilter
+                                    type="text"
+                                    field="phone_number"
+                                    display="menu"
+                                  ></p-columnFilter>
+                                </div>
+                              </th>
+
+                              <th style="width: 8rem">
+                                <div
+                                  class="flex justify-content-center align-items-center"
+                                >
+                                  Email
+                                  <p-columnFilter
+                                    type="text"
+                                    field="Email"
+                                    display="menu"
+                                  ></p-columnFilter>
+                                </div>
+                              </th>
+                            </tr>
+                          </ng-template>
+                          <ng-template
+                            pTemplate="body"
+                            let-contact
+                            let-expanded="expanded"
+                          >
+                            <tr>
+                              <td>
+                                <p-tableCheckbox
+                                  [value]="contact"
+                                ></p-tableCheckbox>
+                              </td>
+                              <td>
+                                {{ contact.first_name }} {{ contact.last_name }}
+                              </td>
+                              <td>{{ contact.title }}</td>
+                              <td>{{ contact.email }}</td>
+                              <td>{{ contact.phone_number }}</td>
+                            </tr>
+                          </ng-template>
+
+                          <ng-template pTemplate="summary">
+                            <div class="p-d-flex p-ai-center p-jc-between">
+                              In total there are
+                              {{ allContact ? allContact.length : 0 }} contacts.
+                            </div>
+                          </ng-template>
+                        </p-table>
+                      </p-card>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="tab-pane fade" id="manage-contacts">
+                <section class="section">
+                  <div class="row">
+                    <form ngNativeValidate #userForm="ngForm">
+                      <div class="jumbotron">
+                        <h5 class="display-5">
+                          Audit Finding Reporting and Followup Management System
+                        </h5>
+                        <p class="lead">
+                          Please put any issue, feedback, comment or suggestion
+                          here. System admin will contact you as soon as
+                          possible.
+                        </p>
+                        <hr class="my-4" />
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1"
+                            >Issue</label
+                          >
+                          <ckeditor
+                            #reason="ngModel"
+                            name="action_plan"
+                            [(ngModel)]="feedback.feedback"
+                            [editor]="Editor"
+                            [config]="config"
+                            [required]="true"
+                            [class.is-invalid]="
+                              reason.invalid && reason.touched
+                            "
+                            [minlength]="12"
+                          >
+                          </ckeditor>
+                          <!-- <textarea
+                            class="form-control"
+                            id="floatingFeedBack"
+                            name="reason"
+                            [(ngModel)]="feedback.feedback"
+                            #reason="ngModel"
+                            [class.is-invalid]="
+                              reason.invalid && reason.touched
+                            "
+                            minlength="12"
+                            maxlength="500"
+                            required
+                            rows="3"
+                          ></textarea> -->
+                          <div *ngIf="reason.errors && reason.touched">
+                            <small
+                              class="text-danger"
+                              *ngIf="reason.errors['minlength']"
+                              >Issue must be greater than 12 letters</small
+                            >
+                            <!-- <small
+                              class="text-danger"
+                              *ngIf="reason?.errors?.['maxlength']"
+                              >Feedback must be less than 50 letters</small
+                            > -->
+                            <small
+                              class="text-danger"
+                              *ngIf="reason?.errors?.['required']"
+                              >Issue is Required</small
+                            >
+                          </div>
+                        </div>
+                        <p class="lead">
+                          <button
+                            *ngIf="!feedback_form_loading"
+                            class="btn btn-primary btn-lg"
+                            [disabled]="userForm.form.invalid"
+                            (click)="writeFeedback()"
+                          >
+                            Send
+                          </button>
+                          <button
+                            *ngIf="feedback_form_loading"
+                            type="button"
+                            disabled
+                            class="btn btn-primary"
+                          >
+                            Loading...
+
+                            <span
+                              class="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          </button>
+                        </p>
+                      </div>
+                    </form>
+                  </div>
+                </section>
+              </div>
+
+              <div class="tab-pane fade pt-3" id="view-feedback">
+                <section class="section">
+                  <p-card>
+                    <p-toolbar styleClass="p-mb-4">
+                      <ng-template pTemplate="left">
+                        <button
+                          pButton
+                          pRipple
+                          label="Close"
+                          icon="pi pi-trash"
+                          class="p-button-raised p-button-rounded p-button-danger p-mr-2"
+                          (click)="closeSelectedFeedbacks()"
+                          [disabled]="
+                            !selectedFeedbacks || !selectedFeedbacks.length
+                          "
+                        ></button>
+                      </ng-template>
+                    </p-toolbar>
+
+                    <p-table
+                      #r_feedback_table
+                      [value]="feedbacks"
+                      [rows]="5"
+                      [paginator]="true"
+                      [loading]="feedback_loading"
+                      [globalFilterFields]="[
+                        'user.first_name',
+                        'feedback',
+                        'response'
+                      ]"
+                      [(selection)]="selectedFeedbacks"
+                      [rowHover]="true"
+                      dataKey="id"
+                      [rowsPerPageOptions]="[5, 10, 25, 50]"
+                      [tableStyle]="{ 'min-width': '45rem' }"
+                      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                      [showCurrentPageReport]="true"
+                    >
+                      <ng-template pTemplate="caption">
+                        <div class="p-d-flex p-ai-center p-jc-between">
+                          <h5 class="p-m-0">Manage Raised Issues</h5>
+                          <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                              pInputText
+                              type="text"
+                              #searchData
+                              (input)="
+                                r_feedback_table.filterGlobal(
+                                  searchData.value,
+                                  'contains'
+                                )
+                              "
+                              placeholder="Search..."
+                            />
+                          </span>
+                        </div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                          </th>
+
+                          <th style="width: 20rem">
+                            <div
+                              class="flex justify-content-center align-items-center"
+                            >
+                              Issue
+                              <p-columnFilter
+                                type="text"
+                                field="feedback"
+                                display="menu"
+                              ></p-columnFilter>
+                            </div>
+                          </th>
+
+                          <th style="width: 20rem">
+                            <div
+                              class="flex justify-content-center align-items-center"
+                            >
+                              Admin Response
+                              <p-columnFilter
+                                type="text"
+                                field="response"
+                                display="menu"
+                              ></p-columnFilter>
+                            </div>
+                          </th>
+
+                          <th style="width: 5rem">Action</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template
+                        pTemplate="body"
+                        let-feedback
+                        let-expanded="expanded"
+                      >
+                        <tr>
+                          <td>
+                            <p-tableCheckbox
+                              [value]="feedback"
+                            ></p-tableCheckbox>
+                          </td>
+                          <td>
+                            <span [innerHTML]="feedback.feedback"></span>
+                          </td>
+                          <td>
+                            <span
+                              *ngIf="feedback.response"
+                              [innerHTML]="feedback.response"
+                            ></span>
+
+                            <button
+                              *ngIf="!feedback.response"
+                              pButton
+                              pRipple
+                              type="text"
+                              icon="pi pi-spin pi-spinner"
+                              label="Pending"
+                              class="p-button-rounded p-button-outlined p-button-sm"
+                            ></button>
+                          </td>
+
+                          <td>
+                            <button
+                              pButton
+                              pRipple
+                              pTooltip="Close"
+                              (click)="closeFeedback(feedback)"
+                              icon="pi pi-trash"
+                              class="p-button-rounded p-button-danger p-mr-2"
+                            ></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template pTemplate="summary">
+                        <div class="p-d-flex p-ai-center p-jc-between">
+                          In total there are
+                          {{ feedbacks ? feedbacks.length : 0 }}
+                          raised issues.
+                        </div>
+                      </ng-template>
+                    </p-table>
+                  </p-card>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+

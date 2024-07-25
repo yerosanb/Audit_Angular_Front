@@ -1,0 +1,49 @@
+export class DashboardResponseThree {
+  division_compiled_3_acb: number = 0;
+  division_compiled_3_ccb: number = 0;
+  division_compiled_3_cpb: number = 0;
+  division_compiled_3_cmb: number = 0;
+  division_compiled_3_nib: number = 0;
+  division_compiled_3_sab: number = 0;
+  division_compiled_3_loib: number = 0;
+  division_compiled_3_lab: number = 0;
+  division_compiled_3_ceb: number = 0;
+  division_compiled_3_iab: number = 0;
+  division_compiled_3_odb: number = 0;
+  division_compiled_3_diab: number = 0;
+  division_compiled_3_alb: number = 0;
+  division_compiled_3_abb: number = 0;
+  division_compiled_3_mcb: number = 0;
+
+  division_submitted_3_acb: number = 0;
+  division_submitted_3_ccb: number = 0;
+  division_submitted_3_cpb: number = 0;
+  division_submitted_3_cmb: number = 0;
+  division_submitted_3_nib: number = 0;
+  division_submitted_3_sab: number = 0;
+  division_submitted_3_loib: number = 0;
+  division_submitted_3_lab: number = 0;
+  division_submitted_3_ceb: number = 0;
+  division_submitted_3_iab: number = 0;
+  division_submitted_3_odb: number = 0;
+  division_submitted_3_diab: number = 0;
+  division_submitted_3_alb: number = 0;
+  division_submitted_3_abb: number = 0;
+  division_submitted_3_mcb: number = 0;
+
+  approved_3_acb: number = 0;
+  approved_3_ccb: number = 0;
+  approved_3_cpb: number = 0;
+  approved_3_cmb: number = 0;
+  approved_3_nib: number = 0;
+  approved_3_sab: number = 0;
+  approved_3_loib: number = 0;
+  approved_3_lab: number = 0;
+  approved_3_ceb: number = 0;
+  approved_3_iab: number = 0;
+  approved_3_odb: number = 0;
+  approved_3_diab: number = 0;
+  approved_3_alb: number = 0;
+  approved_3_abb: number = 0;
+  approved_3_mcb: number = 0;
+}

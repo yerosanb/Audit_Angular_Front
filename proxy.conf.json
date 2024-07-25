@@ -1,0 +1,11 @@
+{
+    "http://localhost:8081/": {
+        "target": "http://api.ipify.org/",
+        "secure": false,
+        "changeOrign": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/": ""
+          }
+    }
+}

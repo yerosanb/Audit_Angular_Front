@@ -1,0 +1,215 @@
+<main id="main" class="main">
+  <p-toast></p-toast>
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/"><i class="bi bi-house-door"></i></a>
+        </li>
+        <li class="breadcrumb-item active">Unseen Remarks</li>
+        <li></li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <p-card>
+          <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+              <!--   <button
+                pButton
+                pRipple
+                label="Rectify"
+                pTooltip="Auditee Response"
+                icon="pi pi-check"
+                class="p-button-raised p-button-rounded p-button-success p-mr-2"
+                (click)="rectifySelectedAudit()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button>
+              <button
+                pButton
+                pRipple
+                label="Add"
+                pTooltip="Auditee Response"
+                icon="pi pi-plus-circle"
+                class="p-button-raised p-button-rounded p-button-secondary p-mr-2"
+                (click)="addAuditeeResponseForSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button>
+              <button
+                pButton
+                pRipple
+                label="Back"
+                icon="pi pi-chevron-left"
+                class="p-button-raised p-button-rounded"
+                (click)="backSelectedAudits()"
+                [disabled]="!selectedAudits || !selectedAudits.length"
+              ></button> -->
+            </ng-template>
+
+            <ng-template pTemplate="right">
+              <div class="flex">
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file"
+                  (click)="dt.exportCSV()"
+                  class="mr-2"
+                  pTooltip="CSV"
+                  tooltipPosition="bottom"
+                ></button>
+                <!-- <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-excel"
+                  (click)="exportExcel()"
+                  class="p-button-success mr-2"
+                  pTooltip="XLS"
+                  tooltipPosition="bottom"
+                ></button>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-file-pdf"
+                  (click)="exportPdf()"
+                  class="p-button-warning mr-2"
+                  pTooltip="PDF"
+                  tooltipPosition="bottom"
+                ></button> -->
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  icon="pi pi-filter"
+                  (click)="dt.exportCSV({ selectionOnly: true })"
+                  class="p-button-info ml-auto"
+                  pTooltip="Selection Only"
+                  tooltipPosition="bottom"
+                ></button>
+              </div>
+            </ng-template>
+          </p-toolbar>
+
+          <p-table
+            #dt
+            [value]="audits"
+            [rows]="10"
+            [paginator]="true"
+            [loading]="loading"
+            [globalFilterFields]="[
+              'case_number',
+              'audit_type',
+              'unseen_remark'
+            ]"
+            [(selection)]="selectedAudits"
+            [rowHover]="true"
+            dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+          >
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Unseen Remarks</h5>
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input
+                    pInputText
+                    type="text"
+                    #input
+                    (input)="dt.filterGlobal(input.value, 'contains')"
+                    placeholder="Search..."
+                  />
+                </span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>
+                  <div class="flex justify-content-center align-items-center">
+                    Case Number
+                    <p-columnFilter
+                      type="text"
+                      field="case_number"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+                <th>
+                  <div class="flex justify-content-center align-items-center">
+                    Audit Type
+                    <p-columnFilter
+                      type="text"
+                      field="audit_type"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+
+                <th>
+                  <div class="flex justify-content-center align-items-center">
+                    Unseen Remark
+                    <p-columnFilter
+                      type="numeric"
+                      field="unseen_remark"
+                      display="menu"
+                    ></p-columnFilter>
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-audit let-expanded="expanded">
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="audit"></p-tableCheckbox>
+                </td>
+                <td>{{ audit.case_number }}</td>
+                <td>{{ audit.audit_type }}</td>
+                <td>
+                  <p-button
+                    type="text"
+                    icon="pi pi-envelope"
+                    label="Remarks"
+                    styleClass="p-button-rounded p-button-raised"
+                    [badge]="audit.unseen_remark"
+                  ></p-button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary">
+              <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{ audits ? audits.length : 0 }} unseen
+                remarks report.
+              </div>
+            </ng-template>
+          </p-table>
+        </p-card>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<!-- <p-dialog
+  [(visible)]="auditRemarkDialog"
+  [style]="{ width: '800px' }"
+  header="Remarks"
+  [modal]="true"
+  styleClass="p-fluid"
+  [maximizable]="true"
+>
+  <ng-template pTemplate="content">
+    <app-inspection-audit-remark
+      [audit_ISM]="audit_remark"
+    ></app-inspection-audit-remark>
+  </ng-template>
+</p-dialog> -->

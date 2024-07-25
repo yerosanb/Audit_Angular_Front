@@ -1,0 +1,47 @@
+<div class="p-fluid grid formgrid row justify-content-center p-4">
+  <!-- three -->
+  <div class="field">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <!-- style="max-width: 800px" -->
+      <div class="card-body">
+        <h5 class="card-title">
+          <a style="color: darkblue" *ngIf="this.reviewer"
+            >Pending, Regional Compiled, Regional Submitted and Division Reviewed
+            Audits</a
+          >
+          <a style="color: darkblue" *ngIf="this.compiler"
+            >Regional Submitted and Division Reviewed
+            Audits</a
+          >
+          <a style="color: darkblue" *ngIf="!this.compiler && !this.reviewer"
+            >Regional Compiled, Regional Submitted and Division Reviewed
+            Audits</a
+          >
+          <span> | Current </span>
+        </h5>
+        <!-- <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+        </div> -->
+        <div class="row">
+          <div class="col-lg-6" style="padding: 24px !important">
+            <p-chart
+              type="radar"
+              [data]="radarData"
+              [options]="radarOptions"
+            ></p-chart>
+          </div>
+          <div class="col-lg-6" style="padding: 24px !important">
+            <p-chart
+              type="pie"
+              [data]="multiSeriesData"
+              [options]="multiSeriesOptions"
+            ></p-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

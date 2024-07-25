@@ -1,0 +1,83 @@
+<form ngNativeValidate #auditFormValidation="ngForm" class="p-fluid">
+  <div class="p-field">
+    <label for="selected_account_type"
+      ><strong class="text-danger">*</strong>Audit Type
+    </label>
+    <p-dropdown
+      [options]="audit_type"
+      [(ngModel)]="recommendation.identifier"
+      placeholder="Select Audit Type"
+      optionLabel="name"
+      optionValue="code"
+      [showClear]="true"
+      name="identifier"
+      [required]="true"
+      #auditType="ngModel"
+      [class.is-invalid]="auditType.invalid || auditType.touched"
+    >
+    </p-dropdown>
+    <small
+      class="text-danger"
+      [class.d-none]="auditType.valid || auditType.untouched"
+    >
+      Audit type is required<br
+    /></small>
+  </div>
+
+  <div class="p-field">
+    <label for="content" class="form-label"
+      ><strong class="text-danger">*</strong>Content</label
+    >
+    <p-editor
+      [(ngModel)]="recommendation.content"
+      name="content"
+      [style]="{ height: '320px' }"
+      #content="ngModel"
+      [required]="true"
+      [class.is-invalid]="content.invalid || content.touched"
+    ></p-editor>
+
+    <small
+      class="text-danger"
+      [class.d-none]="content.valid || content.untouched"
+    >
+      Content is required<br
+    /></small>
+  </div>
+
+  <div class="p-formgrid p-grid mt-4">
+    <div class="p-field p-col-2">
+      <button
+        *ngIf="!loading"
+        pButton
+        pRipple
+        label="Save"
+        icon="pi pi-check"
+        class="p-button-raised p-button-rounded"
+        [disabled]="auditFormValidation.form.invalid"
+        (click)="addCommon()"
+      ></button>
+
+      <button *ngIf="loading" type="button" disabled class="btn btn-primary">
+        Loading...
+
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+    <div class="p-field p-col-2">
+      <button
+        class="col-md-3"
+        pButton
+        pRipple
+        type="reset"
+        label="Reset"
+        icon="pi pi-times"
+        class="p-button-raised p-button-danger p-button-rounded"
+      ></button>
+    </div>
+  </div>
+</form>

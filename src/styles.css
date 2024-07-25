@@ -1,0 +1,21 @@
+/* @import "~ng-pick-datetime/assets/style/picker.min.css"; */
+
+/* table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+  text-align: center;
+  padding: 0.95rem 0.95rem;
+}
+.dataTables_scrollBody table thead tr {
+  border-top: 0px;
+}
+table.table-bordered.dataTable th:first-child, table.table-bordered.dataTable th:first-child, table.table-bordered.dataTable td:first-child, table.table-bordered.dataTable td:first-child{
+border-left: 0px;
+}
+body {
+  font-family: var(--font-family);
+} */
+
+body {
+  padding: 2em;
+  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”;
+}
+

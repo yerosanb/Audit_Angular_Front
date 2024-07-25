@@ -1,0 +1,2715 @@
+
+
+
+
+        SQL sql = new SQL();
+		if (single_filter_info.equalsIgnoreCase("branch")) {
+			sql.SELECT("bfa.id, " +
+            "bfa.case_number, " +
+            "b.name as branch_name, " +
+            "dbo._StripHTML( CASE " +
+            "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) " +
+            "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) " +
+            "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " +
+            "    ELSE NULL " +
+            "  END) AS audit_finding, " +
+            "ab.account_affected as account_affected, " +
+            "ab.debit as debit_amount, " +
+            "ab.credit as credit_amount, " +
+            "ab.difference as difference_amount, " +
+            "dbo._StripHTML( CASE " +
+            "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) " +
+            "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) " +
+            "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " +
+            "    ELSE NULL " +
+            "  END) AS audit_impact, " +
+            "dbo._StripHTML( CASE " +
+            "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) " +
+            "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) " +
+            "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " +
+            "    ELSE NULL " +
+            "  END) AS auditor_recommendation, " +
+            "dbo._StripHTML(bfa.action_plan) as auditee_response, " +
+            "bfa.finding_status as audit_finding_status, " +
+            "cast(bfa.rectification_date as date) as rectified_on")
+        .FROM("branch_financial_audit AS bfa")
+        .LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+        .LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+        .LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+        .LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+        .JOIN("abnormal_balance_branch AS ab ON bfa.id = ab.branch_audit_id")  // Change the join to abnormal_balance_branch
+        .JOIN("user_role AS ur ON ur.user_id = #{user_id}")
+        .JOIN("role AS r ON ur.role_id = r.id")
+        .JOIN("branch as b on bfa.branch_id = b.id and bfa.id = ab.branch_audit_id")  // Change the join to abnormal_balance_branch
+        .WHERE("1 = 1");
+			if (branch_id != null)
+				sql.AND().WHERE("b.id = #{branch_id}");
+		} else if (single_filter_info.equalsIgnoreCase("region")) {
+			sql.SELECT("	bfa.id, " + "	re.name as region_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.finding_status as audit_finding_status, "
+					+ "	cast(bfa.rectification_date as date) as rectified_on").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id")
+					.JOIN("region as re on bfa.branch_id = b.id and b.region_id = re.id").WHERE("1 = 1");
+			if (region_id != null)
+				sql.AND().WHERE("b.region_id = #{region_id}");
+		} else if (single_filter_info.equalsIgnoreCase("finding_status")) {
+			sql.SELECT("	bfa.id, " + " " + "	b.name as branch_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.finding_status as audit_finding_status, "
+					+ "	cast(bfa.rectification_date as date) as rectified_on").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id and bfa.id = acb.branch_audit_id").WHERE("1 = 1");
+			if (finding_status != null)
+				sql.AND().WHERE("bfa.finding_status = #{finding_status}");
+		} else if (single_filter_info.equalsIgnoreCase("rectification_date_range")) {
+			sql.SELECT("	bfa.id, " + " " + "	b.name as branch_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.finding_status as audit_finding_status, "
+					+ "	cast(bfa.rectification_date as date) as rectified_on").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id and bfa.id = acb.branch_audit_id").WHERE("1 = 1");
+			if (!rectification_date_range[0].equalsIgnoreCase("none42e")
+					&& !rectification_date_range[1].equalsIgnoreCase("none42e")) {
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) >= '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[0]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) <= '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[1]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			} else if (!rectification_date_range[0].equalsIgnoreCase("none42e")
+					&& rectification_date_range[1].equalsIgnoreCase("none42e"))
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) = '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[0]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+		} else if (single_filter_info.equalsIgnoreCase("audit_finding")) {
+			sql.SELECT("bfa.id, " + "	b.name as branch_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.finding_status as audit_finding_status, "
+					+ "	cast(bfa.rectification_date as date) as rectified_on").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id and bfa.id = acb.branch_audit_id").WHERE("1 = 1");
+			if (audit_finding != null)
+				sql.AND().WHERE("dbo._StripHTML(bfa.finding) LIKE '%' + #{audit_finding} + '%'");
+		} else if (single_filter_info.equalsIgnoreCase("date_range")) {
+			sql.SELECT("bfa.id, " + "	cast(bfa.finding_date as date) as audit_report_date, "
+					+ "	b.name as branch_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.finding_status as audit_finding_status, "
+					+ "	cast(bfa.rectification_date as date) as rectified_on").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id and bfa.id = acb.branch_audit_id").WHERE("1 = 1");
+			if (!date_range[0].equalsIgnoreCase("none42e") && !date_range[1].equalsIgnoreCase("none42e")) {
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) >= '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[0]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) <= '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[1]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			} else if (!date_range[0].equalsIgnoreCase("none42e") && date_range[1].equalsIgnoreCase("none42e"))
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) = '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[0]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+		} else {
+			sql.SELECT("bfa.id, " + "	b.name as branch_name, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.finding, cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.finding, bfa.finding) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.finding " + "    ELSE NULL "
+					+ "  END) AS audit_finding, " + "	acb.issued_card as card_issued_branch, "
+					+ "	acb.distributed_card as card_distributed_to_customer, "
+					+ "	acb.returned_card as return_to_card_issuance_unit, "
+					+ "	acb.remaining_card as remaining_card_at_branch, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.impact, cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.impact, bfa.impact) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.impact " + "    ELSE NULL "
+					+ "  END) AS audit_impact, " + "	dbo._StripHTML( CASE "
+					+ "    WHEN r.name IN ('ROLE_APPROVER_BFA',  'ROLE_COMPILER_BFA') THEN COALESCE(cra.recommendation, cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_REVIEWER_BFA', 'ROLE_REGIONALD_BFA') THEN COALESCE(cba.recommendation, bfa.recommendation) "
+					+ "    WHEN r.name IN ('ROLE_AUDITOR_BFA', 'ROLE_BRANCHM_BFA') THEN bfa.recommendation " + "    ELSE NULL "
+					+ "  END) AS auditor_recommendation, " + "	dbo._StripHTML(bfa.action_plan) as auditee_response, "
+					+ "	bfa.case_number, " + "	bfa.finding_status as audit_finding_status, "
+					+ "	cast (bfa.rectification_date as date) as rectified_on, "
+					+ "	cast (bfa.finding_date as date) as audit_report_date").FROM("branch_financial_audit AS bfa")
+					.LEFT_OUTER_JOIN("compiled_audits AS ca ON bfa.id = ca.audit_id")
+					.LEFT_OUTER_JOIN("compiled_branch_audit AS cba ON bfa.id = ca.audit_id AND ca.compiled_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_audits_region AS car ON car.audit_id = cba.id")
+					.LEFT_OUTER_JOIN("compiled_regional_audit AS cra ON cra.id = car.compiled_id")
+					.JOIN("ATM_card_branch AS acb ON bfa.id = acb.branch_audit_id")
+					.JOIN("user_role AS ur ON ur.user_id = #{user_id}").JOIN("role AS r ON ur.role_id = r.id")
+					.JOIN("branch as b on bfa.branch_id = b.id and bfa.id = acb.branch_audit_id").WHERE("1 = 1");
+			if (region_id != null)
+				sql.AND().WHERE("b.region_id = #{region_id}");
+			if (branch_id != null)
+				sql.AND().WHERE("b.id = #{branch_id}");
+			if (finding_status != null)
+				sql.AND().WHERE("bfa.finding_status = #{finding_status}");
+			if (!rectification_date_range[0].equalsIgnoreCase("none42e")
+					&& !rectification_date_range[1].equalsIgnoreCase("none42e")) {
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) >= '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[0]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) <= '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[1]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			} else if (!rectification_date_range[0].equalsIgnoreCase("none42e")
+					&& rectification_date_range[1].equalsIgnoreCase("none42e"))
+				sql.AND()
+						.WHERE("cast(bfa.rectification_date as date) = '"
+								+ LocalDateTime.ofInstant(Instant.parse(rectification_date_range[0]), ZoneId.of("UTC"))
+										.plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			if (audit_finding != null)
+				sql.AND().WHERE("dbo._StripHTML(bfa.finding) LIKE '%' + #{audit_finding} + '%'");
+			if (!date_range[0].equalsIgnoreCase("none42e") && !date_range[1].equalsIgnoreCase("none42e")) {
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) >= '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[0]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) <= '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[1]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			} else if (!date_range[0].equalsIgnoreCase("none42e") && date_range[1].equalsIgnoreCase("none42e"))
+				sql.AND()
+						.WHERE("cast(bfa.finding_date as date) = '"
+								+ LocalDateTime.ofInstant(Instant.parse(date_range[0]), ZoneId.of("UTC")).plusDays(1)
+										.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+								+ "'");
+			if (rectification_status != null)
+				sql.AND().WHERE(
+						"bfa.rectification_status = '" + (rectification_status.equalsIgnoreCase("unrectified_3") ? 2
+								: rectification_status.equalsIgnoreCase("partially") ? 3 : 1) + "'");
+			if (card_issued_branch != null)
+				sql.AND().WHERE("acb.issued_card = #{card_issued_branch}");
+			if (card_distributed_to_customer != null)
+				sql.AND().WHERE("acb.distributed_card = #{card_distributed_to_customer}");
+		}
+		if (Arrays.asList(user_roles).contains("ROLE_AUDITOR_BFA"))
+			sql.AND().WHERE("bfa.auditor_id = #{user_id}");
+
+		if (Arrays.asList(user_roles).contains("ROLE_BRANCHM_BFA")) {
+			sql.AND().WHERE("bfa.auditor_status = 1");
+			sql.AND().WHERE("bfa.branch_id = (select top 1 branch_id from [user] where id =  #{user_id})");
+		}
+		if (Arrays.asList(user_roles).contains("ROLE_REGIONALD_BFA"))
+			sql.AND().WHERE("bfa.regional_compiler_submitted = 1");
+
+		if (Arrays.asList(user_roles).contains("ROLE_REVIEWER_BFA")
+				|| Arrays.asList(user_roles).contains("ROLE_REGIONALD_BFA")) {
+			sql.AND().WHERE("b.region_id = #{user_region_id}");
+			sql.AND().WHERE("bfa.auditor_status = 1");
+		}
+		if (Arrays.asList(user_roles).contains("ROLE_COMPILER_BFA"))
+			sql.AND().WHERE("bfa.regional_compiler_submitted = 1");
+		if (Arrays.asList(user_roles).contains("ROLE_APPROVER_BFA"))
+			sql.AND().WHERE("bfa.division_compiler_submitted = 1");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0001:
+
+
+
+  SELECT
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)
+  ) AS passed_1_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM cash_count_inspection)
+  ) AS passed_1_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)
+  ) AS passed_1_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM daily_cash_register_book)
+  ) AS passed_1_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM cash_bound_book_handling)
+  ) AS passed_1_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM account_balance_inspection)
+  ) AS passed_1_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)
+  ) AS passed_1_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM staff_loan_inspections)
+  ) AS passed_1_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)
+  ) AS passed_1_airi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM supplies_stock_account)
+  ) AS passed_1_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)
+  ) AS passed_1_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)
+  ) AS passed_1_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)
+  ) AS passed_1_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_id FROM deposit_account_inspection)
+  ) AS passed_1_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)
+  ) AS passed_1_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM actual_performance_inspection)
+  ) AS passed_1_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND review_status = 0 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}) )
+   AND id IN (SELECT inspection_audit_id FROM Voucher_inspection)
+  ) AS passed_1_vi;
+
+
+  ============================================================
+
+
+0002:
+
+
+
+select
+(SELECT COUNT(*) FROM inspection_directorate_audit  WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS approved_1_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS approved_1_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS approved_1_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM daily_cash_register_book)) AS approved_1_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS approved_1_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM account_balance_inspection)) AS approved_1_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS approved_1_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS approved_1_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS approved_1_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM supplies_stock_account)) AS approved_1_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS approved_1_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS approved_1_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS approved_1_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_id FROM deposit_account_inspection)) AS approved_1_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS approved_1_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS approved_1_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE review_status = 1 AND approve_status = 0 AND
+     ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS approved_1_vi;
+
+
+
+
+====================================================================
+
+003:
+
+
+ select
+ (SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+ AND MONTH(passed_date) = 1) AS passed_1_january,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 2) AS passed_1_february,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 3) AS passed_1_march,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 4) AS passed_1_april,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 5) AS passed_1_may,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 6) AS passed_1_june,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 7) AS passed_1_july,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 8) AS passed_1_august,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 9) AS passed_1_september,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 10) AS passed_1_october,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 11) AS passed_1_november,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+   AND MONTH(passed_date) = 12) AS passed_1_december;
+
+==================================================================================================================
+
+select
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS approved_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS approved_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS approved_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS approved_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS approved_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS approved_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS approved_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS approved_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS approved_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS approved_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS approved_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS approved_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS approved_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS approved_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS approved_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS approved_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS approved_vi;
+
+
+
+=============================================================================================================================================
+
+select
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS responded_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS responded_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS responded_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS responded_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS responded_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS responded_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS responded_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS responded_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS responded_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS responded_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS responded_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS responded_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS responded_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS responded_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS responded_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS responded_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0
+     AND ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS responded_vi;
+
+
+
+
+
+==============================================================================================================
+
+
+ select
+ (SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+ AND MONTH(reviewed_date) = 1) AS reviewed_1_january,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 2) AS reviewed_1_february,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 3) AS reviewed_1_march,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 4) AS reviewed_1_april,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 5) AS reviewed_1_may,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 6) AS reviewed_1_june,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 7) AS reviewed_1_july,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 8) AS reviewed_1_august,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 9) AS reviewed_1_september,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 10) AS reviewed_1_october,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 11) AS reviewed_1_november,
+(SELECT COUNT(*) FROM inspection_directorate_audit
+ WHERE ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 10010) = 'INS') OR (review_status = 1 AND reviewer_id = 10010))
+   AND MONTH(reviewed_date) = 12) AS reviewed_1_december;
+
+
+   =============================================================================================================================================
+
+select
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS rectified_1_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS rectified_1_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS rectified_1_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS rectified_1_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS rectified_1_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS rectified_1_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS rectified_1_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS rectified_1_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS rectified_1_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS rectified_1_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS rectified_1_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS rectified_1_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS rectified_1_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS rectified_1_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS rectified_1_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS rectified_1_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 3 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS rectified_1_vi;
+
+
+
+
+============================================================================================================================================================
+
+select
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS responded_3_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS responded_3_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS responded_3_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS responded_3_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS responded_3_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS responded_3_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS responded_3_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS responded_3_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS responded_3_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS responded_3_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS responded_3_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS responded_3_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS responded_3_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS responded_3_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS responded_3_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS responded_3_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.complete_status = 1 AND ia.rectification_status = 0 AND
+     ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS responded_3_vi;
+
+
+========================================================================================================================================================
+
+select
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS partially_rectified_1_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS partially_rectified_1_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS partially_rectified_1_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS partially_rectified_1_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS partially_rectified_1_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS partially_rectified_1_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS partially_rectified_1_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS partially_rectified_1_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS partially_rectified_1_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS partially_rectified_1_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS partially_rectified_1_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS partially_rectified_1_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS partially_rectified_1_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS partially_rectified_1_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS partially_rectified_1_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS partially_rectified_1_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida INNER JOIN
+   inspection_auditee AS ia ON ida.id = ia.inspection_id WHERE ia.rectification_status = 3 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id})) AND
+   ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS partially_rectified_1_vi;
+
+
+
+
+
+
+
+=========================================================================================================================================================================
+select
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS unrectified_3_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS unrectified_3_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS unrectified_3_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS unrectified_3_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS unrectified_3_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS unrectified_3_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS unrectified_3_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS unrectified_3_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS unrectified_3_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS unrectified_3_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS unrectified_3_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS unrectified_3_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS unrectified_3_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS unrectified_3_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS unrectified_3_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS unrectified_3_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE ia.rectification_status = 2 AND
+   ((ida.review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (ida.review_status = 1 AND ida.reviewer_id = #{user_id}))
+   AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS unrectified_3_vi;
+
+
+
+
+
+
+===================================================================================================================
+
+
+
+
+
+
+0001:
+
+
+
+  SELECT
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)
+  ) AS passed_1_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM cash_count_inspection)
+  ) AS passed_1_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)
+  ) AS passed_1_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM daily_cash_register_book)
+  ) AS passed_1_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM cash_bound_book_handling)
+  ) AS passed_1_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM account_balance_inspection)
+  ) AS passed_1_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)
+  ) AS passed_1_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM staff_loan_inspections)
+  ) AS passed_1_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)
+  ) AS passed_1_airi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM supplies_stock_account)
+  ) AS passed_1_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)
+  ) AS passed_1_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)
+  ) AS passed_1_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)
+  ) AS passed_1_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_id FROM deposit_account_inspection)
+  ) AS passed_1_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)
+  ) AS passed_1_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM actual_performance_inspection)
+  ) AS passed_1_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit
+   WHERE auditor_status = 1 AND
+   ((review_status = 0 AND (SELECT category FROM [user] WHERE id = 213654) = 'INS') OR (review_status = 1 AND reviewer_id = 213654) )
+   AND id IN (SELECT inspection_audit_id FROM Voucher_inspection)
+  ) AS passed_1_vi;
+
+
+
+
+
+==========================================================================================================================
+
+
+select
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_count_inspection)) AS approved_cci,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cash_holding_limit_inspection)) AS approved_chli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM inspection_Cash_performance)) AS approved_icp,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM daily_cash_register_book)) AS approved_dcrb,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM cash_bound_book_handling)) AS approved_cbbh,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM account_balance_inspection)) AS approved_abi,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM loan_and_advance_inspections)) AS approved_lai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM staff_loan_inspections)) AS approved_sli,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM accrued_interest_reciviable_inspection)) AS approved_ari,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM supplies_stock_account)) AS approved_ssa,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_printed_not_delivered_inspection)) AS approved_cpdni,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM cheque_delivered_not_sign)) AS approved_cdns,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM controllable_expense_inspection)) AS approved_cei,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_id FROM deposit_account_inspection)) AS approved_dai,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM insufficient_cheque_inspection)) AS approved_ici,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM actual_performance_inspection)) AS approved_api,
+
+  (SELECT COUNT(*) FROM inspection_directorate_audit ida
+   INNER JOIN inspection_auditee AS ia ON ida.id = ia.inspection_id
+   WHERE approve_status = 1 AND ia.complete_status = 0
+     AND ((review_status = 0 AND (SELECT category FROM [user] WHERE id = #{user_id}) = 'INS') OR (review_status = 1 AND reviewer_id = #{user_id}))
+     AND ida.id IN (SELECT inspection_audit_id FROM Voucher_inspection)) AS approved_vi;
+Approved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+region_name,
+audit_finding,
+account_type,
+customer_name,
+account_number,
+account_opened_date,
+account_opened_amount,
+opened_by,
+approved_by,
+audit_impact,
+auditor_recommendation,
+auditee_response,
+audit_finding_status,
+rectified_on,
+case_number,
+audit_period,
+branch_name,
+audit_report_date,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      region_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      asset_amount,
+      liability_amount,
+      difference,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      region_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+        branch_name,
+        audit_finding,
+        variation,
+        period,
+        budget_per_plan,
+        actual_balance,
+        audit_impact,
+        auditor_recommendation,
+        auditee_response,
+        audit_finding_status,
+        rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      variation,
+      period,
+      budget_per_plan,
+      actual_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      region_name,
+      audit_finding,
+      account_number,
+      deactivated_date,
+      amount,
+      entry_passed_by,
+      entry_approved_by,
+      account_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      region_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      difference,
+      tracer_date_range,
+      balance_per_tracer,
+      balance_per_trial_balance,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      region_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      average_cash_holding,
+      branch_cash_set_limit,
+      mid_rate_fcy,
+      difference,
+      cash_type,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      audit_period,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      case_number,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      audit_report_date,
+      case_number,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      branch_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+      region_name,
+      audit_finding,
+      amount_shortage,
+      amount_excess,
+      action_taken,
+      audit_impact,
+      auditor_recommendation,
+      auditee_response,
+      audit_finding_status,
+      rectified_on,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+<div class="p-fluid grid formgrid row justify-content-center p-4">
+  <!-- three -->
+  <div class="field">
+    <div
+      class="card info-card revenue-card m-0"
+      style="cursor: pointer; height: 100% !important"
+    >
+      <div class="card-body">
+        <h5 class="card-title">
+          <a style="color: darkblue" *ngIf="auditor"
+            >Drafted, Passed and Regional Reviewed Audits</a
+          >
+          <a style="color: darkblue" *ngIf="branch_m"
+            >Passed and Regional Reviewed Audits</a
+          >
+          <span> | Current </span>
+        </h5>
+        <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+        </div>
+        <h5 class="card-title">
+          <a style="color: darkblue"
+            >Monthly: </a
+          >
+          <span *ngIf="auditor"> | Drafted, Passed and Regional Reviewed Audits </span>
+          <span *ngIf="branch_m"> | Passed and Regional Reviewed Audits </span>
+        </h5>
+        <div style="padding: 24px !important; margin: 32px !important">
+          <p-chart type="line" [data]="data1" [options]="options1"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,474 @@
+<form ngNativeValidate #auditForm="ngForm" class="p-fluid">
+  <div class="p-field">
+    <label class="p-mb-3"><strong class="text-danger">*</strong> Banking</label>
+    <div class="p-formgrid p-grid">
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="conventional"
+          name="banking"
+          value="conventional"
+          (onClick)="changeBanking($event.value)"
+          [(ngModel)]="auditData.banking"
+        ></p-radioButton>
+        <label for="conventional">Conventional</label>
+      </div>
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="ifb"
+          name="banking"
+          value="ifb"
+          [(ngModel)]="auditData.banking"
+          (onClick)="changeBanking($event.value)"
+        ></p-radioButton>
+        <label for="ifb">IFB</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label for="amount" class="p-mb-3 text-primary"
+      >Do you need common findings or recommendations?</label
+    >
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="is_table"
+        name="is_table"
+        (click)="checkTable()"
+      ></p-inputSwitch>
+    </div>
+  </div>
+  <div class="p-field">
+    <label for="finding"><strong class="text-danger">*</strong>Finding</label>
+    <p-dropdown
+      [options]="operationalDescripancyCategoryOption"
+      [(ngModel)]="sampleName"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Select a Descripancy Type"
+      (onChange)="onOperationalCategoryDropdown($event.value)"
+      name="descripancy_category"
+      #descripancyType="ngModel"
+      [required]="true"
+      [class.is-invalid]="descripancyType.invalid || descripancyType.touched"
+    >
+      <small
+        class="text-danger"
+        [class.d-none]="descripancyType.valid || descripancyType.untouched"
+        >Finding is required<br
+      /></small>
+    </p-dropdown>
+  </div>
+
+  <div class="p-field">
+    <label for="finding_detail"> Finding Detail </label>
+    <ckeditor
+      #finding_detail="ngModel"
+      [(ngModel)]="auditData.finding_detail"
+      name="finding_detail"
+      [editor]="impactEditor"
+      [config]="config"
+    ></ckeditor>
+  </div>
+  <div class="p-field">
+    <label for="impact"><strong class="text-danger">*</strong>Impact</label>
+    <ckeditor
+      #impact="ngModel"
+      [(ngModel)]="auditData.impact"
+      name="impact"
+      [class.is-invalid]="impact.invalid && impact.touched"
+      [editor]="impactEditor"
+      [config]="config"
+      (ready)="changeImpact($event, auditData)"
+      [required]="true"
+    ></ckeditor>
+    <small
+      class="text-danger"
+      [class.d-none]="impact.untouched || impact.dirty || impact.valid"
+      >Impact is required<br
+    /></small>
+    <small
+      class="text-danger"
+      [class.d-none]="impact.untouched || impact.dirty || impact.valid"
+      >Impact is required<br
+    /></small>
+  </div>
+
+  <div class="p-field">
+    <label for="recommendation"
+      ><strong class="text-danger">*</strong>Recommendation</label
+    >
+
+    <p-dropdown
+      *ngIf="!is_new_recommendation"
+      [options]="commonRecommendations"
+      [(ngModel)]="auditData.recommendation"
+      optionLabel="content"
+      optionValue="content"
+      [filter]="true"
+      [editable]="true"
+      styleClass="w-100"
+      name="recommendation"
+      filterBy="content"
+      [showClear]="true"
+      placeholder="Select a recommendation"
+      (onChange)="onChangeRecommendationDropdown($event.value)"
+      [required]="true"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="auditData.recommendation">
+          <div [innerHTML]="auditData.recommendation"></div>
+        </div>
+      </ng-template>
+      <ng-template let-commonRecommendation pTemplate="item">
+        <ng-container
+          *ngIf="
+            commonRecommendation.content.includes('New Recommendation');
+            else writtenRecommendation
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Recommendation?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-8"
+          ></button>
+        </ng-container>
+        <ng-template #writtenRecommendation>
+          <div [innerHTML]="commonRecommendation.content"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <div *ngIf="is_new_recommendation">
+      <ckeditor
+        #recommendation="ngModel"
+        [(ngModel)]="auditData.recommendation"
+        [class.is-invalid]="recommendation.invalid && recommendation.touched"
+        name="recommendation"
+        required="true"
+        [editor]="recommendationEditor"
+        [config]="config"
+        (ready)="changeRecommendation($event, auditData)"
+      ></ckeditor>
+      <small
+        class="text-danger"
+        [class.d-none]="recommendation.dirty || recommendation.untouched"
+        >Recommendation is required<br
+      /></small>
+    </div>
+  </div>
+
+  <!-- <div class="p-field">
+    <label for="recommendation"><strong class="text-danger">*</strong>Descripancy Type</label>
+    <p-dropdown
+      [options]="operationalDescripancyCategoryOption"
+      [(ngModel)]="sampleName"
+      optionLabel="name"
+      optionValue="id"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Select a Descripancy Type"
+      (onChange)="onOperationalCategoryDropdown($event.value)"
+      name="descripancy_category"
+      #descripancyType="ngModel"
+      [required]="true"
+      [class.is-invalid]="descripancyType.invalid || descripancyType.touched"
+    >
+      <small
+        class="text-danger"
+        [class.d-none]="descripancyType.valid || descripancyType.untouched"
+        >Descripancy type is required<br
+      /></small>
+    </p-dropdown>
+  </div> -->
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="acount_holder_name" class="block"
+        ><strong class="text-danger">*</strong>Account Name</label
+      >
+      <input
+        id="acount_holder_name"
+        type="text"
+        aria-describedby="acount_holder_name-help"
+        [(ngModel)]="auditData.operationalDescripancyBranch!.acount_holder_name"
+        name="acount_holder_name"
+        pInputText
+        #acount_holder_name="ngModel"
+        pattern="[a-zA-Z\s\u0080-\u024F]+"
+        [class.is-invalid]="
+          acount_holder_name.invalid && acount_holder_name.touched
+        "
+        [required]="true"
+      />
+      <div
+        *ngIf="
+          acount_holder_name.errors &&
+          acount_holder_name.invalid &&
+          acount_holder_name.touched
+        "
+      >
+        <small
+          class="text-danger"
+          [class.d-none]="
+            acount_holder_name.valid || acount_holder_name.untouched
+          "
+        >
+          Account Name is required<br
+        /></small>
+        <small class="text-danger" *ngIf="acount_holder_name.errors['pattern']">
+          Invalid Account Name</small
+        >
+      </div>
+    </div>
+
+    <div class="p-field p-col">
+      <label for="account_number" class="block"
+        ><strong class="text-danger">*</strong>Account Number</label
+      >
+      <input
+        id="account_number"
+        type="text"
+        aria-describedby="account_number-help"
+        [(ngModel)]="auditData.operationalDescripancyBranch!.account_number"
+        name="account_number"
+        pInputText
+        #accountNumber="ngModel"
+        pattern="[A-Za-z0-9]{14,}"
+        [class.is-invalid]="accountNumber.invalid && accountNumber.touched"
+        [required]="true"
+      />
+      <div
+        *ngIf="
+          accountNumber.errors && accountNumber.invalid && accountNumber.touched
+        "
+      >
+        <small
+          class="text-danger"
+          [class.d-none]="accountNumber.valid || accountNumber.untouched"
+        >
+          Account number is required<br
+        /></small>
+        <small class="text-danger" *ngIf="accountNumber.errors['pattern']">
+          Invalid Account number</small
+        >
+      </div>
+    </div>
+
+    <!-- <div class="p-field p-col">
+      <label for="debit"
+        ><strong class="text-danger">*</strong>Account Number</label
+      >
+      <input
+        type="text"
+        pInputText
+        id="debit"
+        [(ngModel)]="auditData.operationalDescripancyBranch!.account_number"
+        name="account_number"
+        #accountNumber="ngModel"
+        [required]="true"
+        [class.is-invalid]="accountNumber.invalid || accountNumber.touched"
+      />
+
+      <small
+        class="text-danger"
+        [class.d-none]="accountNumber.valid || accountNumber.untouched"
+        >Account number is required<br
+      /></small>
+    </div> -->
+  </div>
+  <div class="p-field">
+    <label class="p-mb-3"
+      ><strong class="text-danger">*</strong>Currency Type</label
+    >
+    <div class="p-formgrid p-grid">
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="LCY"
+          name="cash_type"
+          value="LCY"
+          (onClick)="changeCashType($event.value, auditData)"
+          [(ngModel)]="auditData.operationalDescripancyBranch!.cash_type"
+        ></p-radioButton>
+        <label for="LCY">LCY</label>
+      </div>
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="FCY"
+          name="cash_type"
+          value="FCY"
+          [(ngModel)]="auditData.operationalDescripancyBranch!.cash_type"
+          (onClick)="changeCashType($event.value, auditData)"
+        ></p-radioButton>
+        <label for="FCY">FCY</label>
+      </div>
+      <div *ngIf="is_fcy" class="p-field p-col-6">
+        <label for="currency_code"
+          ><strong class="text-danger">*</strong>Currency</label
+        >
+        <p-dropdown
+          [options]="currency"
+          [(ngModel)]="auditData.operationalDescripancyBranch!.fcy"
+          optionLabel="currency_code"
+          optionValue="currency_code"
+          [filter]="true"
+          [editable]="true"
+          styleClass="w-100"
+          name="currency_code"
+          filterBy="currency_code"
+          [showClear]="true"
+          placeholder="Select a Currency"
+          [required]="true"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="auditData.operationalDescripancyBranch?.fcy">
+              <div>{{ auditData.operationalDescripancyBranch?.fcy }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-curr pTemplate="item">
+            {{ curr.currency_code }}
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="amount"><strong class="text-danger">*</strong>Amount</label>
+      <p-inputNumber
+        [(ngModel)]="auditData.operationalDescripancyBranch!.amount"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="0.25"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-info"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        name="amount"
+        #amount="ngModel"
+        [required]="true"
+        [class.is-invalid]="amount.invalid || amount.touched"
+      >
+        <small
+          class="text-danger"
+          [class.d-none]="amount.valid || amount.untouched"
+          >Amount is required<br
+        /></small>
+      </p-inputNumber>
+    </div>
+
+    <div class="p-field p-col">
+      <label for="transaction_date"
+        ><strong class="text-danger">*</strong>Reporting Date</label
+      >
+      <p-calendar
+        [showIcon]="true"
+        [(ngModel)]="transactionDate"
+        id="transaction_date"
+        name="transaction_date"
+        [maxDate]="today"
+        [disabled]="true"
+        dataType="string"
+        dateFormat="mm/dd/yy"
+        #transaction_date="ngModel"
+        [required]="true"
+        [class.is-invalid]="
+          transaction_date.invalid && transaction_date.touched
+        "
+      >
+        <small
+          class="text-danger"
+          [class.d-none]="transaction_date.valid || transaction_date.untouched"
+        >
+          Reporting Date is required<br />
+        </small>
+      </p-calendar>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="inspection_date"
+        ><strong class="text-danger">*</strong>Date of Descripancy</label
+      >
+      <p-calendar
+        [showIcon]="true"
+        [(ngModel)]="findingDate"
+        id="finding_date"
+        name="finding_date"
+        [maxDate]="today"
+        dataType="string"
+        dateFormat="mm/dd/yy"
+        #finding_date="ngModel"
+        [required]="true"
+        [class.is-invalid]="finding_date.invalid && finding_date.touched"
+      >
+        <small
+          class="text-danger"
+          [class.d-none]="finding_date.valid || finding_date.untouched"
+        >
+          Descripancy date is required<br />
+        </small>
+      </p-calendar>
+    </div>
+  </div>
+
+  <ul class="list-group col-md-12 mt-2">
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="edit_auditee"
+        (click)="changeEditAuditee()"
+        name="edit_auditee"
+      ></p-inputSwitch>
+    </div>
+    <li class="list-group-item ml-1" *ngIf="edit_auditee">
+      <app-file-upload (dataChange)="onDataChange($event)"></app-file-upload>
+    </li>
+  </ul>
+
+  <div class="p-formgrid p-grid mt-4">
+    <div class="p-field p-col-2">
+      <button
+        *ngIf="!loading"
+        pButton
+        pRipple
+        label="Save"
+        [disabled]="
+          auditForm.form.invalid ||
+          !recommendation_valid ||
+          !impact_valid ||
+          !banking
+        "
+        icon="pi pi-check"
+        class="p-button-raised p-button-rounded"
+        (click)="saveAudit()"
+      ></button>
+      <button *ngIf="loading" type="button" disabled class="btn btn-primary">
+        Loading...
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+    <div class="p-field p-col-2">
+      <button
+        class="col-md-3"
+        pButton
+        pRipple
+        type="reset"
+        label="Reset"
+        icon="pi pi-times"
+        class="p-button-raised p-button-danger p-button-rounded"
+      ></button>
+    </div>
+  </div>
+</form>

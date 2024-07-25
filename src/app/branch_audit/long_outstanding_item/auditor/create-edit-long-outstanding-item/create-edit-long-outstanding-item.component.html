@@ -1,0 +1,689 @@
+<form ngNativeValidate #auditForm="ngForm" class="p-fluid">
+  <div class="p-field">
+    <label class="p-mb-3"><strong class="text-danger">*</strong> Banking</label>
+    <div class="p-formgrid p-grid">
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="conventional"
+          name="banking"
+          value="conventional"
+          (onClick)="changeBanking($event.value)"
+          [(ngModel)]="auditData.banking"
+        ></p-radioButton>
+        <label for="conventional">Conventional</label>
+      </div>
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="ifb"
+          name="banking"
+          value="ifb"
+          [(ngModel)]="auditData.banking"
+          (onClick)="changeBanking($event.value)"
+        ></p-radioButton>
+        <label for="ifb">IFB</label>
+      </div>
+    </div>
+  </div>
+  <div class="p-field">
+    <label for="outstanding_item"
+      ><strong class="p-error block">*</strong>Outstanding Items</label
+    >
+    <p-dropdown
+      [options]="items"
+      [(ngModel)]="auditData.long_outstanding!.outstanding_item"
+      name="outstanding_item"
+      optionLabel="item"
+      optionValue="value"
+      [showClear]="true"
+      [filter]="true"
+      [editable]="true"
+      styleClass="w-100"
+      filterBy="outstanding_item"
+      [required]="true"
+      placeholder="Select an Outstanding Item"
+    ></p-dropdown>
+  </div>
+
+  <div class="p-field">
+    <label for="amount" class="p-mb-3 text-primary">Do you need common findings or recommendations?</label>
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="is_table"
+        name="is_table"
+        (click)="checkTable()"
+      ></p-inputSwitch>
+    </div>
+  </div>
+  <div class="p-field">
+    <label for="finding"><strong class="text-danger">*</strong>Finding</label>
+    <p-dropdown
+      *ngIf="!is_new_finding"
+      [options]="commonFindings"
+      [(ngModel)]="auditData.finding"
+      optionLabel="content"
+      optionValue="content"
+      [editable]="true"
+      [filter]="true"
+      filterBy="content"
+      [showClear]="true"
+      placeholder="Select a finding"
+      (onChange)="onChangeFindingDropdown($event.value)"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="auditData.finding">
+          <div [innerHTML]="auditData.finding"></div>
+        </div>
+      </ng-template>
+      <ng-template let-commonfinding pTemplate="item">
+        <ng-container
+          *ngIf="
+            commonfinding.content.includes('New Finding');
+            else writtenFinding
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Finding?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-6"
+          ></button>
+        </ng-container>
+        <ng-template #writtenFinding>
+          <div [innerHTML]="commonfinding.content"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <ckeditor
+      *ngIf="is_new_finding"
+      #finding
+      name="finding"
+      [(ngModel)]="auditData.finding"
+       [editor]="findingEditor"
+[config]="config"
+      (ready)="changeFinding($event, auditData)"
+    ></ckeditor>
+  </div>
+
+  <div class="p-field">
+    <label for="finding_detail">Finding Detail</label>
+    <ckeditor
+      #finding_detail="ngModel"
+      [(ngModel)]="auditData.finding_detail"
+      name="finding_detail"
+            [editor]="impactEditor"
+[config]="config"
+    ></ckeditor>
+  </div>
+
+  <div class="p-field">
+    <label for="impact"><strong class="p-error block">*</strong> Impact</label>
+    <ckeditor
+      #impact="ngModel"
+      [(ngModel)]="auditData.impact"
+      name="impact"
+      [class.is-invalid]="impact.invalid && impact.touched"
+            [editor]="impactEditor"
+[config]="config"
+      (ready)="changeImpact($event, auditData)"
+      [required]="true"
+    ></ckeditor>
+    <small
+      class="p-error block"
+      [class.d-none]="impact.untouched || impact.dirty || impact.valid"
+      >Impact is required<br
+    /></small>
+  </div>
+
+  <div class="p-field">
+    <label for="recommendation"
+      ><strong class="p-error block">*</strong> Recommendation</label
+    >
+    <p-dropdown
+      *ngIf="!is_new_recommendation"
+      [options]="commonRecommendations"
+      [(ngModel)]="auditData.recommendation"
+      optionLabel="content"
+      optionValue="content"
+      [filter]="true"
+      [editable]="true"
+      styleClass="w-100"
+      name="recommendation"
+      filterBy="content"
+      [showClear]="true"
+      placeholder="Select a recommendation"
+      (onChange)="onChangeRecommendationDropdown($event.value)"
+      [required]="true"
+    >
+      <ng-template pTemplate="selectedItem">
+        <div *ngIf="auditData.recommendation">
+          <div [innerHTML]="auditData.recommendation"></div>
+        </div>
+      </ng-template>
+      <ng-template let-commonRecommendation pTemplate="item">
+        <ng-container
+          *ngIf="
+            commonRecommendation.content.includes('New Recommendation');
+            else writtenRecommendation
+          "
+          class="row"
+        >
+          <button
+            pButton
+            pRipple
+            label="New Recommendation?"
+            icon="pi pi-plus"
+            class="p-button-raised p-button-rounded col-md-8"
+          ></button>
+        </ng-container>
+        <ng-template #writtenRecommendation>
+          <div [innerHTML]="commonRecommendation.content"></div>
+        </ng-template>
+      </ng-template>
+    </p-dropdown>
+    <div *ngIf="is_new_recommendation">
+      <ckeditor
+        #recommendation="ngModel"
+        [(ngModel)]="auditData.recommendation"
+        [class.is-invalid]="recommendation.invalid && recommendation.touched"
+        name="recommendation"
+        required="true"
+        [editor]="recommendationEditor"
+[config]="config"
+        (ready)="changeRecommendation($event, auditData)"
+      ></ckeditor>
+      <small
+        class="p-error block"
+        [class.d-none]="recommendation.dirty || recommendation.untouched"
+        >Recommendation is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <label class="p-mb-3">
+      <strong class="text-danger">*</strong>Currency Type</label
+    >
+    <div class="p-formgrid p-grid">
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="LCY"
+          name="cash_type"
+          value="LCY"
+          (onClick)="changeCashType($event.value, auditData)"
+          [(ngModel)]="auditData.long_outstanding!.cash_type"
+        ></p-radioButton>
+        <label for="LCY">LCY</label>
+      </div>
+      <div class="p-field-radiobutton p-col-3">
+        <p-radioButton
+          id="FCY"
+          name="cash_type"
+          value="FCY"
+          [(ngModel)]="auditData.long_outstanding!.cash_type"
+          (onClick)="changeCashType($event.value, auditData)"
+        ></p-radioButton>
+        <label for="FCY">FCY</label>
+      </div>
+      <div *ngIf="is_fcy" class="p-field p-col-6">
+        <label for="currency_code"
+          ><strong class="text-danger">*</strong>Currency</label
+        >
+        <p-dropdown
+          [options]="currency"
+          [(ngModel)]="auditData.long_outstanding!.fcy"
+          optionLabel="currency_code"
+          optionValue="currency_code"
+          [filter]="true"
+          [editable]="true"
+          styleClass="w-100"
+          name="currency_code"
+          filterBy="currency_code"
+          [showClear]="true"
+          placeholder="Select a Currency"
+          [required]="true"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="auditData.long_outstanding?.fcy">
+              <div>{{ auditData.long_outstanding?.fcy }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-curr pTemplate="item">
+            {{ curr.currency_code }}
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="trial_balance"
+        ><strong class="p-error block">*</strong>Trial Balance</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.trial_balance"
+        name="trial_balance"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        (onBlur)="getDifference()"
+        #trial_balance="ngModel"
+        [class.is-invalid]="trial_balance.invalid && trial_balance.touched"
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="trial_balance.valid || trial_balance.untouched"
+        >Trial balance is required<br
+      /></small>
+    </div>
+  </div>
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label class="p-mb-3">
+        <strong class="text-danger">*</strong>Age of Item</label
+      >
+      <p-selectButton
+        [options]="ageOfItems"
+        [(ngModel)]="auditData.long_outstanding!.selected_items_age"
+        [multiple]="true"
+        (onChange)="onSelectAgeOfItem($event.value)"
+        optionLabel="name"
+        optionValue="value"
+        name="selected_items_age"
+        #selected_items_age="ngModel"
+        [class.is-invalid]="
+          selected_items_age.invalid && selected_items_age.touched
+        "
+        [required]="true"
+      ></p-selectButton>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          selected_items_age.valid || selected_items_age.untouched
+        "
+        >Age of Item is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid" *ngIf="less_than_90">
+    <div class="p-field p-col-5">
+      <label for="less_than_90_amount"
+        ><strong class="p-error block">*</strong>< 90 Amount</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.less_than_90_amount"
+        name="less_than_90_amount"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="0.5"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        (onBlur)="getTotalAmount()"
+        #less_than_90_amount="ngModel"
+        [class.is-invalid]="
+          less_than_90_amount.invalid && less_than_90_amount.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          less_than_90_amount.valid || less_than_90_amount.untouched
+        "
+        >< 90 Amount is required<br
+      /></small>
+    </div>
+    <div class="p-field p-col-5">
+      <label for="less_than_90_number"
+        ><strong class="p-error block">*</strong>< 90 #</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.less_than_90_number"
+        name="less_than_90_number"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="1"
+        (onBlur)="getTotalAmount()"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        #less_than_90_number="ngModel"
+        [class.is-invalid]="
+          less_than_90_number.invalid && less_than_90_number.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          less_than_90_number.valid || less_than_90_number.untouched
+        "
+        >< 90 # is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid" *ngIf="between_90_180">
+    <div class="p-field p-col-5">
+      <label for="greater_than_90_amount"
+        ><strong class="p-error block">*</strong>Between 90-180 Days
+        Amount</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_90_amount"
+        name="greater_than_90_amount"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="0.5"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        (onBlur)="getTotalAmount()"
+        #greater_than_90_amount="ngModel"
+        [class.is-invalid]="
+          greater_than_90_amount.invalid && greater_than_90_amount.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_90_amount.valid || greater_than_90_amount.untouched
+        "
+      >
+        Between 90-180 Amount is required<br
+      /></small>
+    </div>
+
+    <div class="p-field p-col-5">
+      <label for="greater_than_90_number"
+        ><strong class="p-error block">*</strong>Between 90-180 Days
+        Number</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_90_number"
+        name="greater_than_90_number"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        (onBlur)="getTotalAmount()"
+        [step]="1"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        #greater_than_90_number="ngModel"
+        [class.is-invalid]="
+          greater_than_90_number.invalid && greater_than_90_number.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_90_number.valid || greater_than_90_number.untouched
+        "
+        >Greater than 90 days number is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid" *ngIf="between_180_365">
+    <div class="p-field p-col-5">
+      <label for="greater_than_180_amount"
+        ><strong class="p-error block">*</strong>Between 180-365 Days
+        amount</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_180_amount"
+        name="greater_than_180_amount"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="0.5"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        (onBlur)="getTotalAmount()"
+        #greater_than_180_amount="ngModel"
+        [class.is-invalid]="
+          greater_than_180_amount.invalid && greater_than_180_amount.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_180_amount.valid || greater_than_180_amount.untouched
+        "
+        >Between 180-365 Amount is required<br
+      /></small>
+    </div>
+    <div class="p-field p-col-5" *ngIf="between_180_365">
+      <label for="greater_than_180_number"
+        ><strong class="p-error block">*</strong>Between 180-365 Days
+        Number</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_180_number"
+        name="greater_than_180_number"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="1"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        #greater_than_180_number="ngModel"
+        (onBlur)="getTotalAmount()"
+        [class.is-invalid]="
+          greater_than_180_number.invalid && greater_than_180_number.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_180_number.valid || greater_than_180_number.untouched
+        "
+        >Between 180-365 # is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid" *ngIf="greater_than_365">
+    <div class="p-field p-col-5">
+      <label for="greater_than_365_amount"
+        ><strong class="p-error block">*</strong>Greater Than 365 Days
+        Amount</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_365_amount"
+        name="greater_than_365_amount"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="0.5"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        (onBlur)="getTotalAmount()"
+        #greater_than_365_amount="ngModel"
+        [class.is-invalid]="
+          greater_than_365_amount.invalid && greater_than_365_amount.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_365_amount.valid || greater_than_365_amount.untouched
+        "
+        >> 365 Amount is required<br
+      /></small>
+    </div>
+    <div class="p-field p-col-5">
+      <label for="greater_than_365_number"
+        ><strong class="p-error block">*</strong>Greater Than 365 Days
+        Number</label
+      >
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.greater_than_365_number"
+        name="greater_than_365_number"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        spinnerMode="horizontal"
+        [step]="1"
+        (onBlur)="getTotalAmount()"
+        decrementButtonClass="p-button-secondary"
+        incrementButtonClass="p-button-primary"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        #greater_than_365_number="ngModel"
+        [class.is-invalid]="
+          greater_than_365_number.invalid && greater_than_365_number.touched
+        "
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          greater_than_365_number.valid || greater_than_365_number.untouched
+        "
+        >Between 180-365 Amount is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="total_amount">Total Amount</label>
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.total_amount"
+        name="total_amount"
+        [showButtons]="true"
+        [disabled]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        #total_amount="ngModel"
+        [class.is-invalid]="total_amount.invalid && total_amount.touched"
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="total_amount.valid || total_amount.untouched"
+        >Total amount is required<br
+      /></small>
+    </div>
+    <div class="p-field p-col">
+      <label for="difference">Difference</label>
+      <p-inputNumber
+        [(ngModel)]="auditData.long_outstanding!.difference"
+        name="difference"
+        [disabled]="true"
+        buttonLayout="horizontal"
+        inputId="horizontal"
+        #difference="ngModel"
+        [class.is-invalid]="difference.invalid && difference.touched"
+        [required]="true"
+      ></p-inputNumber>
+      <small
+        class="p-error block"
+        [class.d-none]="difference.valid || difference.untouched"
+        >Difference is required<br
+      /></small>
+    </div>
+  </div>
+
+  <div class="p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="justification"
+        ><strong class="p-error block">*</strong>Justification</label
+      >
+      <ckeditor
+        [(ngModel)]="auditData.long_outstanding!.justification"
+        name="justification"
+        #justification="ngModel"
+        [class.is-invalid]="justification.invalid && justification.touched"
+        [required]="true"
+        [editor]="justificationEditor"
+      ></ckeditor>
+      <small
+        class="p-error block"
+        [class.d-none]="
+          justification.valid || justification.untouched || justification.dirty
+        "
+        >Justification is required<br
+      /></small>
+    </div>
+  </div>
+
+  <ul class="list-group col-md-12 mt-2">
+    <div class="form-check form-switch">
+      <p-inputSwitch
+        [(ngModel)]="edit_auditee"
+        (click)="changeEditAuditee()"
+        name="edit_auditee"
+      ></p-inputSwitch>
+    </div>
+
+    <li class="list-group-item ml-1" *ngIf="edit_auditee">
+      <app-file-upload (dataChange)="onDataChange($event)"></app-file-upload>
+    </li>
+  </ul>
+  <div class="p-formgrid p-grid mt-4">
+    <div class="p-field p-col-2">
+      <button
+      *ngIf="!loading"
+        pButton
+        pRipple
+        label="Save"
+        [disabled]="auditForm.form.invalid || !banking"
+        icon="pi pi-check"
+        class="p-button-raised p-button-rounded"
+        (click)="saveAudit()"
+      ></button>
+      <button *ngIf="loading" type="button" disabled class="btn btn-primary">
+        Loading...
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="p-field p-col-2">
+      <button
+        class="col-md-3"
+        pButton
+        pRipple
+        type="reset"
+        label="Reset"
+        icon="pi pi-times"
+        class="p-button-raised p-button-danger p-button-rounded"
+      ></button>
+    </div>
+  </div>
+</form>
