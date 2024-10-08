@@ -245,7 +245,7 @@
                       class="p-field"
                     >
                       <label for="email">
-                        <strong class="text-danger">*</strong>Outlook
+                        <strong class="text-danger">*</strong>
                         Address</label
                       >
                       <input
@@ -263,19 +263,19 @@
 
                       <div *ngIf="email_status">
                         <small class="text-danger">
-                          Outlook Address Already Exists
+                           Address Already Exists
                         </small>
                       </div>
                       <div *ngIf="email.errors && email.touched">
                         <small
                           class="text-danger"
                           *ngIf="email.errors['required']"
-                          >Outlook Address is required</small
+                          > Address is required</small
                         >
                         <small
                           class="text-danger"
                           *ngIf="email.errors['pattern']"
-                          >Outlook Address should end with
+                          > Address should end with
                           '@.com'</small
                         >
                       </div>
