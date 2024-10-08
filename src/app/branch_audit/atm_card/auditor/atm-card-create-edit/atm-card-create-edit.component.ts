@@ -77,7 +77,7 @@ export class AtmCardCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
   loading=false;
 
 
@@ -147,8 +147,8 @@ export class AtmCardCreateEditComponent {
     }
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   getCommonFindings() {
@@ -270,7 +270,7 @@ export class AtmCardCreateEditComponent {
     this.auditee_valid = true;
     this.risk_level_valid = true;
 
-    this.banking = true;
+    this.ing = true;
 
   }
 

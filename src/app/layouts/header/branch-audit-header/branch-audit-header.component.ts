@@ -399,7 +399,7 @@ export class BranchAuditHeaderComponent {
         ],
       },
       {
-        label: 'Digital banking findings',
+        label: 'Digital ing findings',
         // icon: 'pi pi-fw pi-money-bill',
         items: [
           {
@@ -1039,7 +1039,7 @@ export class BranchAuditHeaderComponent {
       },
 
       {
-        label: 'Digital banking findings',
+        label: 'Digital ing findings',
         // icon: 'pi pi-fw pi-money-bill',
         items: [
           {
@@ -1793,7 +1793,7 @@ export class BranchAuditHeaderComponent {
       },
 
       {
-        label: 'Digital banking findings',
+        label: 'Digital ing findings',
         // icon: 'pi pi-fw pi-money-bill',
         items: [
           {
@@ -2625,7 +2625,7 @@ export class BranchAuditHeaderComponent {
       },
 
       {
-        label: 'Digital banking findings',
+        label: 'Digital ing findings',
         // icon: 'pi pi-fw pi-money-bill',
         items: [
           {
@@ -3070,7 +3070,7 @@ export class BranchAuditHeaderComponent {
     // this.storageService.clean();
     // window.location.reload();
 
-    const loginUrl = 'https://afrfms.awashbank.com/afrfms';
+    const loginUrl = 'https://afrfms..com/afrfms';
     window.location.href = loginUrl;
   }
 

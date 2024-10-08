@@ -426,23 +426,23 @@
         </div>
 
         <div class="field col-lg-4 col-md-6 mb-2">
-          <label for="banking">Banking</label>
+          <label for="ing">ing</label>
           <p-selectButton
-            [options]="bankingOptions"
-            [(ngModel)]="branch_report.banking"
+            [options]="ingOptions"
+            [(ngModel)]="branch_report.ing"
             optionLabel="label"
             optionValue="value"
-            name="banking"
-            id="banking"
-            (onChange)="bankingOnChange()"
+            name="ing"
+            id="ing"
+            (onChange)="ingOnChange()"
           ></p-selectButton>
         </div>
 
         <div class="field col-lg-4 col-md-6 mb-2">
-          <label for="banking">Loan Type</label>
+          <label for="ing">Loan Type</label>
           <p-dropdown
             [options]="
-              branch_report.banking == 'conventional'
+              branch_report.ing == 'conventional'
                 ? commonLoanTypes
                 : IFBLoanTypes
             "
@@ -455,7 +455,7 @@
             [editable]="true"
             [class.is-invalid]="loanType.invalid && loanType.touched"
             placeholder="Select Loan Type"
-            [disabled]="branch_report.banking == null"
+            [disabled]="branch_report.ing == null"
           >
           </p-dropdown>
         </div>

@@ -67,7 +67,7 @@ export class CashCountCreatEditBranchComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking = false;
+  ing = false;
   loading = false;
 
   @Input() passedAudit: any[];
@@ -248,8 +248,8 @@ export class CashCountCreatEditBranchComponent {
       );
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
   }
 
   onChangeRecommendationDropdown(recommendation: String) {
@@ -289,7 +289,7 @@ export class CashCountCreatEditBranchComponent {
     this.auditee_valid = true;
     this.cash_type_valid = true;
 
-    this.banking = true;
+    this.ing = true;
   }
 
   openNew() {

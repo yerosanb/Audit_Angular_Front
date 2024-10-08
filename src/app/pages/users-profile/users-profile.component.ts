@@ -89,14 +89,14 @@ export class UsersProfileComponent implements OnInit {
         console.log(this.userData)
         const pattern = /^(AB|AIB)\/(\d{1,7})\/(19|20|21)(\d{2})$/;
 
-        const awash_id = {
+        const _id = {
           id_no: this.userData.employee_id?.match(pattern)![2],
           year:
             this.userData.employee_id!.match(pattern)![3] +
             this.userData.employee_id!.match(pattern)![4],
         };
 
-        this.validationService.checkUserEmployeeId(awash_id).subscribe({
+        this.validationService.checkUserEmployeeId(_id).subscribe({
           next: (res: any) => {
             if (res) {
               this.user_job_position = res.position;

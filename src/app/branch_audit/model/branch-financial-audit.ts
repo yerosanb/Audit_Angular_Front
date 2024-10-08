@@ -103,5 +103,5 @@ export class BranchFinancialAudit {
   long_outstanding?: LongOutstandingItem = {};
   outstanding_date?: number;
   unseen_remark?: number;
-  banking?: String;
+  ing?: String;
 }

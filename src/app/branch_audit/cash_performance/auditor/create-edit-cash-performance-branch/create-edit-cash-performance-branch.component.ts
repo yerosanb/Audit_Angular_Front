@@ -77,7 +77,7 @@ export class CreateEditCashPerformanceBranchComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
 
   @Input() passedAudit: any[];
   @Output() editedAudit: EventEmitter<any> = new EventEmitter();
@@ -185,8 +185,8 @@ export class CreateEditCashPerformanceBranchComponent {
     }
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   getCommonFindings() {
@@ -324,7 +324,7 @@ export class CreateEditCashPerformanceBranchComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
 
   }

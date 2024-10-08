@@ -123,7 +123,7 @@ export class IncompleteAccountPendingForReviewBranchComponent {
     this.reviewer.id = user.id
 
     const userData = this.storageService.getUser();
-    this.user_type.banking = userData.banking;
+    this.user_type.ing = userData.ing;
     if (userData.region) {
       this.region.id = userData.region.id;
       this.user_type.region = this.region;

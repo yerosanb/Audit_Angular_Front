@@ -62,7 +62,7 @@ export class ReportCashExcessOrShortageComponent implements OnInit {
   // exportDataColumns!: any;
   selectedReportType!: string;
   selectedTitleForReport: string = 'AFRFMS - Findings Report';
-  bankingOptions: any[];
+  ingOptions: any[];
   cashTypeOptions: any[];
 
   constructor(
@@ -79,7 +79,7 @@ export class ReportCashExcessOrShortageComponent implements OnInit {
     this.getRegion();
     this.getDiscrepancies();
     this.getFindings();
-    this.bankingOptions = [
+    this.ingOptions = [
       { label: 'Conventional', value: 'conventional' },
       { label: 'IFB', value: 'ifb' },
     ];

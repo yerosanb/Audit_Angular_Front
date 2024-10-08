@@ -9,7 +9,7 @@ export class ObservationPayload {
   date_range?: string[];
   audit_finding?: string;
 
-  banking?: string;
+  ing?: string;
   rectification_status?: string;
   single_filter_info?: string;
   user_id?: number;

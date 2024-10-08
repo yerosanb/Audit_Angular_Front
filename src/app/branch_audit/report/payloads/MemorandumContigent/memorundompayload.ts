@@ -18,7 +18,7 @@ export class Memorundompayload {
   memorandum_amount_max?: Number;
   contingent_amount_max?: Number;
 
-  banking?: string;
+  ing?: string;
   rectification_status?: string;
   single_filter_info?: string;
   user_id?: number;

@@ -333,7 +333,7 @@
          -->
 
         <div class="field col-lg-4 col-md-6 mb-2">
-          <label for="banking">Stock Item Type</label>
+          <label for="ing">Stock Item Type</label>
           <p-dropdown
             [options]="negotiableStockItemOption"
             [(ngModel)]="branch_report.stock_item_type"
@@ -393,14 +393,14 @@
         </div>
 
         <div class="field col-lg-4 col-md-6 mb-2">
-          <label for="banking">Banking</label>
+          <label for="ing">ing</label>
           <p-selectButton
-            [options]="bankingOptions"
-            [(ngModel)]="branch_report.banking"
+            [options]="ingOptions"
+            [(ngModel)]="branch_report.ing"
             optionLabel="label"
             optionValue="value"
-            name="banking"
-            id="banking"
+            name="ing"
+            id="ing"
           ></p-selectButton>
         </div>
 

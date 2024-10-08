@@ -67,7 +67,7 @@ export class MemorandomCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
 
   @Input() passedAudit: any[];
   @Output() editedAudit: EventEmitter<any> = new EventEmitter();
@@ -134,8 +134,8 @@ export class MemorandomCreateEditComponent {
     }
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
    checkTable() {
@@ -277,7 +277,7 @@ export class MemorandomCreateEditComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
   }
 

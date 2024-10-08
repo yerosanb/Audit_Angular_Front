@@ -67,7 +67,7 @@ export class AssetLiabilityCreatEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
   loading=false;
 
   @Input() passedAudit: any[];
@@ -170,8 +170,8 @@ export class AssetLiabilityCreatEditComponent {
       );
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   onChangeFindingDropdown(finding: String) {
@@ -268,7 +268,7 @@ export class AssetLiabilityCreatEditComponent {
     if (this.cash_type_intial == 'FCY') {
       this.is_fcy = true;
     }
-    this.banking = true;
+    this.ing = true;
 
   }
 

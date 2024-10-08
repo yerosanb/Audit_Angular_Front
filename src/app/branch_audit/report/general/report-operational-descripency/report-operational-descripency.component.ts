@@ -72,7 +72,7 @@ export class ReportOperationalDescripencyComponent {
   exportColumns!: ExportColumn[];
   // exportDataColumns!: any;
   selectedReportType!: string;
-  bankingOptions: any[];
+  ingOptions: any[];
   cashTypeOptions: any[];
 
   constructor(
@@ -88,7 +88,7 @@ export class ReportOperationalDescripencyComponent {
     this.getRegion();
     this.getDiscrepancies();
     // this.getFindings();
-    this.bankingOptions = [
+    this.ingOptions = [
       { label: 'Conventional', value: 'conventional' },
       { label: 'IFB', value: 'ifb' },
     ];

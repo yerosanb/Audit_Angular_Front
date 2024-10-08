@@ -13,7 +13,7 @@ export class NegotiablePayload {
   max_amount?: Number;
   account_number?: Number;
   stock_item_type?: string;
-  banking?: string;
+  ing?: string;
   cash_type?: string;
 
   rectification_status?: string;

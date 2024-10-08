@@ -41,11 +41,11 @@ export class ValidationService {
   checkUserPhoneNumber(phone_number: string): Observable<any> {
     return this.http.get<any>(`${rootURL}/checkUserPhoneNumber/${phone_number}`);
   }
-  checkUserEmployeeId(awash_id: any): Observable<any> {
-    return this.http.post<any>(`${rootURL}/checkUserEmployeeId`, awash_id);
+  checkUserEmployeeId(_id: any): Observable<any> {
+    return this.http.post<any>(`${rootURL}/checkUserEmployeeId`, _id);
   }
-  checkEmployeeIdSystem(awash_id: any): Observable<any> {
-    return this.http.post<any>(`${rootURL}/checkUserEmployeeIdSystem`, awash_id);
+  checkEmployeeIdSystem(_id: any): Observable<any> {
+    return this.http.post<any>(`${rootURL}/checkUserEmployeeIdSystem`, _id);
   }
 
   getJobPosition(): Observable<any> {

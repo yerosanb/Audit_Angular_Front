@@ -78,7 +78,7 @@ export class LoanAndAdvanceCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
 
   @Input() passedAudit: any[];
   @Input() overDraftPassed: any[];
@@ -167,7 +167,7 @@ export class LoanAndAdvanceCreateEditComponent {
 
     this.commonLoanTypes = [
       { loan_type: 'Education and Health Services Loans' },
-      { loan_type: 'AWASH BANK STAFF HOUSING AND CAR LOANS' },
+      { loan_type: '  STAFF HOUSING AND CAR LOANS' },
       { loan_type: 'AGRI PROD. TERM LOANS DEF' },
       { loan_type: 'AGRICULTURAL PROD. OVERDRAFT-DEF' },
       { loan_type: 'TRANSPORT OVERDRAFT-DEF' },
@@ -332,8 +332,8 @@ export class LoanAndAdvanceCreateEditComponent {
       );
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   onChangeRecommendationDropdown(recommendation: String) {
@@ -393,7 +393,7 @@ export class LoanAndAdvanceCreateEditComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
   }
 

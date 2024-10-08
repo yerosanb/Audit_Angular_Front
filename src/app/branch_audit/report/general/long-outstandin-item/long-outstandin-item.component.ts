@@ -93,7 +93,7 @@ export class LongOutstandinItemComponent {
   minValueForMax2: any = 0;
   minValueForMax3: any = 0;
   minValueForMax4: any = 0;
-  bankingOptions: any[];
+  ingOptions: any[];
   constructor(
     private branch_report_service: BranchReportService,
     public storageService: StorageService,
@@ -107,7 +107,7 @@ export class LongOutstandinItemComponent {
     this.getRegion();
     this.getDiscrepancies();
     this.getFindings();
-    this.bankingOptions = [
+    this.ingOptions = [
       { label: 'Conventional', value: 'conventional' },
       { label: 'IFB', value: 'ifb' },
     ];

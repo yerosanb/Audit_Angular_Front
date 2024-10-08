@@ -18,7 +18,7 @@ export class CashCountPayload {
   trial_balance_min?: String;
   trial_balance_max?: String;
 
-  banking?: string;
+  ing?: string;
   rectification_status?: string;
   single_filter_info?: string;
   user_id?: number;

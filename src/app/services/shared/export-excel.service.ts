@@ -183,7 +183,7 @@ export class ExportExcelService {
       header_titles.length - 2
     );
     // let footerRow = worksheet.addRow([
-    //   'Big Foreign Currency Non Govermental Organizations Employees Loan Followup Management System - Report Generated from https://lms.awashbank.com/bigfcy/ at ',
+    //   'Big Foreign Currency Non Govermental Organizations Employees Loan Followup Management System - Report Generated from https://lms..com/bigfcy/ at ',
     // ]);
     // footerRow.getCell(1).fill = {
     //   type: 'pattern',
@@ -193,7 +193,7 @@ export class ExportExcelService {
 
     const footerRow = worksheet.getCell(data.length + 7, 3);
     footerRow.value =
-      'AFRFMS - Report Generated from https://afrfms.awashbank.com/afrfms/';
+      'AFRFMS - Report Generated from https://afrfms..com/afrfms/';
     footerRow.font = {
       name: 'Calibri',
       size: 11,
@@ -220,7 +220,7 @@ export class ExportExcelService {
     //   selectLockedCells: false,
     //   selectUnlockedCells: false,
     // })
-    workbook.company = 'Awash Bank';
+    workbook.company = ' ';
     workbook.created = d;
     workbook.creator = 'Big Fcy Loan Followup Management System';
     workbook.addImage({
@@ -337,7 +337,7 @@ export class ExportExcelService {
           body: [
             [
               '',
-              'AFRFMS - Report Generated from https://afrfms.awashbank.com/afrfms/',
+              'AFRFMS - Report Generated from https://afrfms..com/afrfms/',
               '',
             ],
           ],
@@ -464,7 +464,7 @@ export class ExportExcelService {
           body: [
             [
               '',
-              'AFRFMS - Report Generated from https://afrfms.awashbank.com/afrfms/',
+              'AFRFMS - Report Generated from https://afrfms..com/afrfms/',
               '',
             ],
           ],
@@ -670,7 +670,7 @@ export class ExportExcelService {
       header_titles.length - 2
     );
     // let footerRow = worksheet.addRow([
-    //   'Big Foreign Currency Non Govermental Organizations Employees Loan Followup Management System - Report Generated from https://lms.awashbank.com/bigfcy/ at ',
+    //   'Big Foreign Currency Non Govermental Organizations Employees Loan Followup Management System - Report Generated from https://lms..com/bigfcy/ at ',
     // ]);
     // footerRow.getCell(1).fill = {
     //   type: 'pattern',
@@ -680,7 +680,7 @@ export class ExportExcelService {
 
     const footerRow = worksheet.getCell(data.length + 7, 3);
     footerRow.value =
-      'AFRFMS - Report Generated from https://afrfms.awashbank.com/afrfms/';
+      'AFRFMS - Report Generated from https://afrfms..com/afrfms/';
     footerRow.font = {
       name: 'Calibri',
       size: 11,
@@ -707,7 +707,7 @@ export class ExportExcelService {
     //   selectLockedCells: false,
     //   selectUnlockedCells: false,
     // })
-    workbook.company = 'Awash Bank';
+    workbook.company = ' ';
     workbook.created = d;
     workbook.creator = 'Audit Finding Reporting and Followup Management System';
     workbook.addImage({

@@ -15,7 +15,7 @@ export class OperationalDescripency {
   account_number?: Number;
   cash_type?: string;
 
-  banking?: string;
+  ing?: string;
   rectification_status?: string;
   single_filter_info?: string;
   user_id?: number;

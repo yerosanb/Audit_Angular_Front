@@ -14,9 +14,9 @@
                 <div class="d-flex justify-content-center">
                   <a routerLink="/" class="d-flex align-items-center w-auto"
                     ><img
-                      class="w-100 text-center awash-bank-login-logo"
-                      src="assets/img/Awash_Bank_Final_logo.jpg"
-                      alt="Awash Bank AFRFMS"
+                      class="w-100 text-center --login-logo"
+                      src="assets/img/__Final_logo.jpg"
+                      alt="  AFRFMS"
                     />
                   </a>
                 </div>
@@ -194,7 +194,7 @@
                     <!-- <div class="p-formgrid p-grid"> -->
                     <div class="p-field">
                       <label for="employee_id">
-                        <strong class="text-danger">*</strong>Awash Bank
+                        <strong class="text-danger">*</strong> 
                         ID</label
                       >
                       <input
@@ -207,7 +207,7 @@
                         id="employee_id"
                         [(ngModel)]="user.employee_id"
                         name="employee_id"
-                        (input)="checkAwashBankIdStatus($event)"
+                        (input)="checkIdStatus($event)"
                         required="true"
                         pattern="^(AB|AIB|aib|ab)\/(\d{1,7})\/(19|20|21)\d{2}$"
                       />
@@ -215,12 +215,12 @@
                         <small
                           class="text-danger"
                           *ngIf="employee_id.errors['required']"
-                          >Awash Bank ID is required</small
+                          >  ID is required</small
                         >
                         <small
                           class="text-danger"
                           *ngIf="employee_id.errors['pattern']"
-                          >Awash ID Incorrect</small
+                          > ID Incorrect</small
                         >
                       </div>
                       <div *ngIf="employee_id_status">
@@ -258,7 +258,7 @@
                         name="email"
                         (input)="checkEmailStatus($event)"
                         required="true"
-                        pattern="\w+@awashbank\.com$"
+                        pattern="\w+@\.com$"
                       />
 
                       <div *ngIf="email_status">
@@ -276,7 +276,7 @@
                           class="text-danger"
                           *ngIf="email.errors['pattern']"
                           >Outlook Address should end with
-                          '@awashbank.com'</small
+                          '@.com'</small
                         >
                       </div>
                     </div>
@@ -669,42 +669,42 @@
                       "
                     >
                       <label class="p-mb-3"
-                        ><strong class="text-danger">*</strong>Banking
+                        ><strong class="text-danger">*</strong>ing
                         Category</label
                       >
                       <div class="p-formgrid p-grid">
                         <div class="p-field-radiobutton p-col-4">
                           <p-radioButton
                             id="conventional"
-                            name="banking"
-                            #banking="ngModel"
+                            name="ing"
+                            #ing="ngModel"
                             [class.is-invalid]="
-                              banking.invalid && banking.touched
+                              ing.invalid && ing.touched
                             "
                             value="conventional"
                             required="true"
-                            [(ngModel)]="user.banking"
+                            [(ngModel)]="user.ing"
                           ></p-radioButton>
                           <label for="conventional">Conventional</label>
                         </div>
                         <div class="p-field-radiobutton p-col-4">
                           <p-radioButton
                             id="ifb"
-                            name="banking"
-                            #banking="ngModel"
+                            name="ing"
+                            #ing="ngModel"
                             [class.is-invalid]="
-                              banking.invalid && banking.touched
+                              ing.invalid && ing.touched
                             "
                             value="ifb"
                             required="true"
-                            [(ngModel)]="user.banking"
+                            [(ngModel)]="user.ing"
                           ></p-radioButton>
                           <label for="ifb">IFB</label>
                         </div>
                         <small
                           class="text-danger"
-                          [class.d-none]="banking.valid || banking.untouched"
-                          >Banking type is required<br
+                          [class.d-none]="ing.valid || ing.untouched"
+                          >ing type is required<br
                         /></small>
                       </div>
                     </div>
@@ -721,28 +721,28 @@
                         <div class="p-field-radiobutton p-col-4">
                           <p-radioButton
                             id="TradeService"
-                            name="banking"
-                            #banking="ngModel"
+                            name="ing"
+                            #ing="ngModel"
                             [class.is-invalid]="
-                              banking.invalid && banking.touched
+                              ing.invalid && ing.touched
                             "
                             value="TradeService"
                             required="true"
-                            [(ngModel)]="user.banking"
+                            [(ngModel)]="user.ing"
                           ></p-radioButton>
                           <label for="TradeService">Trade Service</label>
                         </div>
                         <div class="p-field-radiobutton p-col-4">
                           <p-radioButton
                             id="FinanceManagement"
-                            name="banking"
-                            #banking="ngModel"
+                            name="ing"
+                            #ing="ngModel"
                             [class.is-invalid]="
-                              banking.invalid && banking.touched
+                              ing.invalid && ing.touched
                             "
                             value="FinanceManagement"
                             required="true"
-                            [(ngModel)]="user.banking"
+                            [(ngModel)]="user.ing"
                           ></p-radioButton>
                           <label for="FinanceManagement"
                             >Finance Management</label
@@ -751,20 +751,20 @@
                         <div class="p-field-radiobutton p-col-4">
                           <p-radioButton
                             id="PeriodicAudit"
-                            name="banking"
-                            #banking="ngModel"
+                            name="ing"
+                            #ing="ngModel"
                             [class.is-invalid]="
-                              banking.invalid && banking.touched
+                              ing.invalid && ing.touched
                             "
                             value="PeriodicAudit"
                             required="true"
-                            [(ngModel)]="user.banking"
+                            [(ngModel)]="user.ing"
                           ></p-radioButton>
                           <label for="PeriodicAudit">Periodic Audit</label>
                         </div>
                         <small
                           class="text-danger"
-                          [class.d-none]="banking.valid || banking.untouched"
+                          [class.d-none]="ing.valid || ing.untouched"
                           >Management Audit type is required<br
                         /></small>
                       </div>
@@ -848,7 +848,7 @@
                 </ng-template>
               </div>
               <div class="copyright">
-                &copy; Copyright <strong><span>Awash Bank</span></strong
+                &copy; Copyright <strong><span> </span></strong
                 >. All Rights Reserved
               </div>
             </div>
@@ -942,9 +942,9 @@
     <div class="col-md-12">
       <label class="form-label"
         ><span *ngIf="user.category == 'BFA' || user.category == 'INS'"
-          >Banking Category: </span
+          >ing Category: </span
         ><span *ngIf="user.category == 'MGT'">Management Audit: </span>
-        <b>{{ user.banking }}</b></label
+        <b>{{ user.ing }}</b></label
       >
     </div>
     <div class="col-md-12">

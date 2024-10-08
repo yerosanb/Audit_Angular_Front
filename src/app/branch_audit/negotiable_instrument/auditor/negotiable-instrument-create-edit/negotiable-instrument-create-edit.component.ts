@@ -72,7 +72,7 @@ export class NegotiableInstrumentCreateEditComponent {
   reviewer = false;
   auditor = false;
   sampleName: any;
-  banking = false;
+  ing = false;
   loading = false;
 
   @Input() passedAudit: any[];
@@ -156,8 +156,8 @@ export class NegotiableInstrumentCreateEditComponent {
     ];
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
   }
 
   getCommonFindings() {
@@ -300,7 +300,7 @@ export class NegotiableInstrumentCreateEditComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
   }
 
   openNew() {

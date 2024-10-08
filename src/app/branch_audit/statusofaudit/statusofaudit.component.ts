@@ -28,7 +28,7 @@ export class StatusofauditComponent implements OnInit {
   branch = new Branches();
   findingDate = new Date();
   today: Date = new Date();
-  banking=false;
+  ing=false;
 
   constructor(
     private service: StatusofauditService,
@@ -74,8 +74,8 @@ export class StatusofauditComponent implements OnInit {
     this.auditor = {};
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   OpenEdit(audit: BranchFinancialAudit) {
@@ -89,7 +89,7 @@ export class StatusofauditComponent implements OnInit {
       ? audit.statusofAudit
       : new Statusofaudit();
 
-      this.banking = true;
+      this.ing = true;
 
   }
 

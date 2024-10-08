@@ -91,7 +91,7 @@ export class CashManagementCreateEditBranchComponent {
   cash_type_intial: any;
   currency: Currency[] = [];
   is_fcy = false;
-  banking = false;
+  ing = false;
   is_table = false;
   loading=false;
 
@@ -291,7 +291,7 @@ export class CashManagementCreateEditBranchComponent {
     this.auditee_valid = true;
     this.cash_type_valid = true;
 
-    this.banking = true;
+    this.ing = true;
 
   }
 
@@ -476,8 +476,8 @@ export class CashManagementCreateEditBranchComponent {
     }
   }
 
-  changeBanking(banking: any) {
-   this.banking = true;
+  changeing(ing: any) {
+   this.ing = true;
   }
 
   onDataChange(data: any) {

@@ -77,7 +77,7 @@ export class DormantInactiveAccountCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
   loading=false;
 
   @Input() passedAudit: any[];
@@ -188,7 +188,7 @@ public config = {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
 
   }
@@ -250,8 +250,8 @@ public config = {
       );
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   onChangeFindingDropdown(finding: String) {

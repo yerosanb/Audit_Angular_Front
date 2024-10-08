@@ -65,7 +65,7 @@ export class CreateEditLongOutstandingItemComponent implements OnInit {
   cash_type_intial: any;
   cash_type_change_tracker = new ChangeTrackerBranchAudit();
   currency: Currency[] = [];
-  banking=false;
+  ing=false;
   loading=false;
 
   @Input() passedAudit: any[];
@@ -301,8 +301,8 @@ export class CreateEditLongOutstandingItemComponent implements OnInit {
     });
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   changeRecommendation(editor: any, audit: BranchFinancialAudit) {
@@ -631,7 +631,7 @@ export class CreateEditLongOutstandingItemComponent implements OnInit {
       );
     }
 
-    this.banking = true;
+    this.ing = true;
 
   }
 

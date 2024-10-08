@@ -95,7 +95,7 @@ export class AppComponent {
   private handleLogoutSuccess(): void {
     this.storageService.clean();
     // this.reloadPageAndRedirect('http://localhost:8082/afrfms');
-    this.reloadPageAndRedirect('https://afrfms.awashbank.com/afrfms');
+    this.reloadPageAndRedirect('https://afrfms..com/afrfms');
   }
 
   private handleLogoutError(err: any): void {

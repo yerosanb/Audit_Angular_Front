@@ -68,7 +68,7 @@ export class StatusofauditreviewComponent implements OnInit {
     this.reviewer.id = this.storageService.getUser().id;
 
     const userData = this.storageService.getUser();
-    this.user_type.banking = userData.banking;
+    this.user_type.ing = userData.ing;
     if (userData.region) {
       this.region.id = userData.region.id;
       this.user_type.region = this.region;

@@ -312,17 +312,17 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  checkAwashBankIdStatus(event: any) {
+  checkIdStatus(event: any) {
     this.employee_id = event.target.value;
     const pattern = /^(AB|AIB)\/(\d{1,7})\/(19|20|21)(\d{2})$/;
-    const awash_id = {
+    const _id = {
       id_no: this.employee_id.match(pattern)![2],
       year:
         this.employee_id.match(pattern)![3] +
         this.employee_id.match(pattern)![4],
     };
 
-    this.validationService.checkUserEmployeeId(awash_id).subscribe({
+    this.validationService.checkUserEmployeeId(_id).subscribe({
       next: (res: any) => {
         if (res) {
           this.userFromHr = res;
@@ -337,7 +337,7 @@ export class SignupComponent implements OnInit {
         this.errorMessage = error.error.message;
       },
     });
-    this.validationService.checkEmployeeIdSystem(awash_id).subscribe({
+    this.validationService.checkEmployeeIdSystem(_id).subscribe({
       next: (res: any) => {
         if (res) {
           this.employee_id_status_system = true;

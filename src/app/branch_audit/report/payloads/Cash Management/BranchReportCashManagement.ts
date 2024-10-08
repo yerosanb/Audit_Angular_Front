@@ -15,7 +15,7 @@ export class BranchReportCashManagement {
   // amount_min?: Number;
   // amount_max?: Number;
 
-  banking?: string;
+  ing?: string;
   rectification_status?: string;
   single_filter_info?: string;
   user_id?: number;

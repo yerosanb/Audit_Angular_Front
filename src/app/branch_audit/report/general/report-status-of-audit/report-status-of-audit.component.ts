@@ -69,7 +69,7 @@ export class ReportStatusOfAuditComponent implements OnInit {
   exportColumns!: ExportColumn[];
   // exportDataColumns!: any;
   selectedReportType!: string;
-  bankingOptions: any[];
+  ingOptions: any[];
   constructor(
     private branch_report_service: BranchReportService,
     public storageService: StorageService,
@@ -84,7 +84,7 @@ export class ReportStatusOfAuditComponent implements OnInit {
     this.getRegion();
     this.getDiscrepancies();
     this.getFindings();
-    this.bankingOptions = [
+    this.ingOptions = [
       { label: 'Conventional', value: 'conventional' },
       { label: 'IFB', value: 'ifb' },
     ];

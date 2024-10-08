@@ -4,7 +4,7 @@ export default function invert() {
       '-o-filter: invert(90%);' + 
       '-ms-filter: invert(90%);' +
       'transition: filter 0.3s ease-in-out; hue-rotate(180deg);}'+
-      'img:not(.awash-bank-login-logo) {-webkit-filter: invert(90%);' +
+      'img:not(.--login-logo) {-webkit-filter: invert(90%);' +
       '-moz-filter: invert(90%);' + 
       '-o-filter: invert(90%);' + 
       '-ms-filter: invert(90%);' +
@@ -17,7 +17,7 @@ export default function invert() {
       window.counter++
       if (window.counter % 2 == 0) {
         css ='html {-webkit-filter: invert(0%); -moz-filter: invert(0%); -o-filter: invert(0%); -ms-filter: invert(0%); transition: filter 0.3s ease-in-out; hue-rotate(180deg); }'+
-        'img:not(.awash-bank-login-logo) {-webkit-filter: invert(0%);' +
+        'img:not(.--login-logo) {-webkit-filter: invert(0%);' +
       '-moz-filter: invert(0%);' + 
       '-o-filter: invert(0%);' + 
       '-ms-filter: invert(0%);' +

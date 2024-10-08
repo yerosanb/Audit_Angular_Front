@@ -26,5 +26,5 @@ export class User {
     category?: string;
     unseen_remark?:number;
     authenthication_media?:Boolean;
-    banking?: string;
+    ing?: string;
 }

@@ -1,24 +1,24 @@
 <form ngNativeValidate #auditForm="ngForm" class="p-fluid">
   <div class="p-field">
-    <label class="p-mb-3"><strong class="text-danger">*</strong> Banking</label>
+    <label class="p-mb-3"><strong class="text-danger">*</strong> ing</label>
     <div class="p-formgrid p-grid">
       <div class="p-field-radiobutton p-col-3">
         <p-radioButton
           id="conventional"
-          name="banking"
+          name="ing"
           value="conventional"
-          (onClick)="changeBanking($event.value)"
-          [(ngModel)]="auditData.banking"
+          (onClick)="changeing($event.value)"
+          [(ngModel)]="auditData.ing"
         ></p-radioButton>
         <label for="conventional">Conventional</label>
       </div>
       <div class="p-field-radiobutton p-col-3">
         <p-radioButton
           id="ifb"
-          name="banking"
+          name="ing"
           value="ifb"
-          [(ngModel)]="auditData.banking"
-          (onClick)="changeBanking($event.value)"
+          [(ngModel)]="auditData.ing"
+          (onClick)="changeing($event.value)"
         ></p-radioButton>
         <label for="ifb">IFB</label>
       </div>
@@ -660,7 +660,7 @@
         pButton
         pRipple
         label="Save"
-        [disabled]="auditForm.form.invalid || !banking"
+        [disabled]="auditForm.form.invalid || !ing"
         icon="pi pi-check"
         class="p-button-raised p-button-rounded"
         (click)="saveAudit()"

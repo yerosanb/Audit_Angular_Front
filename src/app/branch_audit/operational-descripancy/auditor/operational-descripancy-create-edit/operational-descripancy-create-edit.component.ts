@@ -68,7 +68,7 @@ export class OperationalDescripancyCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
   loading=false;
 
   @Input() passedAudit: any[];
@@ -148,8 +148,8 @@ export class OperationalDescripancyCreateEditComponent {
     this.getOperationalCategories();
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   getCommonRecommendations() {
@@ -238,7 +238,7 @@ export class OperationalDescripancyCreateEditComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
   }
 

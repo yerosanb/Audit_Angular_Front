@@ -49,7 +49,7 @@ export class LoanAndAdvanceComponent {
   branch_report = new LoanPayload();
   searchClicked = false;
   stateOptions: any[];
-  bankingOptions: any[];
+  ingOptions: any[];
   finding_status: any[];
   loading: boolean = false;
 
@@ -94,7 +94,7 @@ export class LoanAndAdvanceComponent {
       { label: 'LCY', value: 2 },
     ];
 
-    this.bankingOptions = [
+    this.ingOptions = [
       { label: 'Conventional', value: 'conventional' },
       { label: 'IFB', value: 'ifb' },
     ];
@@ -110,7 +110,7 @@ export class LoanAndAdvanceComponent {
 
     this.commonLoanTypes = [
       { loan_type: 'Education and Health Services Loans' },
-      { loan_type: 'AWASH BANK STAFF HOUSING AND CAR LOANS' },
+      { loan_type: '  STAFF HOUSING AND CAR LOANS' },
       { loan_type: 'AGRI PROD. TERM LOANS DEF' },
       { loan_type: 'AGRICULTURAL PROD. OVERDRAFT-DEF' },
       { loan_type: 'TRANSPORT OVERDRAFT-DEF' },
@@ -154,7 +154,7 @@ export class LoanAndAdvanceComponent {
     ];
   }
 
-  bankingOnChange() {
+  ingOnChange() {
     this.branch_report.loan_type = undefined;
   }
 

@@ -78,7 +78,7 @@ export class ControllableExspenseCreateEditComponent {
   approver = false;
   reviewer = false;
   auditor = false;
-  banking=false;
+  ing=false;
   loading=false;
 
   @Input() passedAudit: any[];
@@ -187,8 +187,8 @@ export class ControllableExspenseCreateEditComponent {
       );
   }
 
-  changeBanking(banking: any) {
-    this.banking = true;
+  changeing(ing: any) {
+    this.ing = true;
    }
 
   onChangeFindingDropdown(finding: String) {
@@ -287,7 +287,7 @@ export class ControllableExspenseCreateEditComponent {
       this.is_fcy = true;
     }
 
-    this.banking = true;
+    this.ing = true;
 
 
   }
